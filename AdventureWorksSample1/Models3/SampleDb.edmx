@@ -1,0 +1,448 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SamplDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--生成中に見つかったエラー:
+警告 6002: テーブル/ビュー 'sampldb.dbo.Customers' には主キーが定義されていません。主キーは推論され、定義は読み取り専用のテーブル/ビューとして作成されました。-->
+        <EntityType Name="Customers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <!--生成中に見つかったエラー:
+警告 6013: テーブル/ビュー 'sampldb.dbo.history' に主キーが定義されておらず、有効な主キーを推論できませんでした。このテーブル/ビューは除外されました。エンティティを使用するには、スキーマを確認し、正しいキーを追加して、コメントを解除する必要があります。
+        <EntityType Name="history">
+          <Property Name="date" Type="char" MaxLength="10" />
+          <Property Name="time" Type="char" MaxLength="5" />
+          <Property Name="commit_date" Type="datetime" />
+          <Property Name="file" Type="varchar" MaxLength="1024" />
+          <Property Name="version" Type="bigint" />
+          <Property Name="user" Type="varchar" MaxLength="256" />
+          <Property Name="comment" Type="nvarchar(max)" />
+          <Property Name="gcount" Type="bigint" />
+        </EntityType>-->
+        <EntityType Name="sample_table1">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="256" />
+        </EntityType>
+        <!--生成中に見つかったエラー:
+警告 6002: テーブル/ビュー 'sampldb.dbo.src_file' には主キーが定義されていません。主キーは推論され、定義は読み取り専用のテーブル/ビューとして作成されました。-->
+        <EntityType Name="src_file">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="directory_name" Type="nvarchar" MaxLength="1024" />
+          <Property Name="source_file_name" Type="nvarchar" MaxLength="1024" />
+        </EntityType>
+        <EntityType Name="SYS_USER">
+          <Key>
+            <PropertyRef Name="UID" />
+          </Key>
+          <Property Name="UID" Type="bigint" Nullable="false" />
+          <Property Name="USER_ID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="NAME" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MAIL_ADDRESS" Type="varchar" MaxLength="128" />
+          <Property Name="PASSWORD" Type="varchar(max)" Nullable="false" />
+          <Property Name="LAST_LOGIN_DATE" Type="datetime" />
+          <Property Name="IS_AVAILABLE" Type="bit" Nullable="false" />
+          <Property Name="OTP" Type="varchar" MaxLength="1024" />
+          <Property Name="IS_VISIT_PASSWORD" Type="bit" Nullable="false" />
+          <Property Name="IS_LOCK" Type="bit" Nullable="false" />
+          <Property Name="LOGIN_FAILURE_COUNT" Type="int" Nullable="false" />
+          <Property Name="DELETE_FLG" Type="bit" Nullable="false" />
+          <Property Name="CREATE_AT" Type="datetime" Nullable="false" />
+          <Property Name="CREATE_BY" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UPDATE_AT" Type="datetime" Nullable="false" />
+          <Property Name="UPDATE_BY" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="VERSION" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+        </EntityType>
+        <EntityType Name="table1">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="table2">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="table1_id" Type="bigint" />
+        </EntityType>
+        <EntityType Name="table3">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="table1_id" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="table4">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="table1_id" Type="bigint" Nullable="false" />
+        </EntityType>
+        <!--生成中に見つかったエラー:
+警告 6013: テーブル/ビュー 'sampldb.dbo.vss_history' に主キーが定義されておらず、有効な主キーを推論できませんでした。このテーブル/ビューは除外されました。エンティティを使用するには、スキーマを確認し、正しいキーを追加して、コメントを解除する必要があります。
+        <EntityType Name="vss_history">
+          <Property Name="date" Type="char" MaxLength="10" />
+          <Property Name="time" Type="char" MaxLength="5" />
+          <Property Name="commit_date" Type="datetime" />
+          <Property Name="file" Type="varchar" MaxLength="1024" />
+          <Property Name="version" Type="bigint" />
+          <Property Name="user" Type="varchar" MaxLength="256" />
+          <Property Name="comment" Type="nvarchar(max)" />
+          <Property Name="gcount" Type="bigint" />
+        </EntityType>-->
+        <Association Name="FK_table2_1">
+          <End Role="table1" Type="Self.table1" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="table2" Type="Self.table2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="table1">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="table2">
+              <PropertyRef Name="table1_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_table3_1">
+          <End Role="table1" Type="Self.table1" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="table3" Type="Self.table3" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="table1">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="table3">
+              <PropertyRef Name="table1_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_table4_1">
+          <End Role="table1" Type="Self.table1" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="table4" Type="Self.table4" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="table1">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="table4">
+              <PropertyRef Name="table1_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SamplDbModelStoreContainer">
+          <EntitySet Name="sample_table1" EntityType="Self.sample_table1" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SYS_USER" EntityType="Self.SYS_USER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="table1" EntityType="Self.table1" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="table2" EntityType="Self.table2" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="table3" EntityType="Self.table3" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="table4" EntityType="Self.table4" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customers" EntityType="Self.Customers" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Customers].[Id] AS [Id], 
+    [Customers].[Name] AS [Name]
+    FROM [dbo].[Customers] AS [Customers]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="src_file" EntityType="Self.src_file" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [src_file].[id] AS [id], 
+    [src_file].[directory_name] AS [directory_name], 
+    [src_file].[source_file_name] AS [source_file_name]
+    FROM [dbo].[src_file] AS [src_file]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_table2_1" Association="Self.FK_table2_1">
+            <End Role="table1" EntitySet="table1" />
+            <End Role="table2" EntitySet="table2" />
+          </AssociationSet>
+          <AssociationSet Name="FK_table3_1" Association="Self.FK_table3_1">
+            <End Role="table1" EntitySet="table1" />
+            <End Role="table3" EntitySet="table3" />
+          </AssociationSet>
+          <AssociationSet Name="FK_table4_1" Association="Self.FK_table4_1">
+            <End Role="table1" EntitySet="table1" />
+            <End Role="table4" EntitySet="table4" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SamplDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="sample_table1">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="SYS_USER">
+          <Key>
+            <PropertyRef Name="UID" />
+          </Key>
+          <Property Name="UID" Type="Int64" Nullable="false" />
+          <Property Name="USER_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MAIL_ADDRESS" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="PASSWORD" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LAST_LOGIN_DATE" Type="DateTime" Precision="3" />
+          <Property Name="IS_AVAILABLE" Type="Boolean" Nullable="false" />
+          <Property Name="OTP" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
+          <Property Name="IS_VISIT_PASSWORD" Type="Boolean" Nullable="false" />
+          <Property Name="IS_LOCK" Type="Boolean" Nullable="false" />
+          <Property Name="LOGIN_FAILURE_COUNT" Type="Int32" Nullable="false" />
+          <Property Name="DELETE_FLG" Type="Boolean" Nullable="false" />
+          <Property Name="CREATE_AT" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CREATE_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UPDATE_AT" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UPDATE_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="VERSION" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="table1">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="table2" Relationship="Self.FK_table2_1" FromRole="table1" ToRole="table2" />
+          <NavigationProperty Name="table3" Relationship="Self.FK_table3_1" FromRole="table1" ToRole="table3" />
+          <NavigationProperty Name="table4" Relationship="Self.FK_table4_1" FromRole="table1" ToRole="table4" />
+        </EntityType>
+        <EntityType Name="table2">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="table1_id" Type="Int64" />
+          <NavigationProperty Name="table1" Relationship="Self.FK_table2_1" FromRole="table2" ToRole="table1" />
+        </EntityType>
+        <EntityType Name="table3">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="table1_id" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="table1" Relationship="Self.FK_table3_1" FromRole="table3" ToRole="table1" />
+        </EntityType>
+        <EntityType Name="table4">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="table1_id" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="table1" Relationship="Self.FK_table4_1" FromRole="table4" ToRole="table1" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="src_file">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="directory_name" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Name="source_file_name" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_table2_1">
+          <End Role="table1" Type="Self.table1" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="table2" Type="Self.table2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="table1">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="table2">
+              <PropertyRef Name="table1_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_table3_1">
+          <End Role="table1" Type="Self.table1" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="table3" Type="Self.table3" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="table1">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="table3">
+              <PropertyRef Name="table1_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_table4_1">
+          <End Role="table1" Type="Self.table1" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="table4" Type="Self.table4" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="table1">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="table4">
+              <PropertyRef Name="table1_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SamplDbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="sample_table1" EntityType="Self.sample_table1" />
+          <EntitySet Name="SYS_USER" EntityType="Self.SYS_USER" />
+          <EntitySet Name="table1" EntityType="Self.table1" />
+          <EntitySet Name="table2" EntityType="Self.table2" />
+          <EntitySet Name="table3" EntityType="Self.table3" />
+          <EntitySet Name="table4" EntityType="Self.table4" />
+          <EntitySet Name="Customers" EntityType="Self.Customer" />
+          <EntitySet Name="src_file" EntityType="Self.src_file" />
+          <AssociationSet Name="FK_table2_1" Association="Self.FK_table2_1">
+            <End Role="table1" EntitySet="table1" />
+            <End Role="table2" EntitySet="table2" />
+          </AssociationSet>
+          <AssociationSet Name="FK_table3_1" Association="Self.FK_table3_1">
+            <End Role="table1" EntitySet="table1" />
+            <End Role="table3" EntitySet="table3" />
+          </AssociationSet>
+          <AssociationSet Name="FK_table4_1" Association="Self.FK_table4_1">
+            <End Role="table1" EntitySet="table1" />
+            <End Role="table4" EntitySet="table4" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SamplDbModelStoreContainer" CdmEntityContainer="SamplDbEntities">
+          <EntitySetMapping Name="sample_table1">
+            <EntityTypeMapping TypeName="SamplDbModel.sample_table1">
+              <MappingFragment StoreEntitySet="sample_table1">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SYS_USER">
+            <EntityTypeMapping TypeName="SamplDbModel.SYS_USER">
+              <MappingFragment StoreEntitySet="SYS_USER">
+                <ScalarProperty Name="UID" ColumnName="UID" />
+                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="MAIL_ADDRESS" ColumnName="MAIL_ADDRESS" />
+                <ScalarProperty Name="PASSWORD" ColumnName="PASSWORD" />
+                <ScalarProperty Name="LAST_LOGIN_DATE" ColumnName="LAST_LOGIN_DATE" />
+                <ScalarProperty Name="IS_AVAILABLE" ColumnName="IS_AVAILABLE" />
+                <ScalarProperty Name="OTP" ColumnName="OTP" />
+                <ScalarProperty Name="IS_VISIT_PASSWORD" ColumnName="IS_VISIT_PASSWORD" />
+                <ScalarProperty Name="IS_LOCK" ColumnName="IS_LOCK" />
+                <ScalarProperty Name="LOGIN_FAILURE_COUNT" ColumnName="LOGIN_FAILURE_COUNT" />
+                <ScalarProperty Name="DELETE_FLG" ColumnName="DELETE_FLG" />
+                <ScalarProperty Name="CREATE_AT" ColumnName="CREATE_AT" />
+                <ScalarProperty Name="CREATE_BY" ColumnName="CREATE_BY" />
+                <ScalarProperty Name="UPDATE_AT" ColumnName="UPDATE_AT" />
+                <ScalarProperty Name="UPDATE_BY" ColumnName="UPDATE_BY" />
+                <ScalarProperty Name="VERSION" ColumnName="VERSION" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="table1">
+            <EntityTypeMapping TypeName="SamplDbModel.table1">
+              <MappingFragment StoreEntitySet="table1">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="table2">
+            <EntityTypeMapping TypeName="SamplDbModel.table2">
+              <MappingFragment StoreEntitySet="table2">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="table1_id" ColumnName="table1_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="table3">
+            <EntityTypeMapping TypeName="SamplDbModel.table3">
+              <MappingFragment StoreEntitySet="table3">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="table1_id" ColumnName="table1_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="table4">
+            <EntityTypeMapping TypeName="SamplDbModel.table4">
+              <MappingFragment StoreEntitySet="table4">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="table1_id" ColumnName="table1_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="SamplDbModel.Customer">
+              <MappingFragment StoreEntitySet="Customers">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="src_file">
+            <EntityTypeMapping TypeName="SamplDbModel.src_file">
+              <MappingFragment StoreEntitySet="src_file">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="directory_name" ColumnName="directory_name" />
+                <ScalarProperty Name="source_file_name" ColumnName="source_file_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="なし" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

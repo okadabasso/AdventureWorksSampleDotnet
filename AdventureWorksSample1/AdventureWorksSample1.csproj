@@ -1,0 +1,737 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0C592E64-696A-4B18-8314-C6F82EACE65D}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>AdventureWorksSample1</RootNamespace>
+    <AssemblyName>AdventureWorksSample1</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Model5\Address.generated.cs" />
+    <Compile Include="Model5\AddressType.generated.cs" />
+    <Compile Include="Model5\AwBuildVersion.generated.cs" />
+    <Compile Include="Model5\BillOfMaterials.generated.cs" />
+    <Compile Include="Model5\BusinessEntity.generated.cs" />
+    <Compile Include="Model5\BusinessEntityAddress.generated.cs" />
+    <Compile Include="Model5\BusinessEntityContact.generated.cs" />
+    <Compile Include="Model5\ContactType.generated.cs" />
+    <Compile Include="Model5\CountryRegion.generated.cs" />
+    <Compile Include="Model5\CountryRegionCurrency.generated.cs" />
+    <Compile Include="Model5\CreditCard.generated.cs" />
+    <Compile Include="Model5\Culture.generated.cs" />
+    <Compile Include="Model5\Currency.generated.cs" />
+    <Compile Include="Model5\CurrencyRate.generated.cs" />
+    <Compile Include="Model5\Customer.generated.cs" />
+    <Compile Include="Model5\CustomerPii.generated.cs" />
+    <Compile Include="Model5\DatabaseLog.generated.cs" />
+    <Compile Include="Model5\DemoSalesOrderDetailSeed.generated.cs" />
+    <Compile Include="Model5\DemoSalesOrderHeaderSeed.generated.cs" />
+    <Compile Include="Model5\Department.generated.cs" />
+    <Compile Include="Model5\EmailAddress.generated.cs" />
+    <Compile Include="Model5\EmployeeDepartmentHistory.generated.cs" />
+    <Compile Include="Model5\EmployeePayHistory.generated.cs" />
+    <Compile Include="Model5\EntityTemplate.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EntityTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model5\ErrorLog.generated.cs" />
+    <Compile Include="Model5\Illustration.generated.cs" />
+    <Compile Include="Model5\JobCandidate.generated.cs" />
+    <Compile Include="Model5\Location.generated.cs" />
+    <Compile Include="Model5\OrderTracking.generated.cs" />
+    <Compile Include="Model5\Password.generated.cs" />
+    <Compile Include="Model5\Person.generated.cs" />
+    <Compile Include="Model5\PersonCreditCard.generated.cs" />
+    <Compile Include="Model5\PersonJson.generated.cs" />
+    <Compile Include="Model5\PersonPhone.generated.cs" />
+    <Compile Include="Model5\PersonTemporal.generated.cs" />
+    <Compile Include="Model5\PersonTemporalHistory.generated.cs" />
+    <Compile Include="Model5\PhoneNumberType.generated.cs" />
+    <Compile Include="Model5\Product.generated.cs" />
+    <Compile Include="Model5\ProductCategory.generated.cs" />
+    <Compile Include="Model5\ProductCostHistory.generated.cs" />
+    <Compile Include="Model5\ProductDescription.generated.cs" />
+    <Compile Include="Model5\ProductInmem.generated.cs" />
+    <Compile Include="Model5\ProductInventory.generated.cs" />
+    <Compile Include="Model5\ProductListPriceHistory.generated.cs" />
+    <Compile Include="Model5\ProductModel.generated.cs" />
+    <Compile Include="Model5\ProductModelIllustration.generated.cs" />
+    <Compile Include="Model5\ProductModelProductDescriptionCulture.generated.cs" />
+    <Compile Include="Model5\ProductOndisk.generated.cs" />
+    <Compile Include="Model5\ProductPhoto.generated.cs" />
+    <Compile Include="Model5\ProductProductPhoto.generated.cs" />
+    <Compile Include="Model5\ProductReview.generated.cs" />
+    <Compile Include="Model5\ProductSubcategory.generated.cs" />
+    <Compile Include="Model5\ProductVendor.generated.cs" />
+    <Compile Include="Model5\PurchaseOrderDetail.generated.cs" />
+    <Compile Include="Model5\PurchaseOrderHeader.generated.cs" />
+    <Compile Include="Model5\SalesOrderDetail.generated.cs" />
+    <Compile Include="Model5\SalesorderdetailInmem.generated.cs" />
+    <Compile Include="Model5\SalesorderdetailOndisk.generated.cs" />
+    <Compile Include="Model5\SalesOrderHeader.generated.cs" />
+    <Compile Include="Model5\SalesorderheaderInmem.generated.cs" />
+    <Compile Include="Model5\SalesorderheaderOndisk.generated.cs" />
+    <Compile Include="Model5\SalesOrderHeaderSalesReason.generated.cs" />
+    <Compile Include="Model5\SalesorderJson.generated.cs" />
+    <Compile Include="Model5\SalesPerson.generated.cs" />
+    <Compile Include="Model5\SalesPersonQuotaHistory.generated.cs" />
+    <Compile Include="Model5\SalesReason.generated.cs" />
+    <Compile Include="Model5\SalesTaxRate.generated.cs" />
+    <Compile Include="Model5\SalesTerritory.generated.cs" />
+    <Compile Include="Model5\SalesTerritoryHistory.generated.cs" />
+    <Compile Include="Model5\SampleDbContext.cs" />
+    <Compile Include="Model5\ScrapReason.generated.cs" />
+    <Compile Include="Model5\Shift.generated.cs" />
+    <Compile Include="Model5\ShipMethod.generated.cs" />
+    <Compile Include="Model5\ShoppingCartItem.generated.cs" />
+    <Compile Include="Model5\SpecialOffer.generated.cs" />
+    <Compile Include="Model5\SpecialofferInmem.generated.cs" />
+    <Compile Include="Model5\SpecialofferOndisk.generated.cs" />
+    <Compile Include="Model5\SpecialOfferProduct.generated.cs" />
+    <Compile Include="Model5\SpecialofferproductInmem.generated.cs" />
+    <Compile Include="Model5\SpecialofferproductOndisk.generated.cs" />
+    <Compile Include="Model5\StateProvince.generated.cs" />
+    <Compile Include="Model5\Store.generated.cs" />
+    <Compile Include="Model5\TrackingEvent.generated.cs" />
+    <Compile Include="Model5\TransactionHistory.generated.cs" />
+    <Compile Include="Model5\TransactionHistoryArchive.generated.cs" />
+    <Compile Include="Model5\UnitMeasure.generated.cs" />
+    <Compile Include="Model5\Vendor.generated.cs" />
+    <Compile Include="Model5\WorkOrder.generated.cs" />
+    <Compile Include="Model5\WorkOrderRouting.generated.cs" />
+    <Compile Include="Models2\Address.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\AddressType.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\AWBuildVersion.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\BillOfMaterial.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\BusinessEntity.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\BusinessEntityAddress.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\BusinessEntityContact.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\ContactType.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\CountryRegion.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\CountryRegionCurrency.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\CreditCard.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\Culture.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\Currency.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\CurrencyRate.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\Customer.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\customerAccessPredicate_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\CustomerPII.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\DatabaseLog.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\DemoSalesOrderDetailSeed.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\DemoSalesOrderHeaderSeed.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\Department.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\EmailAddress.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\Employee.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\EmployeeDepartmentHistory.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\EmployeePayHistory.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\Employee_Temporal.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\Employee_Temporal_History.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\ErrorLog.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\Illustration.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\JobCandidate.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\Location.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\Model1.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\Model1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\Model1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\OrderTracking.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\Password.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\Person.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\PersonCreditCard.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\PersonPhone.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\Person_json.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\Person_Temporal.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\Person_Temporal_History.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\PhoneNumberType.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\Product.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\ProductCategory.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\ProductCostHistory.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\ProductDescription.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\ProductDocument.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\ProductInventory.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\ProductListPriceHistory.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\ProductModel.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\ProductModelIllustration.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\ProductModelProductDescriptionCulture.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\ProductPhoto.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\ProductProductPhoto.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\ProductReview.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\ProductSubcategory.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\ProductVendor.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\Product_inmem.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\Product_ondisk.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\PurchaseOrderDetail.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\PurchaseOrderHeader.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\SalesOrderDetail.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\SalesOrderDetail_inmem.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\SalesOrderDetail_ondisk.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\SalesOrderHeader.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\SalesOrderHeaderSalesReason.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\SalesOrderHeader_inmem.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\SalesOrderHeader_ondisk.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\SalesOrder_json.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\SalesPerson.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\SalesPersonQuotaHistory.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\SalesReason.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\SalesTaxRate.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\SalesTerritory.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\SalesTerritoryHistory.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\ScrapReason.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\Shift.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\ShipMethod.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\ShoppingCartItem.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\SpecialOffer.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\SpecialOfferProduct.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\SpecialOfferProduct_inmem.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\SpecialOfferProduct_ondisk.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\SpecialOffer_inmem.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\SpecialOffer_ondisk.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\sp_GetEmployee_Person_Info_AsOf_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\StateProvince.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\Store.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\TrackingEvent.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\TransactionHistory.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\TransactionHistoryArchive.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\ufnGetContactInformation_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\UnitMeasure.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\uspGetBillOfMaterials_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\uspGetEmployeeManagers_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\uspGetManagerEmployees_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\uspGetOrderTrackingBySalesOrderID_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\uspGetOrderTrackingByTrackingNumber_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\uspGetWhereUsedProductID_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\vAdditionalContactInfo.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\vEmployee.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\vEmployeeDepartment.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\vEmployeeDepartmentHistory.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\vEmployeePersonTemporalInfo.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\Vendor.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\vIndividualCustomer.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\vJobCandidate.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\vJobCandidateEducation.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\vJobCandidateEmployment.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\vPersonDemographic.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\vProductAndDescription.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\vProductModelCatalogDescription.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\vProductModelInstruction.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\vSalesOrderDetail_extended_inmem_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\vSalesOrderHeader_extended_inmem_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\vSalesPerson.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\vSalesPersonSalesByFiscalYear.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\vStateProvinceCountryRegion.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\vStoreWithAddress.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\vStoreWithContact.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\vStoreWithDemographic.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\vVendorWithAddress.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\vVendorWithContact.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\WorkOrder.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models2\WorkOrderRouting.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models3\Customer.cs">
+      <DependentUpon>SampleDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models3\SampleDb.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SampleDb.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models3\SampleDb.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SampleDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models3\SampleDb.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SampleDb.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models3\sample_table1.cs">
+      <DependentUpon>SampleDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models3\src_file.cs">
+      <DependentUpon>SampleDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models3\SYS_USER.cs">
+      <DependentUpon>SampleDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models3\table1.cs">
+      <DependentUpon>SampleDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models3\table2.cs">
+      <DependentUpon>SampleDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models3\table3.cs">
+      <DependentUpon>SampleDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models3\table4.cs">
+      <DependentUpon>SampleDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models4\Customer.cs" />
+    <Compile Include="Models4\Model1.cs" />
+    <Compile Include="Models4\sample_table1.cs" />
+    <Compile Include="Models4\src_file.cs" />
+    <Compile Include="Models4\SYS_USER.cs" />
+    <Compile Include="Models4\table1.cs" />
+    <Compile Include="Models4\table2.cs" />
+    <Compile Include="Models4\table3.cs" />
+    <Compile Include="Models4\table4.cs" />
+    <Compile Include="Models4\table5.cs" />
+    <Compile Include="Models4\table5b.cs" />
+    <Compile Include="Models4\table6.cs" />
+    <Compile Include="Models4\table7.cs" />
+    <Compile Include="Models\Address.cs" />
+    <Compile Include="Models\AddressType.cs" />
+    <Compile Include="Models\AdventureWorks.cs" />
+    <Compile Include="Models\AWBuildVersion.cs" />
+    <Compile Include="Models\BillOfMaterial.cs" />
+    <Compile Include="Models\BusinessEntity.cs" />
+    <Compile Include="Models\BusinessEntityAddress.cs" />
+    <Compile Include="Models\BusinessEntityContact.cs" />
+    <Compile Include="Models\ContactType.cs" />
+    <Compile Include="Models\CountryRegion.cs" />
+    <Compile Include="Models\CountryRegionCurrency.cs" />
+    <Compile Include="Models\CreditCard.cs" />
+    <Compile Include="Models\Culture.cs" />
+    <Compile Include="Models\Currency.cs" />
+    <Compile Include="Models\CurrencyRate.cs" />
+    <Compile Include="Models\Customer.cs" />
+    <Compile Include="Models\CustomerPII.cs" />
+    <Compile Include="Models\DatabaseLog.cs" />
+    <Compile Include="Models\DemoSalesOrderDetailSeed.cs" />
+    <Compile Include="Models\DemoSalesOrderHeaderSeed.cs" />
+    <Compile Include="Models\Department.cs" />
+    <Compile Include="Models\EmailAddress.cs" />
+    <Compile Include="Models\Employee.cs" />
+    <Compile Include="Models\EmployeeDepartmentHistory.cs" />
+    <Compile Include="Models\EmployeePayHistory.cs" />
+    <Compile Include="Models\Employee_Temporal.cs" />
+    <Compile Include="Models\Employee_Temporal_History.cs" />
+    <Compile Include="Models\ErrorLog.cs" />
+    <Compile Include="Models\Illustration.cs" />
+    <Compile Include="Models\JobCandidate.cs" />
+    <Compile Include="Models\Location.cs" />
+    <Compile Include="Models\OrderTracking.cs" />
+    <Compile Include="Models\Password.cs" />
+    <Compile Include="Models\Person.cs" />
+    <Compile Include="Models\PersonCreditCard.cs" />
+    <Compile Include="Models\PersonPhone.cs" />
+    <Compile Include="Models\Person_json.cs" />
+    <Compile Include="Models\Person_Temporal.cs" />
+    <Compile Include="Models\Person_Temporal_History.cs" />
+    <Compile Include="Models\PhoneNumberType.cs" />
+    <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\ProductCategory.cs" />
+    <Compile Include="Models\ProductCostHistory.cs" />
+    <Compile Include="Models\ProductDescription.cs" />
+    <Compile Include="Models\ProductDocument.cs" />
+    <Compile Include="Models\ProductInventory.cs" />
+    <Compile Include="Models\ProductListPriceHistory.cs" />
+    <Compile Include="Models\ProductModel.cs" />
+    <Compile Include="Models\ProductModelIllustration.cs" />
+    <Compile Include="Models\ProductModelProductDescriptionCulture.cs" />
+    <Compile Include="Models\ProductPhoto.cs" />
+    <Compile Include="Models\ProductProductPhoto.cs" />
+    <Compile Include="Models\ProductReview.cs" />
+    <Compile Include="Models\ProductSubcategory.cs" />
+    <Compile Include="Models\ProductVendor.cs" />
+    <Compile Include="Models\Product_inmem.cs" />
+    <Compile Include="Models\Product_ondisk.cs" />
+    <Compile Include="Models\PurchaseOrderDetail.cs" />
+    <Compile Include="Models\PurchaseOrderHeader.cs" />
+    <Compile Include="Models\SalesOrderDetail.cs" />
+    <Compile Include="Models\SalesOrderDetail_inmem.cs" />
+    <Compile Include="Models\SalesOrderDetail_ondisk.cs" />
+    <Compile Include="Models\SalesOrderHeader.cs" />
+    <Compile Include="Models\SalesOrderHeaderSalesReason.cs" />
+    <Compile Include="Models\SalesOrderHeader_inmem.cs" />
+    <Compile Include="Models\SalesOrderHeader_ondisk.cs" />
+    <Compile Include="Models\SalesOrder_json.cs" />
+    <Compile Include="Models\SalesPerson.cs" />
+    <Compile Include="Models\SalesPersonQuotaHistory.cs" />
+    <Compile Include="Models\SalesReason.cs" />
+    <Compile Include="Models\SalesTaxRate.cs" />
+    <Compile Include="Models\SalesTerritory.cs" />
+    <Compile Include="Models\SalesTerritoryHistory.cs" />
+    <Compile Include="Models\ScrapReason.cs" />
+    <Compile Include="Models\Shift.cs" />
+    <Compile Include="Models\ShipMethod.cs" />
+    <Compile Include="Models\ShoppingCartItem.cs" />
+    <Compile Include="Models\SpecialOffer.cs" />
+    <Compile Include="Models\SpecialOfferProduct.cs" />
+    <Compile Include="Models\SpecialOfferProduct_inmem.cs" />
+    <Compile Include="Models\SpecialOfferProduct_ondisk.cs" />
+    <Compile Include="Models\SpecialOffer_inmem.cs" />
+    <Compile Include="Models\SpecialOffer_ondisk.cs" />
+    <Compile Include="Models\StateProvince.cs" />
+    <Compile Include="Models\Store.cs" />
+    <Compile Include="Models\TrackingEvent.cs" />
+    <Compile Include="Models\TransactionHistory.cs" />
+    <Compile Include="Models\TransactionHistoryArchive.cs" />
+    <Compile Include="Models\UnitMeasure.cs" />
+    <Compile Include="Models\Vendor.cs" />
+    <Compile Include="Models\WorkOrder.cs" />
+    <Compile Include="Models\WorkOrderRouting.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <EntityDeploy Include="Models2\Model1.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Models2\Model1.edmx.diagram">
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </None>
+    <EntityDeploy Include="Models3\SampleDb.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>SampleDb.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Models3\SampleDb.edmx.diagram">
+      <DependentUpon>SampleDb.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Model5\EntityTemplate.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EntityTemplate.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models2\Model1.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Model1.edmx</DependentUpon>
+      <LastGenOutput>Model1.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models2\Model1.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Model1.edmx</DependentUpon>
+      <LastGenOutput>Model1.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models3\SampleDb.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SampleDb.edmx</DependentUpon>
+      <LastGenOutput>SampleDb.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models3\SampleDb.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SampleDb.edmx</DependentUpon>
+      <LastGenOutput>SampleDb.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Schema\Schema.csproj">
+      <Project>{f47b365b-b876-4f00-be4c-8ee694e1f74d}</Project>
+      <Name>Schema</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
