@@ -77,22 +77,42 @@ namespace AdventureWorksSample1
                     foreach(var table in tables)
                     {
                         Console.WriteLine(table.ObjectName);
-                        var dependents = tables.Where(x => x.ForeignKeys.Any(y => y.ReferencedTableName == table.TableName));
-                        foreach(var dependent in dependents)
-                        {
-                            foreach (var fkey in dependent.ForeignKeys.Where(x => x.ReferencedTableName == table.TableName))
-                            {
-                                Console.WriteLine($"\t <-- {dependent.ObjectName} as {fkey.Columns[0]}");
 
+                        // このテーブルを参照する
+                        var dependents = tables.Where(x => x.ForeignKeys.Any(y => y.ReferencedTable.NameEquals(table)))
+                            .SelectMany(x => x.ForeignKeys.Where(r => r.ReferencedTable.NameEquals(table)))
+                            .GroupBy(x => new { x.BaseTable.TableSchema, x.BaseTable.TableName });
+
+                        foreach (var group in dependents)
+                        {
+                            var n = 0;
+                            foreach(var fkey in group)
+                            {
+                                // one or many
+                                var multiplicityA = (fkey.PrincipalRole.Required ? "1.." : "0..") + fkey.PrincipalRole.Multiplicity;
+                                var multiplicityB = (fkey.DependentRole.Required ? "1.." : "0..") + fkey.DependentRole.Multiplicity;
+                                Console.Write($"{table.ObjectName}\t ({multiplicityA}) <---- ({multiplicityB})");
+                                Console.Write($" {fkey.BaseTable.TableName} as {fkey.DependentRole.RoleName}{n:#}");
+                                Console.WriteLine($" by {string.Join(",", fkey.Columns)}");
+                                n++;
                             }
                         }
 
-
-                        foreach(var fkey in table.ForeignKeys)
+                        // このテーブルが参照する
+                        foreach (var group in table.ForeignKeys.GroupBy(x => new { x.ReferencedTable.TableSchema, x.ReferencedTable.TableName}))
                         {
-                            var referenced = tables.Where(x => x.TableName == fkey.ReferencedTableName).FirstOrDefault();
-                            Console.WriteLine($"\t --> {referenced.ObjectName} as {fkey.Columns[0]}");
+                            var n = 0;
+                            foreach (var fkey in group)
+                            {
+                                var multiplicityA = (fkey.PrincipalRole.Required ? "1.." : "0..") + fkey.PrincipalRole.Multiplicity;
+                                var multiplicityB = (fkey.DependentRole.Required ? "1.." : "0..") + fkey.DependentRole.Multiplicity;
 
+                                Console.Write($"{table.ObjectName}\t ({multiplicityB}) ----> ({multiplicityA})");
+                                Console.Write($" {fkey.ReferencedTable.TableName} as {fkey.PrincipalRole.RoleName}{n:#}");
+                                Console.WriteLine($" by {string.Join(",", fkey.Columns)}");
+
+                                n++;
+                            }
                         }
 
                     }

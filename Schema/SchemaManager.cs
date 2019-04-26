@@ -69,7 +69,7 @@ namespace Schema
                 var foreignKey = CreateForeignKey(tables, baseTable, constraint);
                 if(foreignKey != null)
                 {
-                    baseTable.ForeignKeys.Add(foreignKey);
+                    foreignKey.BaseTable.ForeignKeys.Add(foreignKey);
                 }
             }
         }
@@ -92,26 +92,11 @@ namespace Schema
                 return null;
             }
             BuildTable(referencedTable);
-            var foreignKey = new ForeignKey() {
-                ConstraintSchema = constraint.ConstraintSchema,
-                ConstraintName = constraint.ConstraintName,
-                BaseTableSchema = baseTable.TableSchema,
-                BaseTableName = baseTable.TableName,
-                ReferencedTableSchema = referencedTable.TableSchema,
-                ReferencedTableName = referencedTable.TableName,
-                Columns = constraint.ConstraintColumns
-                    ?.OrderBy(x => x.OrdinalPosition).Select(x => x.ColumnName).ToList() 
-                    ?? new List<string>(),
-                ReferenceColumns = referencedTable.Constraints // reference may be unique index 
-                    .FirstOrDefault(x => x.ConstraintType == "PRIMARY KEY")
-                        ?.ConstraintColumns
-                            ?.OrderBy(x => x.OrdinalPosition).Select(x => x.ColumnName).ToList()
-                        ?? baseTable.Indexes.FirstOrDefault(x => x.Name == constraint.ConstraintName)
-                            ?.Columns.OrderBy(x => x.IndexColumnId).Select(x => x.ColumnName).ToList()
-                        ?? new List<string>()
-            };
+            var foreignKey = new ForeignKey(constraint, referentialConstraint, baseTable, referencedTable);
+
             return foreignKey;
         }
+
         private void BuildTable(Table table)
         {
             // 列が構成されていたらそのテーブルは構成済みとみなす

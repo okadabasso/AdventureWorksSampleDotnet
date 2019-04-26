@@ -33,6 +33,7 @@ namespace Schema
 
         [Column("INITIALLY_DEFERRED")]
         public string InitiallyDeferred { get; set; }
+
         public List<KeyColumnUsage> ConstraintColumns { get; set; }
 
 

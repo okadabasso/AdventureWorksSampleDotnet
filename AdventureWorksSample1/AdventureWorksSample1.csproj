@@ -53,6 +53,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Diff.cs" />
+    <Compile Include="Difference.cs" />
     <Compile Include="Model5\Address.generated.cs" />
     <Compile Include="Model5\AddressType.generated.cs" />
     <Compile Include="Model5\AwBuildVersion.generated.cs" />

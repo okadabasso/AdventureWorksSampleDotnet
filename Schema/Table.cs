@@ -34,8 +34,6 @@ namespace Schema
         public List<TableConstraint> Constraints{ get; set; }
         public List<ReferentialConstraint> ReferentialConstraints { get; set; }
 
-        public List<Table> ReferencedTables { get; set; }
-
         public IEnumerable<string> PrimaryKeyColumns
         {
             get {
@@ -48,10 +46,11 @@ namespace Schema
                 }
             }
         }
-        public List<ForeignKey> ForeignKeys
+        public List<ForeignKey> ForeignKeys { get; set; }
+
+        public bool NameEquals(Table table)
         {
-            get;
-            set;
+            return this.TableSchema == table.TableSchema && this.TableName == table.TableName;
         }
     }
 }

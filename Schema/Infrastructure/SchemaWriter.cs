@@ -143,7 +143,7 @@ namespace Schema.Infrastructure
                 Write($@"""references"": {{");
                 PushIndent();
 
-                Write($@"""table"": ""{key.ReferencedTableName}"",");
+                Write($@"""table"": ""{key.ReferencedTable.TableName}"",");
                 Write($@"""columns"": [");
                 PushIndent();
                 var referencedColumnCount = 0;
