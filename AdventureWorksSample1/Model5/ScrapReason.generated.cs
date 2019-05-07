@@ -9,19 +9,32 @@ namespace Sample.Entities
     [Table("Production.ScrapReason")]
     public partial class ScrapReason
     {
-        [Key]
-        [Column("ScrapReasonID", Order = 1, TypeName = "smallint")]
-        public short ScrapReasonId { get; set; }
-        [Column("Name", Order = 2, TypeName = "nvarchar")]
-        [StringLength(50)]
-        public string Name { get; set; }
-        [Column("ModifiedDate", Order = 3, TypeName = "datetime")]
-        public DateTime ModifiedDate { get; set; }
         public ScrapReason()
         {
-            ScrapReasonId = 0;
+            ScrapReasonID = 0;
             Name = null;
             ModifiedDate = DateTime.Parse("0001/01/01 0:00:00");
+
+            WorkOrders = new HashSet<WorkOrder>();
+
         }
+
+        [Key]
+        [Column("ScrapReasonID", Order = 0, TypeName = "smallint")]
+        public short ScrapReasonID { get; set; }
+
+        [Required]
+        [Column("Name", Order = 1, TypeName = "nvarchar")]
+        [StringLength(50)]
+        public string Name { get; set; }
+
+        [Column("ModifiedDate", Order = 2, TypeName = "datetime")]
+        public DateTime ModifiedDate { get; set; }
+
+//WorkOrder ScrapReason
+            
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<WorkOrder> WorkOrders { get; set; }
+
     }
 }

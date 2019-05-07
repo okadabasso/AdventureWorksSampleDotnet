@@ -1,4 +1,4 @@
-namespace AdventureWorksSample1.Models
+﻿namespace AdventureWorksSample1.Models
 {
     using System;
     using System.Data.Entity;
@@ -992,4 +992,5 @@ namespace AdventureWorksSample1.Models
                 .IsFixedLength();
         }
     }
+
 }

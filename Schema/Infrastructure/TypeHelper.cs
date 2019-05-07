@@ -62,7 +62,10 @@ namespace Schema.Infrastructure
             {"money", typeof(decimal) },
             {"smallmoney", typeof(decimal) },
             {"bit", typeof(bool) },
-            {"uniqueidentifier", typeof(Guid) }
+            {"uniqueidentifier", typeof(Guid) },
+            {"xml", typeof(string) },
+            {"hierarchyid", typeof(byte[]) }
+
         };
         public static Type GetObjectType(string dataType, bool nullable)
         {

@@ -9,16 +9,22 @@ namespace Sample.Entities
     [Table("Sales.TrackingEvent")]
     public partial class TrackingEvent
     {
-        [Key]
-        [Column("TrackingEventID", Order = 1, TypeName = "int")]
-        public int TrackingEventId { get; set; }
-        [Column("EventName", Order = 2, TypeName = "nvarchar")]
-        [StringLength(255)]
-        public string EventName { get; set; }
         public TrackingEvent()
         {
-            TrackingEventId = 0;
+            TrackingEventID = 0;
             EventName = null;
+
+
         }
+
+        [Key]
+        [Column("TrackingEventID", Order = 0, TypeName = "int")]
+        public int TrackingEventID { get; set; }
+
+        [Required]
+        [Column("EventName", Order = 1, TypeName = "nvarchar")]
+        [StringLength(255)]
+        public string EventName { get; set; }
+
     }
 }

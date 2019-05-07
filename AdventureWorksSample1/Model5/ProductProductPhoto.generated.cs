@@ -9,22 +9,33 @@ namespace Sample.Entities
     [Table("Production.ProductProductPhoto")]
     public partial class ProductProductPhoto
     {
-        [Key]
-        [Column("ProductID", Order = 1, TypeName = "int")]
-        public int ProductId { get; set; }
-        [Key]
-        [Column("ProductPhotoID", Order = 2, TypeName = "int")]
-        public int ProductPhotoId { get; set; }
-        [Column("Primary", Order = 3, TypeName = "bit")]
-        public bool Primary { get; set; }
-        [Column("ModifiedDate", Order = 4, TypeName = "datetime")]
-        public DateTime ModifiedDate { get; set; }
         public ProductProductPhoto()
         {
-            ProductId = 0;
-            ProductPhotoId = 0;
+            ProductID = 0;
+            ProductPhotoID = 0;
             Primary = false;
             ModifiedDate = DateTime.Parse("0001/01/01 0:00:00");
+
+
         }
+
+        [Key]
+        [Column("ProductID", Order = 0, TypeName = "int")]
+        public int ProductID { get; set; }
+
+        [Key]
+        [Column("ProductPhotoID", Order = 1, TypeName = "int")]
+        public int ProductPhotoID { get; set; }
+
+        [Column("Primary", Order = 2, TypeName = "bit")]
+        public bool Primary { get; set; }
+
+        [Column("ModifiedDate", Order = 3, TypeName = "datetime")]
+        public DateTime ModifiedDate { get; set; }
+
+        public virtual Product Product { get; set; }
+
+        public virtual ProductPhoto ProductPhoto { get; set; }
+
     }
 }

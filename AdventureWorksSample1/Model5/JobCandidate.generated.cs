@@ -9,21 +9,29 @@ namespace Sample.Entities
     [Table("HumanResources.JobCandidate")]
     public partial class JobCandidate
     {
-        [Key]
-        [Column("JobCandidateID", Order = 1, TypeName = "int")]
-        public int JobCandidateId { get; set; }
-        [Column("BusinessEntityID", Order = 2, TypeName = "int")]
-        public int? BusinessEntityId { get; set; }
-        [Column("Resume", Order = 3, TypeName = "xml")]
-        public object Resume { get; set; }
-        [Column("ModifiedDate", Order = 4, TypeName = "datetime")]
-        public DateTime ModifiedDate { get; set; }
         public JobCandidate()
         {
-            JobCandidateId = 0;
-            BusinessEntityId = null;
+            JobCandidateID = 0;
+            BusinessEntityID = null;
             Resume = null;
             ModifiedDate = DateTime.Parse("0001/01/01 0:00:00");
+
+
         }
+
+        [Key]
+        [Column("JobCandidateID", Order = 0, TypeName = "int")]
+        public int JobCandidateID { get; set; }
+
+        public int? BusinessEntityID { get; set; }
+
+        [Column("Resume", Order = 2, TypeName = "xml")]
+        public string Resume { get; set; }
+
+        [Column("ModifiedDate", Order = 3, TypeName = "datetime")]
+        public DateTime ModifiedDate { get; set; }
+
+        public virtual Employee Employee { get; set; }
+
     }
 }

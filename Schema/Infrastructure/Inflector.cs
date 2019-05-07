@@ -22,11 +22,9 @@ namespace Schema.Infrastructure
                 return inflector;
             }
         }
-        private Dictionary<string, string>
-       PluralIllegular;
+        private Dictionary<string, string> PluralIllegular;
         private Dictionary<string, string> PluralRules;
-        private Dictionary<string, string>
-        SingularIllegular;
+        private Dictionary<string, string> SingularIllegular;
         private Dictionary<string, string> SingularRules;
         private List<string> Uninflected;
 
@@ -122,7 +120,8 @@ namespace Schema.Infrastructure
             PluralIllegular.Add("numen", "numina");
             PluralIllegular.Add("opus", "opuses");
             PluralIllegular.Add("penis", "penises");
-            PluralIllegular.Add("person", "people");
+            // i do not need "group" 
+            //PluralIllegular.Add("person", "people");
             PluralIllegular.Add("sex", "sexes");
             PluralIllegular.Add("soliloquy", "soliloquies");
             PluralIllegular.Add("testis", "testes");
@@ -192,15 +191,18 @@ namespace Schema.Infrastructure
                 InitializePluralRules();
             }
 
-            if (Uninflected.Any(x => x.ToLower() ==
-                    word.ToLower()))
-            { return word; }
+            if (Uninflected.Any(x => x.ToLower() == word.ToLower()))
+            {
+                return word;
+            }
 
             foreach (var keyValue in PluralIllegular)
+            {
                 if (Regex.IsMatch(word, keyValue.Key, RegexOptions.IgnoreCase))
                 {
                     return Regex.Replace(word, keyValue.Key, keyValue.Value);
                 }
+            }
 
             foreach (var keyValue in PluralRules)
             {

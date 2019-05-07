@@ -9,42 +9,89 @@ namespace Sample.Entities
     [Table("Sales.SalesTerritory")]
     public partial class SalesTerritory
     {
-        [Key]
-        [Column("TerritoryID", Order = 1, TypeName = "int")]
-        public int TerritoryId { get; set; }
-        [Column("Name", Order = 2, TypeName = "nvarchar")]
-        [StringLength(50)]
-        public string Name { get; set; }
-        [Column("CountryRegionCode", Order = 3, TypeName = "nvarchar")]
-        [StringLength(3)]
-        public string CountryRegionCode { get; set; }
-        [Column("Group", Order = 4, TypeName = "nvarchar")]
-        [StringLength(50)]
-        public string Group { get; set; }
-        [Column("SalesYTD", Order = 5, TypeName = "money")]
-        public decimal SalesYtd { get; set; }
-        [Column("SalesLastYear", Order = 6, TypeName = "money")]
-        public decimal SalesLastYear { get; set; }
-        [Column("CostYTD", Order = 7, TypeName = "money")]
-        public decimal CostYtd { get; set; }
-        [Column("CostLastYear", Order = 8, TypeName = "money")]
-        public decimal CostLastYear { get; set; }
-        [Column("rowguid", Order = 9, TypeName = "uniqueidentifier")]
-        public Guid Rowguid { get; set; }
-        [Column("ModifiedDate", Order = 10, TypeName = "datetime")]
-        public DateTime ModifiedDate { get; set; }
         public SalesTerritory()
         {
-            TerritoryId = 0;
+            TerritoryID = 0;
             Name = null;
             CountryRegionCode = null;
             Group = null;
-            SalesYtd = 0;
+            SalesYTD = 0;
             SalesLastYear = 0;
-            CostYtd = 0;
+            CostYTD = 0;
             CostLastYear = 0;
-            Rowguid = Guid.Parse("00000000-0000-0000-0000-000000000000");
+            rowguid = Guid.Parse("00000000-0000-0000-0000-000000000000");
             ModifiedDate = DateTime.Parse("0001/01/01 0:00:00");
+
+            StateProvinces = new HashSet<StateProvince>();
+            Customers = new HashSet<Customer>();
+            SalesOrderHeaders = new HashSet<SalesOrderHeader>();
+            SalesPersons = new HashSet<SalesPerson>();
+            SalesTerritoryHistories = new HashSet<SalesTerritoryHistory>();
+
         }
+
+        [Key]
+        [Column("TerritoryID", Order = 0, TypeName = "int")]
+        public int TerritoryID { get; set; }
+
+        [Required]
+        [Column("Name", Order = 1, TypeName = "nvarchar")]
+        [StringLength(50)]
+        public string Name { get; set; }
+
+        [Required]
+        [StringLength(3)]
+        public string CountryRegionCode { get; set; }
+
+        [Required]
+        [Column("Group", Order = 3, TypeName = "nvarchar")]
+        [StringLength(50)]
+        public string Group { get; set; }
+
+        [Column("SalesYTD", Order = 4, TypeName = "money")]
+        public decimal SalesYTD { get; set; }
+
+        [Column("SalesLastYear", Order = 5, TypeName = "money")]
+        public decimal SalesLastYear { get; set; }
+
+        [Column("CostYTD", Order = 6, TypeName = "money")]
+        public decimal CostYTD { get; set; }
+
+        [Column("CostLastYear", Order = 7, TypeName = "money")]
+        public decimal CostLastYear { get; set; }
+
+        [Column("rowguid", Order = 8, TypeName = "uniqueidentifier")]
+        public Guid rowguid { get; set; }
+
+        [Column("ModifiedDate", Order = 9, TypeName = "datetime")]
+        public DateTime ModifiedDate { get; set; }
+
+//StateProvince SalesTerritory
+            
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StateProvince> StateProvinces { get; set; }
+
+//Customer SalesTerritory
+            
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Customer> Customers { get; set; }
+
+//SalesOrderHeader SalesTerritory
+            
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SalesOrderHeader> SalesOrderHeaders { get; set; }
+
+//SalesPerson SalesTerritory
+            
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SalesPerson> SalesPersons { get; set; }
+
+//SalesTerritoryHistory SalesTerritory
+            
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SalesTerritoryHistory> SalesTerritoryHistories { get; set; }
+
+        public virtual CountryRegion CountryRegion { get; set; }
+
     }
 }

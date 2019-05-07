@@ -89,13 +89,13 @@ namespace Schema
         public string ObjectName
         {
             get {
-                var name = Schema.Infrastructure.Inflector.Currnet.Pascalize(ColumnName);
-                var tableName = Schema.Infrastructure.Inflector.Currnet.Pascalize(TableName);
+                var name = ColumnName;
+                var tableName = TableName;
                 if(name == TableName)
                 {
                     return name + "1";
                 }
-                return name;
+                return name.Replace(" ", "_");
             }
         }
         public Type ObjectType
@@ -206,7 +206,25 @@ namespace Schema
                 return default(int?);
             }
         }
+        public bool IsFixedLength
+        {
+            get {
+                return (DataType == "char" || DataType == "nchar" || DataType == "binary");
+            }
+        }
+        public bool IsUnicode
+        {
+            get {
+                return (DataType == "nchar" || DataType == "nvarchar" || DataType == "ntext");
 
-
+            }
+        }
+        public bool IsString
+        {
+            get {
+                return (DataType == "nchar" || DataType == "nvarchar" || DataType == "ntext" || DataType == "char" || DataType == "varchar" || DataType == "text");
+            }
+        }
+        
     }
 }

@@ -39,19 +39,26 @@ namespace AdventureWorksSample1
 
         private static void Main(string[] args)
         {
+            var t = typeof(int);
+            
 
-            // SampleDbTest();
-            FindAssociation();
+            SampleDbTest();
+            //FindAssociation();
             Console.ReadLine();
         }
         static void SampleDbTest()
         {
             using(var context = new Sample.Entities.SampleDbContext())
             {
-                var query = context.Product.Where(x => x.Name.StartsWith("Mountain"));
+                var query = context.Product.Include(x => x.BillOfMaterials).Where(x => x.Name.StartsWith("Mountain"));
                 foreach(var product in query)
                 {
-                    Console.WriteLine($"{product.ProductId} {product.Name} {product.SellEndDate} {product.ModifiedDate}");
+                    Console.WriteLine($"{product.ProductID} {product.Name} {product.SellEndDate} {product.ModifiedDate}");
+                    foreach(var n in product.BillOfMaterials)
+                    {
+                        Console.WriteLine($"\t{n.ComponentID} {n.BillOfMaterialsID} {n.UnitMeasureCode}");
+
+                    }
                 }
 
             }

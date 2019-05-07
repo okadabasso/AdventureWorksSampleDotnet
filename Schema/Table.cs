@@ -25,7 +25,8 @@ namespace Schema
         public string ObjectName {
             get 
             {
-                return  Inflector.Currnet.Pascalize(TableName);
+                //return  Inflector.Currnet.Pascalize(TableName);
+                return TableName.Replace(" ","_");
             }
         }
 
