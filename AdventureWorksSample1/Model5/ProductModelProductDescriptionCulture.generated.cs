@@ -11,28 +11,31 @@ namespace Sample.Entities
     {
         public ProductModelProductDescriptionCulture()
         {
-            ProductModelID = 0;
-            ProductDescriptionID = 0;
-            CultureID = null;
+            ProductModelId = 0;
+            ProductDescriptionId = 0;
+            CultureId = null;
             ModifiedDate = DateTime.Parse("0001/01/01 0:00:00");
-
 
         }
 
+        ///<summary>Primary key. Foreign key to ProductModel.ProductModelID.</summary>
         [Key]
         [Column("ProductModelID", Order = 0, TypeName = "int")]
-        public int ProductModelID { get; set; }
+        public int ProductModelId { get; set; }
 
+        ///<summary>Primary key. Foreign key to ProductDescription.ProductDescriptionID.</summary>
         [Key]
         [Column("ProductDescriptionID", Order = 1, TypeName = "int")]
-        public int ProductDescriptionID { get; set; }
+        public int ProductDescriptionId { get; set; }
 
+        ///<summary>Culture identification number. Foreign key to Culture.CultureID.</summary>
         [Key]
         [Required]
         [Column("CultureID", Order = 2, TypeName = "nchar")]
         [StringLength(6)]
-        public string CultureID { get; set; }
+        public string CultureId { get; set; }
 
+        ///<summary>Date and time the record was last updated.</summary>
         [Column("ModifiedDate", Order = 3, TypeName = "datetime")]
         public DateTime ModifiedDate { get; set; }
 

@@ -55,7 +55,7 @@ namespace Schema
         public string ObjectName
         {
             get {
-                return Inflector.Currnet.Pascalize(SequenceName);
+                return NamingConvention.Pascalize(SequenceName);
             }
         }
         public Type ObjectType

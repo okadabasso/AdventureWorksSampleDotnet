@@ -11,31 +11,33 @@ namespace Sample.Entities
     {
         public SpecialOfferProduct()
         {
-            SpecialOfferID = 0;
-            ProductID = 0;
-            rowguid = Guid.Parse("00000000-0000-0000-0000-000000000000");
+            SpecialOfferId = 0;
+            ProductId = 0;
+            Rowguid = Guid.Parse("00000000-0000-0000-0000-000000000000");
             ModifiedDate = DateTime.Parse("0001/01/01 0:00:00");
-
             SalesOrderDetails = new HashSet<SalesOrderDetail>();
 
         }
 
+        ///<summary>Primary key for SpecialOfferProduct records.</summary>
         [Key]
         [Column("SpecialOfferID", Order = 0, TypeName = "int")]
-        public int SpecialOfferID { get; set; }
+        public int SpecialOfferId { get; set; }
 
+        ///<summary>Product identification number. Foreign key to Product.ProductID.</summary>
         [Key]
         [Column("ProductID", Order = 1, TypeName = "int")]
-        public int ProductID { get; set; }
+        public int ProductId { get; set; }
 
+        ///<summary>ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.</summary>
         [Column("rowguid", Order = 2, TypeName = "uniqueidentifier")]
-        public Guid rowguid { get; set; }
+        public Guid Rowguid { get; set; }
 
+        ///<summary>Date and time the record was last updated.</summary>
         [Column("ModifiedDate", Order = 3, TypeName = "datetime")]
         public DateTime ModifiedDate { get; set; }
 
-//SalesOrderDetail SpecialOfferProduct
-            
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SalesOrderDetail> SalesOrderDetails { get; set; }
 

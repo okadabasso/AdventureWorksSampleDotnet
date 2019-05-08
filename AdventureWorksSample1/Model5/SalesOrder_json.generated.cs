@@ -38,7 +38,6 @@ namespace Sample.Entities
             rowguid = Guid.Parse("00000000-0000-0000-0000-000000000000");
             ModifiedDate = DateTime.Parse("0001/01/01 0:00:00");
 
-
         }
 
         [Key]

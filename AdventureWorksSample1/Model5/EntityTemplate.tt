@@ -9,6 +9,7 @@
 <#@ import namespace="System.IO" #>
 <#@ import namespace="EnvDTE" #>
 <#@ import namespace="Schema" #>
+<#@ import namespace="Schema.Infrastructure" #>
 <#@ output extension=".generated.cs" #>
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,7 @@ namespace Sample.Entities
             Database.Log = x => Console.Out.WriteLine(x);
         }
 <#  foreach(var table in tables){ 
+        // hierarchyid is not supported on .NET Framework 4.7
         if( table.PrimaryKeyColumns.Any(x => table.Columns.Any(y => y.ColumnName == x && y.DataType == "hierarchyid"))){
             continue;
         }
@@ -40,6 +42,7 @@ namespace Sample.Entities
         {
 
 <#  foreach(var table in tables){ 
+        // hierarchyid is not supported on .NET Framework 4.7
         if( table.PrimaryKeyColumns.Any(x => table.Columns.Any(y => y.ColumnName == x && y.DataType == "hierarchyid"))){
             continue;
         }
@@ -60,15 +63,15 @@ namespace Sample.Entities
                 }
 #>            modelBuilder.Entity<<#= table.ObjectName #>>()
 <#
-                var variableName = Schema.Infrastructure.Inflector.Currnet.Pluralize(fkey.BaseTable.ObjectName) + $"{n:#}";
+                var variableName = NamingConvention.Pluralize(fkey.BaseTable.ObjectName) + $"{n:#}";
                 if(fkey.DependentRole.Multiplicity == "*"){
 #>
                 .HasMany(e => e.<#= variableName #>)
 <#
                     if(fkey.PrincipalRole.Required){ #>
-                .WithRequired(e => e.<#= fkey.PrincipalRole.RoleName  + $"{n:#}" #>)<#
+                .WithRequired(e => e.<#= fkey.ReferencedTable.ObjectName + $"{n:#}" #>)<#
                     } else { #>
-                .WithOptional(e => e.<#= fkey.PrincipalRole.RoleName  + $"{n:#}" #>)<#
+                .WithOptional(e => e.<#= fkey.ReferencedTable.ObjectName + $"{n:#}" #>)<#
                     } 
                     if(fkey.Columns.Count > 1 ){ #>
 
@@ -80,7 +83,7 @@ namespace Sample.Entities
 #>,<#
                             }
 #>
-                    e.<#= column #>
+                    e.<#= NamingConvention.Pascalize(column) #>
 <#
                             position++;
                         }
@@ -88,7 +91,7 @@ namespace Sample.Entities
                  })<#                  
                     } else { #>
 
-                .HasForeignKey(e => e.<#= fkey.Columns[0] #>)<#
+                .HasForeignKey(e => e.<#= NamingConvention.Pascalize(fkey.Columns[0]) #>)<#
                     }
                 }
                 else{
@@ -96,9 +99,9 @@ namespace Sample.Entities
                 .HasOptional(e => e.<#= fkey.BaseTable.ObjectName + $"{n:#}" #>)
 <#
                     if(fkey.PrincipalRole.Required){ #>
-                .WithRequired(e => e.<#= fkey.PrincipalRole.RoleName + $"{n:#}" #>)<#
+                .WithRequired(e => e.<#= fkey.ReferencedTable.ObjectName + $"{n:#}" #>)<#
                     } else { #>
-                .WithOptional(e => e.<#= fkey.PrincipalRole.RoleName + $"{n:#}" #>)<#
+                .WithOptional(e => e.<#= fkey.ReferencedTable.ObjectName + $"{n:#}" #>)<#
                     } 
                 } 
                 if(fkey.ReferentialConstraint.DeleteRule == "NO ACTION"){ #>
@@ -163,12 +166,13 @@ namespace Sample.Entities
     {
         public <#= table.ObjectName#>()
         {
-<#      foreach(var column in table.Columns){ #>
-<#          if(column.DataType == "hierarchyid") {  continue;  } #>
-<#          if(column.DefaultValue == null){ #>
+<#      foreach(var column in table.Columns){ 
+            // hierarchyid is not supported on .NET Framework 4.7
+            if(column.DataType == "hierarchyid") {  continue;  } 
+            if(column.DefaultValue == null){ #>
             <#= column.ObjectName #> = null;
-<#          } else { #>
-<#              if(column.DataType == "date" || column.DataType == "datetime" || column.DataType == "datetime2" || column.DataType == "smalldatetime"){ #>
+<#          } else { 
+                if(column.DataType == "date" || column.DataType == "datetime" || column.DataType == "datetime2" || column.DataType == "smalldatetime"){ #>
             <#= column.ObjectName #> = DateTime.Parse(<#= column.DefaultValueLiteral #>);
 <#              } else if(column.DataType == "time"){ #>
             <#= column.ObjectName #> = TimeSpan.Parse(<#= column.DefaultValueLiteral #>);
@@ -176,10 +180,10 @@ namespace Sample.Entities
             <#= column.ObjectName #> = Guid.Parse(<#= column.DefaultValueLiteral #>);
 <#              } else { #>
             <#= column.ObjectName #> = <#= column.DefaultValueLiteral #>;
-<#              } #>
-<#          } #>
-<#      } #>
-
+<#              } 
+            } 
+      } 
+#>
 <#  
         // このテーブルを参照する
         var dependentsForInit = tables.Where(x => x.ForeignKeys.Any(y => y.ReferencedTable.NameEquals(table)))
@@ -206,30 +210,35 @@ namespace Sample.Entities
 
         }
 
-<#      foreach(var column in table.Columns){ #>
-<#          if(column.DataType == "hierarchyid") {  
+<#      foreach(var column in table.Columns){
+            // hierarchyid is not supported on .NET Framework 4.7
+            if(column.DataType == "hierarchyid") {  
                 continue;
-            } 
-#>
-<#          if(table.PrimaryKeyColumns.Any(x => x == column.ColumnName)) {  #>
+            }#>
+        ///<summary><#= column.Description ?? $"column:{column.ColumnName}" #></summary>
+<# 
+            if(table.PrimaryKeyColumns.Any(x => x == column.ColumnName)) {  #>
         [Key]
-<#          } #>
-<#          if(!table.PrimaryKeyColumns.Any() && column.OrdinalPosition == 1) {  #>
+<#          }
+            if(!table.PrimaryKeyColumns.Any() && column.OrdinalPosition == 1) {  #>
         [Key]
-<#          } #>
-<#          if(column.ObjectType.IsClass && column.IsNullable == "NO") {  #>
+<#          }
+            if(column.ObjectType.IsClass && column.IsNullable == "NO") {  #>
         [Required]
-<#          } #>
-<#          if( table.PrimaryKeyColumns.Contains(column.ColumnName) || !table.ForeignKeys.Any(x => x.Columns.Contains(column.ColumnName))){  #>
+<#          } 
+            if( table.PrimaryKeyColumns.Contains(column.ColumnName) || !table.ForeignKeys.Any(x => x.Columns.Contains(column.ColumnName))){  #>
         [Column("<#= column.ColumnName #>", Order = <#= column.OrdinalPosition - 1 #>, TypeName = "<#= column.DataType #>")]
-<#          }  #>
-<#          if(column.ObjectType == typeof(string) && column.CharacterMaximumLength > 0){ #>
+<#          }  
+            if(column.ObjectType == typeof(string) && column.CharacterMaximumLength > 0){ #>
         [StringLength(<#= column.Precision #>)]
+<#          } 
+            if(column.IsIdentity == "YES")  {  #>
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 <#          } #>
         public <#= column.ObjectTypeName #> <#= column.ObjectName #> { get; set; }
 
-<#      } #>
-<#  
+<#      } 
+  
         // このテーブルを参照する
         var dependents = tables.Where(x => x.ForeignKeys.Any(y => y.ReferencedTable.NameEquals(table)))
             .SelectMany(x => x.ForeignKeys.Where(r => r.ReferencedTable.NameEquals(table)))
@@ -240,14 +249,13 @@ namespace Sample.Entities
             var n = 0;
 
             foreach(var fkey in group)
-            { #>//<#= fkey.BaseTable.TableName#> <#= fkey.ReferencedTable.TableName#>
-            <#
+            { 
                 if( fkey.BaseTable.PrimaryKeyColumns.Any(x => fkey.BaseTable.Columns.Any(y => y.ColumnName == x && y.DataType == "hierarchyid"))){
                      continue;
                 }
 
                 if(fkey.DependentRole.Multiplicity == "*"){
-                    var variableName = Schema.Infrastructure.Inflector.Currnet.Pluralize(fkey.BaseTable.ObjectName) + $"{n:#}";
+                    var variableName = NamingConvention.Pluralize(fkey.BaseTable.ObjectName) + $"{n:#}";
 #>
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -264,8 +272,6 @@ namespace Sample.Entities
                 n++;
             }
         }
-#>
-<#
         // このテーブルが参照する
         var query = table.ForeignKeys
             .GroupBy(x => new { x.ReferencedTable.TableSchema, x.ReferencedTable.TableName});
@@ -274,6 +280,7 @@ namespace Sample.Entities
             var n = 0;
             foreach (var fkey in group)
             { 
+                // hierarchyid is not supported on .NET Framework 4.7
                 //if( fkey.ReferencedTable.PrimaryKeyColumns.Any(x => fkey.ReferencedTable.Columns.Any(y => y.ColumnName == x && y.DataType == "hierarchyid"))){
                 //     continue;
                 //}
@@ -288,8 +295,8 @@ namespace Sample.Entities
 #>
     }
 }
-<# SaveOutput(table.ObjectName + ".generated.cs"); #>
-<#  } #>
+<#      SaveOutput(table.ObjectName + ".generated.cs"); 
+    } #>
 <#+
 private void SaveOutput(string outputFileName) {
   string templateDirectory = Path.GetDirectoryName(Host.TemplateFile);

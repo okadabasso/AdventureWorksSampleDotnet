@@ -14,7 +14,6 @@ namespace Sample.Entities
             SpecialOfferID = 0;
             ProductID = 0;
             ModifiedDate = DateTime.Parse("0001/01/01 0:00:00");
-
             SalesOrderDetail_inmems = new HashSet<SalesOrderDetail_inmem>();
 
         }

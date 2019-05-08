@@ -12,37 +12,44 @@ namespace Sample.Entities
         public DemoSalesOrderHeaderSeed()
         {
             DueDate = DateTime.Parse("0001/01/01 0:00:00");
-            CustomerID = 0;
-            SalesPersonID = 0;
-            BillToAddressID = 0;
-            ShipToAddressID = 0;
-            ShipMethodID = 0;
-            LocalID = 0;
-
+            CustomerId = 0;
+            SalesPersonId = 0;
+            BillToAddressId = 0;
+            ShipToAddressId = 0;
+            ShipMethodId = 0;
+            LocalId = 0;
 
         }
 
+        ///<summary>column:DueDate</summary>
         [Column("DueDate", Order = 0, TypeName = "datetime2")]
         public DateTime DueDate { get; set; }
 
+        ///<summary>column:CustomerID</summary>
         [Column("CustomerID", Order = 1, TypeName = "int")]
-        public int CustomerID { get; set; }
+        public int CustomerId { get; set; }
 
+        ///<summary>column:SalesPersonID</summary>
         [Column("SalesPersonID", Order = 2, TypeName = "int")]
-        public int SalesPersonID { get; set; }
+        public int SalesPersonId { get; set; }
 
+        ///<summary>column:BillToAddressID</summary>
         [Column("BillToAddressID", Order = 3, TypeName = "int")]
-        public int BillToAddressID { get; set; }
+        public int BillToAddressId { get; set; }
 
+        ///<summary>column:ShipToAddressID</summary>
         [Column("ShipToAddressID", Order = 4, TypeName = "int")]
-        public int ShipToAddressID { get; set; }
+        public int ShipToAddressId { get; set; }
 
+        ///<summary>column:ShipMethodID</summary>
         [Column("ShipMethodID", Order = 5, TypeName = "int")]
-        public int ShipMethodID { get; set; }
+        public int ShipMethodId { get; set; }
 
+        ///<summary>column:LocalID</summary>
         [Key]
         [Column("LocalID", Order = 6, TypeName = "int")]
-        public int LocalID { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int LocalId { get; set; }
 
     }
 }

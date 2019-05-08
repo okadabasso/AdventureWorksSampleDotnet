@@ -79,6 +79,8 @@
     <Compile Include="Model5\Employee.generated.cs" />
     <Compile Include="Model5\EmployeeDepartmentHistory.generated.cs" />
     <Compile Include="Model5\EmployeePayHistory.generated.cs" />
+    <Compile Include="Model5\EmployeeTemporal.generated.cs" />
+    <Compile Include="Model5\EmployeeTemporalHistory.generated.cs" />
     <Compile Include="Model5\Employee_Temporal.generated.cs" />
     <Compile Include="Model5\Employee_Temporal_History.generated.cs" />
     <Compile Include="Model5\EntityTemplate.generated.cs">
@@ -94,20 +96,79 @@
     <Compile Include="Model5\Password.generated.cs" />
     <Compile Include="Model5\Person.generated.cs" />
     <Compile Include="Model5\PersonCreditCard.generated.cs" />
+    <Compile Include="Model5\PersonJson.generated.cs" />
     <Compile Include="Model5\PersonPhone.generated.cs" />
+    <Compile Include="Model5\PersonTemporal.generated.cs" />
+    <Compile Include="Model5\PersonTemporalHistory.generated.cs" />
     <Compile Include="Model5\Person_json.generated.cs" />
     <Compile Include="Model5\Person_Temporal.generated.cs" />
     <Compile Include="Model5\Person_Temporal_History.generated.cs" />
     <Compile Include="Model5\PhoneNumberType.generated.cs" />
+    <Compile Include="Model5\Procedures\CustomerAccessPredicate.generated.cs" />
+    <Compile Include="Model5\Procedures\Function.generated.cs">
+      <DependentUpon>Function.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Model5\Procedures\Routine.generated.cs">
+      <DependentUpon>Routine.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Model5\Procedures\SpDeletepersonTemporal.generated.cs" />
+    <Compile Include="Model5\Procedures\SpGetemployeePersonInfoAsof.generated.cs" />
+    <Compile Include="Model5\Procedures\SpUpdateemployeeTemporal.generated.cs" />
+    <Compile Include="Model5\Procedures\SpUpdatepersonTemporal.generated.cs" />
+    <Compile Include="Model5\Procedures\UfnGetAccountingEndDate.generated.cs" />
+    <Compile Include="Model5\Procedures\UfngetaccountingenddateNative.generated.cs" />
+    <Compile Include="Model5\Procedures\UfnGetAccountingStartDate.generated.cs" />
+    <Compile Include="Model5\Procedures\UfngetaccountingstartdateNative.generated.cs" />
+    <Compile Include="Model5\Procedures\UfnGetContactInformation.generated.cs" />
+    <Compile Include="Model5\Procedures\UfnGetDocumentStatusText.generated.cs" />
+    <Compile Include="Model5\Procedures\UfngetdocumentstatustextNative.generated.cs" />
+    <Compile Include="Model5\Procedures\UfnGetProductDealerPrice.generated.cs" />
+    <Compile Include="Model5\Procedures\UfnGetProductListPrice.generated.cs" />
+    <Compile Include="Model5\Procedures\UfnGetProductStandardCost.generated.cs" />
+    <Compile Include="Model5\Procedures\UfnGetPurchaseOrderStatusText.generated.cs" />
+    <Compile Include="Model5\Procedures\UfngetpurchaseorderstatustextNative.generated.cs" />
+    <Compile Include="Model5\Procedures\UfnGetSalesOrderStatusText.generated.cs" />
+    <Compile Include="Model5\Procedures\UfngetsalesorderstatustextNative.generated.cs" />
+    <Compile Include="Model5\Procedures\UfnGetStock.generated.cs" />
+    <Compile Include="Model5\Procedures\UfnLeadingZeros.generated.cs" />
+    <Compile Include="Model5\Procedures\UfnleadingzerosNative.generated.cs" />
+    <Compile Include="Model5\Procedures\UspAddOrderTrackingEvent.generated.cs" />
+    <Compile Include="Model5\Procedures\UspDemoinitseed.generated.cs" />
+    <Compile Include="Model5\Procedures\UspDemoreset.generated.cs" />
+    <Compile Include="Model5\Procedures\UspGetBillOfMaterials.generated.cs" />
+    <Compile Include="Model5\Procedures\UspGetEmployeeManagers.generated.cs" />
+    <Compile Include="Model5\Procedures\UspGetManagerEmployees.generated.cs" />
+    <Compile Include="Model5\Procedures\UspGetOrderTrackingBySalesOrderId.generated.cs" />
+    <Compile Include="Model5\Procedures\UspGetOrderTrackingByTrackingNumber.generated.cs" />
+    <Compile Include="Model5\Procedures\UspGetWhereUsedProductId.generated.cs" />
+    <Compile Include="Model5\Procedures\UspInsertsalesorderInmem.generated.cs" />
+    <Compile Include="Model5\Procedures\UspInsertsalesorderOndisk.generated.cs" />
+    <Compile Include="Model5\Procedures\UspLogError.generated.cs" />
+    <Compile Include="Model5\Procedures\UspPrintError.generated.cs" />
+    <Compile Include="Model5\Procedures\UspSearchCandidateResumes.generated.cs" />
+    <Compile Include="Model5\Procedures\UspUpdateEmployeeHireInfo.generated.cs" />
+    <Compile Include="Model5\Procedures\UspUpdateEmployeeLogin.generated.cs" />
+    <Compile Include="Model5\Procedures\UspUpdateEmployeePersonalInfo.generated.cs" />
+    <Compile Include="Model5\Procedures\UspUpdatesalesordershipinfoInmem.generated.cs" />
+    <Compile Include="Model5\Procedures\UspUpdatesalesordershipinfoNative.generated.cs" />
+    <Compile Include="Model5\Procedures\UspUpdatesalesordershipinfoOndisk.generated.cs" />
+    <Compile Include="Model5\Procedures\VsalesorderdetailExtendedInmem.generated.cs" />
+    <Compile Include="Model5\Procedures\VsalesorderheaderExtendedInmem.generated.cs" />
     <Compile Include="Model5\Product.generated.cs" />
     <Compile Include="Model5\ProductCategory.generated.cs" />
     <Compile Include="Model5\ProductCostHistory.generated.cs" />
     <Compile Include="Model5\ProductDescription.generated.cs" />
+    <Compile Include="Model5\ProductInmem.generated.cs" />
     <Compile Include="Model5\ProductInventory.generated.cs" />
     <Compile Include="Model5\ProductListPriceHistory.generated.cs" />
     <Compile Include="Model5\ProductModel.generated.cs" />
     <Compile Include="Model5\ProductModelIllustration.generated.cs" />
     <Compile Include="Model5\ProductModelProductDescriptionCulture.generated.cs" />
+    <Compile Include="Model5\ProductOndisk.generated.cs" />
     <Compile Include="Model5\ProductPhoto.generated.cs" />
     <Compile Include="Model5\ProductProductPhoto.generated.cs" />
     <Compile Include="Model5\ProductReview.generated.cs" />
@@ -118,12 +179,17 @@
     <Compile Include="Model5\PurchaseOrderDetail.generated.cs" />
     <Compile Include="Model5\PurchaseOrderHeader.generated.cs" />
     <Compile Include="Model5\SalesOrderDetail.generated.cs" />
+    <Compile Include="Model5\SalesorderdetailInmem.generated.cs" />
+    <Compile Include="Model5\SalesorderdetailOndisk.generated.cs" />
     <Compile Include="Model5\SalesOrderDetail_inmem.generated.cs" />
     <Compile Include="Model5\SalesOrderDetail_ondisk.generated.cs" />
     <Compile Include="Model5\SalesOrderHeader.generated.cs" />
+    <Compile Include="Model5\SalesorderheaderInmem.generated.cs" />
+    <Compile Include="Model5\SalesorderheaderOndisk.generated.cs" />
     <Compile Include="Model5\SalesOrderHeaderSalesReason.generated.cs" />
     <Compile Include="Model5\SalesOrderHeader_inmem.generated.cs" />
     <Compile Include="Model5\SalesOrderHeader_ondisk.generated.cs" />
+    <Compile Include="Model5\SalesorderJson.generated.cs" />
     <Compile Include="Model5\SalesOrder_json.generated.cs" />
     <Compile Include="Model5\SalesPerson.generated.cs" />
     <Compile Include="Model5\SalesPersonQuotaHistory.generated.cs" />
@@ -137,7 +203,11 @@
     <Compile Include="Model5\ShipMethod.generated.cs" />
     <Compile Include="Model5\ShoppingCartItem.generated.cs" />
     <Compile Include="Model5\SpecialOffer.generated.cs" />
+    <Compile Include="Model5\SpecialofferInmem.generated.cs" />
+    <Compile Include="Model5\SpecialofferOndisk.generated.cs" />
     <Compile Include="Model5\SpecialOfferProduct.generated.cs" />
+    <Compile Include="Model5\SpecialofferproductInmem.generated.cs" />
+    <Compile Include="Model5\SpecialofferproductOndisk.generated.cs" />
     <Compile Include="Model5\SpecialOfferProduct_inmem.generated.cs" />
     <Compile Include="Model5\SpecialOfferProduct_ondisk.generated.cs" />
     <Compile Include="Model5\SpecialOffer_inmem.generated.cs" />
@@ -708,6 +778,14 @@
     <Content Include="Model5\EntityTemplate.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>EntityTemplate.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="Model5\Procedures\Function.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Function.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="Model5\Procedures\Routine.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Routine.generated.cs</LastGenOutput>
     </Content>
     <Content Include="Models2\Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

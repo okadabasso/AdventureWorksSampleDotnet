@@ -80,7 +80,7 @@ namespace Schema
         public string ObjectName
         {
             get {
-                return Inflector.Currnet.Pascalize(ColumnName);
+                return NamingConvention.Pascalize(ColumnName);
             }
         }
         public Type ObjectType

@@ -11,56 +11,62 @@ namespace Sample.Entities
     {
         public StateProvince()
         {
-            StateProvinceID = 0;
+            StateProvinceId = 0;
             StateProvinceCode = null;
             CountryRegionCode = null;
             IsOnlyStateProvinceFlag = false;
             Name = null;
-            TerritoryID = 0;
-            rowguid = Guid.Parse("00000000-0000-0000-0000-000000000000");
+            TerritoryId = 0;
+            Rowguid = Guid.Parse("00000000-0000-0000-0000-000000000000");
             ModifiedDate = DateTime.Parse("0001/01/01 0:00:00");
-
             Addresses = new HashSet<Address>();
             SalesTaxRates = new HashSet<SalesTaxRate>();
 
         }
 
+        ///<summary>Primary key for StateProvince records.</summary>
         [Key]
         [Column("StateProvinceID", Order = 0, TypeName = "int")]
-        public int StateProvinceID { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int StateProvinceId { get; set; }
 
+        ///<summary>ISO standard state or province code.</summary>
         [Required]
         [Column("StateProvinceCode", Order = 1, TypeName = "nchar")]
         [StringLength(3)]
         public string StateProvinceCode { get; set; }
 
+        ///<summary>ISO standard country or region code. Foreign key to CountryRegion.CountryRegionCode. </summary>
         [Required]
         [StringLength(3)]
         public string CountryRegionCode { get; set; }
 
+        ///<summary>0 = StateProvinceCode exists. 1 = StateProvinceCode unavailable, using CountryRegionCode.</summary>
         [Column("IsOnlyStateProvinceFlag", Order = 3, TypeName = "bit")]
         public bool IsOnlyStateProvinceFlag { get; set; }
 
+        ///<summary>State or province description.</summary>
         [Required]
         [Column("Name", Order = 4, TypeName = "nvarchar")]
         [StringLength(50)]
         public string Name { get; set; }
 
-        public int TerritoryID { get; set; }
+        ///<summary>ID of the territory in which the state or province is located. Foreign key to SalesTerritory.SalesTerritoryID.</summary>
+        public int TerritoryId { get; set; }
 
+        ///<summary>ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.</summary>
         [Column("rowguid", Order = 6, TypeName = "uniqueidentifier")]
-        public Guid rowguid { get; set; }
+        public Guid Rowguid { get; set; }
 
+        ///<summary>Date and time the record was last updated.</summary>
         [Column("ModifiedDate", Order = 7, TypeName = "datetime")]
         public DateTime ModifiedDate { get; set; }
 
-//Address StateProvince
-            
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Address> Addresses { get; set; }
 
-//SalesTaxRate StateProvince
-            
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SalesTaxRate> SalesTaxRates { get; set; }
 

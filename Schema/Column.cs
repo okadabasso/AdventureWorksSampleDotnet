@@ -93,9 +93,9 @@ namespace Schema
                 var tableName = TableName;
                 if(name == TableName)
                 {
-                    return name + "1";
+                    name = name + "1";
                 }
-                return name.Replace(" ", "_");
+                return NamingConvention.Pascalize(name);
             }
         }
         public Type ObjectType

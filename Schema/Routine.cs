@@ -165,7 +165,7 @@ namespace Schema
         public string ObjectName
         {
             get {
-                return Inflector.Currnet.Pascalize(RoutineName);
+                return NamingConvention.Pascalize(RoutineName);
             }
         }
         public Type ObjectType

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Schema.Infrastructure;
 namespace Schema
 {
     [Table("PARAMETERS")]
@@ -99,10 +100,10 @@ namespace Schema
                 // parameter prefixが付く場合はObjectNameからprefixを除外する
                 if(ParameterName.StartsWith("@") || ParameterName.StartsWith(":"))
                 {
-                    return Schema.Infrastructure.Inflector.Currnet.Pascalize(ParameterName.Substring(1));
+                    return NamingConvention.Pascalize(ParameterName.Substring(1));
 
                 }
-                return Schema.Infrastructure.Inflector.Currnet.Pascalize(ParameterName);
+                return NamingConvention.Pascalize(ParameterName);
             }
         }
         public Type ObjectType
@@ -155,6 +156,25 @@ namespace Schema
                     return NumericScale.Value;
                 }
                 return default(int?);
+            }
+        }
+        public bool IsFixedLength
+        {
+            get {
+                return (DataType == "char" || DataType == "nchar" || DataType == "binary");
+            }
+        }
+        public bool IsUnicode
+        {
+            get {
+                return (DataType == "nchar" || DataType == "nvarchar" || DataType == "ntext");
+
+            }
+        }
+        public bool IsString
+        {
+            get {
+                return (DataType == "nchar" || DataType == "nvarchar" || DataType == "ntext" || DataType == "char" || DataType == "varchar" || DataType == "text");
             }
         }
     }

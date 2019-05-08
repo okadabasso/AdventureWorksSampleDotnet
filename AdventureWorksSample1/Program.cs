@@ -40,23 +40,53 @@ namespace AdventureWorksSample1
         private static void Main(string[] args)
         {
             var t = typeof(int);
-            
 
-            SampleDbTest();
+
+            SampleDbFunctionExecute();
             //FindAssociation();
             Console.ReadLine();
         }
-        static void SampleDbTest()
+        static void SampleDbFunctionExecute()
+        {
+            using (var context = new Sample.Entities.SampleDbContext())
+            {
+                var procedure = new Sample.Entities.UfnGetDocumentStatusText();
+                var result = procedure.Execute(2);
+                Console.WriteLine("result = {0}", result);
+            }
+        }
+        static void SampleDbProcedureExecute()
+        {
+            using (var context = new Sample.Entities.SampleDbContext())
+            {
+                var procedure = new Sample.Entities.UspGetEmployeeManagers();
+                var query = procedure.Execute(290);
+
+            }
+        }
+        static void SampleDbProcedureQuery()
+        {
+            using (var context = new Sample.Entities.SampleDbContext())
+            {
+                var procedure = new Sample.Entities.UspGetEmployeeManagers();
+                var query = procedure.Query<EmployeeManager>(290);
+                foreach(var item in query)
+                {
+                    Console.WriteLine($"{item.FirstName} {item.LastName} {item.ManagerFirstName} {item.ManagerLastName}");
+                }
+            }
+        }
+        static void SampleQuery(string name)
         {
             using(var context = new Sample.Entities.SampleDbContext())
             {
-                var query = context.Product.Include(x => x.BillOfMaterials).Where(x => x.Name.StartsWith("Mountain"));
+                var query = context.Product.Include(x => x.BillOfMaterials).Where(x => x.Name.StartsWith(name)).OrderBy(x => x.ProductId);
                 foreach(var product in query)
                 {
-                    Console.WriteLine($"{product.ProductID} {product.Name} {product.SellEndDate} {product.ModifiedDate}");
+                    Console.WriteLine($"{product.ProductId} {product.Name} {product.SellEndDate} {product.ModifiedDate}");
                     foreach(var n in product.BillOfMaterials)
                     {
-                        Console.WriteLine($"\t{n.ComponentID} {n.BillOfMaterialsID} {n.UnitMeasureCode}");
+                        Console.WriteLine($"\t{n.ComponentId} {n.BillOfMaterialsId} {n.UnitMeasureCode}");
 
                     }
                 }
@@ -65,7 +95,7 @@ namespace AdventureWorksSample1
         }
         private static void WriteJson()
         {
-            using(var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["SampleDbModel2"].ConnectionString))
+            using(var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["AdventureWorks"].ConnectionString))
             {
                 using (var schemaManager = new SchemaManager(connection))
                 {
@@ -739,4 +769,15 @@ order by
             }
         }
     }
+    public class EmployeeManager
+    {
+            public int RecursionLEvel { get; set; }
+        public int BusinessEntityId { get; set; }
+        public string FirstName{ get; set; }
+        public string LastName { get; set; }
+        public string OrganizationNode { get; set; }
+        public string ManagerFirstName{ get; set; }
+        public string ManagerLastName { get; set; }
+    }
+
 }

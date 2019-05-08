@@ -11,16 +11,18 @@ namespace Sample.Entities
     {
         public TrackingEvent()
         {
-            TrackingEventID = 0;
+            TrackingEventId = 0;
             EventName = null;
-
 
         }
 
+        ///<summary>Primary key.</summary>
         [Key]
         [Column("TrackingEventID", Order = 0, TypeName = "int")]
-        public int TrackingEventID { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int TrackingEventId { get; set; }
 
+        ///<summary>Tracking event name.</summary>
         [Required]
         [Column("EventName", Order = 1, TypeName = "nvarchar")]
         [StringLength(255)]

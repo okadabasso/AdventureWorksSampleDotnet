@@ -11,21 +11,23 @@ namespace Sample.Entities
     {
         public PersonCreditCard()
         {
-            BusinessEntityID = 0;
-            CreditCardID = 0;
+            BusinessEntityId = 0;
+            CreditCardId = 0;
             ModifiedDate = DateTime.Parse("0001/01/01 0:00:00");
-
 
         }
 
+        ///<summary>Business entity identification number. Foreign key to Person.BusinessEntityID.</summary>
         [Key]
         [Column("BusinessEntityID", Order = 0, TypeName = "int")]
-        public int BusinessEntityID { get; set; }
+        public int BusinessEntityId { get; set; }
 
+        ///<summary>Credit card identification number. Foreign key to CreditCard.CreditCardID.</summary>
         [Key]
         [Column("CreditCardID", Order = 1, TypeName = "int")]
-        public int CreditCardID { get; set; }
+        public int CreditCardId { get; set; }
 
+        ///<summary>Date and time the record was last updated.</summary>
         [Column("ModifiedDate", Order = 2, TypeName = "datetime")]
         public DateTime ModifiedDate { get; set; }
 

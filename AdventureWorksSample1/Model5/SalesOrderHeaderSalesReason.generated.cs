@@ -11,21 +11,23 @@ namespace Sample.Entities
     {
         public SalesOrderHeaderSalesReason()
         {
-            SalesOrderID = 0;
-            SalesReasonID = 0;
+            SalesOrderId = 0;
+            SalesReasonId = 0;
             ModifiedDate = DateTime.Parse("0001/01/01 0:00:00");
-
 
         }
 
+        ///<summary>Primary key. Foreign key to SalesOrderHeader.SalesOrderID.</summary>
         [Key]
         [Column("SalesOrderID", Order = 0, TypeName = "int")]
-        public int SalesOrderID { get; set; }
+        public int SalesOrderId { get; set; }
 
+        ///<summary>Primary key. Foreign key to SalesReason.SalesReasonID.</summary>
         [Key]
         [Column("SalesReasonID", Order = 1, TypeName = "int")]
-        public int SalesReasonID { get; set; }
+        public int SalesReasonId { get; set; }
 
+        ///<summary>Date and time the record was last updated.</summary>
         [Column("ModifiedDate", Order = 2, TypeName = "datetime")]
         public DateTime ModifiedDate { get; set; }
 

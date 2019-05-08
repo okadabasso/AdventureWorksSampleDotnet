@@ -11,23 +11,27 @@ namespace Sample.Entities
     {
         public JobCandidate()
         {
-            JobCandidateID = 0;
-            BusinessEntityID = null;
+            JobCandidateId = 0;
+            BusinessEntityId = null;
             Resume = null;
             ModifiedDate = DateTime.Parse("0001/01/01 0:00:00");
 
-
         }
 
+        ///<summary>Primary key for JobCandidate records.</summary>
         [Key]
         [Column("JobCandidateID", Order = 0, TypeName = "int")]
-        public int JobCandidateID { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int JobCandidateId { get; set; }
 
-        public int? BusinessEntityID { get; set; }
+        ///<summary>Employee identification number if applicant was hired. Foreign key to Employee.BusinessEntityID.</summary>
+        public int? BusinessEntityId { get; set; }
 
+        ///<summary>Résumé in XML format.</summary>
         [Column("Resume", Order = 2, TypeName = "xml")]
         public string Resume { get; set; }
 
+        ///<summary>Date and time the record was last updated.</summary>
         [Column("ModifiedDate", Order = 3, TypeName = "datetime")]
         public DateTime ModifiedDate { get; set; }
 

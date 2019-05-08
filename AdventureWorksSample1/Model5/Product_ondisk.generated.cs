@@ -35,7 +35,6 @@ namespace Sample.Entities
             SellEndDate = null;
             DiscontinuedDate = null;
             ModifiedDate = DateTime.Parse("0001/01/01 0:00:00");
-
             SpecialOfferProduct_ondisks = new HashSet<SpecialOfferProduct_ondisk>();
 
         }

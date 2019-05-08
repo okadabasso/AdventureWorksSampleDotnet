@@ -23,7 +23,6 @@ namespace Sample.Entities
             ValidFrom = DateTime.Parse("0001/01/01 0:00:00");
             ValidTo = DateTime.Parse("0001/01/01 0:00:00");
 
-
         }
 
         [Key]

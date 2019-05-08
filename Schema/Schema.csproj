@@ -50,6 +50,7 @@
     <Compile Include="IndexColumn.cs" />
     <Compile Include="Infrastructure\DatabaseAdapter.cs" />
     <Compile Include="Infrastructure\Inflector.cs" />
+    <Compile Include="Infrastructure\NamingConvention.cs" />
     <Compile Include="Infrastructure\ParameterFactory.cs" />
     <Compile Include="Infrastructure\Query.cs" />
     <Compile Include="Infrastructure\QueryEnumerator.cs" />

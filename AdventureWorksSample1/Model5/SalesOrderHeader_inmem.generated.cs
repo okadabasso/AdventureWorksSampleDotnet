@@ -34,7 +34,6 @@ namespace Sample.Entities
             Freight = 0;
             Comment = null;
             ModifiedDate = DateTime.Parse("0001/01/01 0:00:00");
-
             SalesOrderDetail_inmems = new HashSet<SalesOrderDetail_inmem>();
 
         }

@@ -21,7 +21,6 @@ namespace Sample.Entities
             MinQty = 0;
             MaxQty = null;
             ModifiedDate = DateTime.Parse("0001/01/01 0:00:00");
-
             SpecialOfferProduct_inmems = new HashSet<SpecialOfferProduct_inmem>();
 
         }
