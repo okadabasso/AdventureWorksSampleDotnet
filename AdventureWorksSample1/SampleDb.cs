@@ -14,6 +14,5 @@ namespace AdventureWorksSample1
             : base("name=AdventureWorks")
         {
         }
-        public virtual DbSet<Product> Products { get; set; }
     }
 }

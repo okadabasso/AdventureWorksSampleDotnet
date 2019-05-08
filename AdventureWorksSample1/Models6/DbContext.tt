@@ -1,0 +1,166 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Data" #>
+<#@ assembly name="EnvDTE" #>
+<#@ assembly name="$(SolutionDir)\Schema\bin\Debug\Schema.dll" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="EnvDTE" #>
+<#@ import namespace="Schema" #>
+<#@ import namespace="Schema.Infrastructure" #>
+<#@ output extension=".generated.cs" #>
+<#
+    var modelNamespace = "AdventureWorks1.Models6";
+    var contextName = "SampleDbContext";
+    var connectionName = "sampledb";
+    var connectionString = "data source=localhost\\SQLEXPRESS;initial catalog=sampledb;integrated security=True;MultipleActiveResultSets=True;";
+
+    var schemaManager = new SchemaManager(connectionString);
+    var tables = schemaManager.GetTables();
+
+#>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
+namespace <#= modelNamespace #>
+{
+    public class <#= contextName #> : DbContext{
+        public <#= contextName #>()
+            : base("name=<#= connectionName #>")
+        {
+            Database.SetInitializer<SampleDbContext>(null);
+            //Database.Log = x => Console.Out.WriteLine(x);
+        }
+<#  foreach(var table in tables){ 
+        // hierarchyid is not supported on .NET Framework 4.7
+        if( table.PrimaryKeyColumns.Any(x => table.Columns.Any(y => y.ColumnName == x && y.DataType == "hierarchyid"))){
+            continue;
+        }
+#>
+        public virtual DbSet<<#= table.ObjectName #>> <#= table.ObjectName #> { get; set; }
+<#  } #>
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+
+<#  foreach(var table in tables){ 
+        // hierarchyid is not supported on .NET Framework 4.7
+        if( table.PrimaryKeyColumns.Any(x => table.Columns.Any(y => y.ColumnName == x && y.DataType == "hierarchyid"))){
+            continue;
+        }
+
+        
+        // このテーブルを参照する
+        var dependentsForInit = tables.Where(x => x.ForeignKeys.Any(y => y.ReferencedTable.NameEquals(table)))
+            .SelectMany(x => x.ForeignKeys.Where(r => r.ReferencedTable.NameEquals(table)))
+            .GroupBy(x => new { x.BaseTable.TableSchema, x.BaseTable.ObjectName });
+
+        foreach (var group in dependentsForInit)
+        {
+            var n = 0;
+            foreach(var fkey in group)
+            {
+                if( fkey.BaseTable.PrimaryKeyColumns.Any(x => fkey.BaseTable.Columns.Any(y => y.ColumnName == x && y.DataType == "hierarchyid"))){
+                     continue;
+                }
+#>            modelBuilder.Entity<<#= table.ObjectName #>>()
+<#
+                var variableName = NamingConvention.Pluralize(fkey.BaseTable.ObjectName) + $"{n:#}";
+                if(fkey.DependentRole.Multiplicity == "*"){
+#>
+                .HasMany(e => e.<#= variableName #>)
+<#
+                    if(fkey.PrincipalRole.Required){ #>
+                .WithRequired(e => e.<#= fkey.ReferencedTable.ObjectName + $"{n:#}" #>)<#
+                    } else { #>
+                .WithOptional(e => e.<#= fkey.ReferencedTable.ObjectName + $"{n:#}" #>)<#
+                    } 
+                    if(fkey.Columns.Count > 1 ){ #>
+
+                .HasForeignKey(e => new { 
+<#
+                        var position = 0;
+                        foreach(var column in fkey.Columns){
+                            if(position > 0){
+#>,<#
+                            }
+#>
+                    e.<#= NamingConvention.Pascalize(column) #>
+<#
+                            position++;
+                        }
+#>                
+                 })<#                  
+                    } else { #>
+
+                .HasForeignKey(e => e.<#= NamingConvention.Pascalize(fkey.Columns[0]) #>)<#
+                    }
+                }
+                else{
+#>
+                .HasOptional(e => e.<#= fkey.BaseTable.ObjectName + $"{n:#}" #>)
+<#
+                    if(fkey.PrincipalRole.Required){ #>
+                .WithRequired(e => e.<#= fkey.ReferencedTable.ObjectName + $"{n:#}" #>)<#
+                    } else { #>
+                .WithOptional(e => e.<#= fkey.ReferencedTable.ObjectName + $"{n:#}" #>)<#
+                    } 
+                } 
+                if(fkey.ReferentialConstraint.DeleteRule == "NO ACTION"){ #>
+
+                .WillCascadeOnDelete(false)<#
+                }
+#>;
+
+<#
+                
+                n++;
+            }
+        }
+        foreach(var column in table.Columns){
+            if(column.IsString && !column.IsUnicode){
+#>
+            modelBuilder.Entity<<#= table.ObjectName #>>()
+                .Property(e => e.<#= column.ObjectName #>)
+                .IsUnicode(false);
+
+<#
+            }
+            if(column.IsString && column.IsFixedLength){
+#>
+            modelBuilder.Entity<<#= table.ObjectName #>>()
+                .Property(e => e.<#= column.ObjectName #>)
+                .IsFixedLength();
+
+<#
+            }
+            if(column.DataType == "decimal" || column.DataType == "number" || column.DataType == "money"){
+#>
+            modelBuilder.Entity<<#= table.ObjectName #>>()
+                .Property(e => e.<#= column.ObjectName #>)
+                .HasPrecision(<#= column.NumericPrecision #>, <#= column.NumericScale #>);
+
+<#
+            }
+        }
+    } #>
+        }
+    }
+}
+<# SaveOutput("SampleDbContext.cs"); #>
+<#+
+private void SaveOutput(string outputFileName) {
+  string templateDirectory = Path.GetDirectoryName(Host.TemplateFile);
+  string outputFilePath = Path.Combine(templateDirectory, outputFileName);
+  File.WriteAllText(outputFilePath, this.GenerationEnvironment.ToString()); 
+  this.GenerationEnvironment.Remove(0, this.GenerationEnvironment.Length);
+
+  var visualStudio = (this.Host as IServiceProvider).GetService(typeof(EnvDTE.DTE)) as EnvDTE.DTE;
+  var project = visualStudio.Solution.FindProjectItem(this.Host.TemplateFile).ContainingProject as EnvDTE.Project;
+  project.ProjectItems.AddFromFile(outputFilePath);
+}
+#>

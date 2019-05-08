@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -65,6 +66,40 @@ namespace Schema.Infrastructure
             {"uniqueidentifier", typeof(Guid) },
             {"xml", typeof(string) },
             {"hierarchyid", typeof(byte[]) }
+
+        };
+        public static readonly Dictionary<string, DbType> DbTypeMapping = new Dictionary<string, DbType>
+        {
+            {"image", DbType.Binary },
+            {"varbinary", DbType.Binary },
+            {"binary", DbType.Binary },
+            {"text", DbType.String},
+            {"ntext", DbType.String },
+            {"varchar", DbType.String },
+            {"char", DbType.StringFixedLength },
+            {"nvarchar", DbType.String },
+            {"nchar", DbType.String },
+            {"date", DbType.Date },
+            {"time", DbType.Time},
+            {"datetime2", DbType.DateTime2},
+            {"datetimeoffset", DbType.DateTimeOffset },
+            {"smalldatetime", DbType.DateTime},
+            {"datetime", DbType.DateTime },
+            {"timestamp", DbType.Binary },
+            {"tinyint", DbType.Byte},
+            {"smallint", DbType.UInt16},
+            {"int", DbType.Int32 },
+            {"bigint", DbType.Int64 },
+            {"real", DbType.Single },
+            {"float", DbType.Double },
+            {"decimal", DbType.VarNumeric },
+            {"numeric", DbType.VarNumeric },
+            {"money", DbType.Decimal},
+            {"smallmoney", DbType.Decimal},
+            {"bit", DbType.Boolean },
+            {"uniqueidentifier", DbType.Guid },
+            {"xml", DbType.Xml },
+            {"hierarchyid", DbType.Binary }
 
         };
         public static Type GetObjectType(string dataType, bool nullable)

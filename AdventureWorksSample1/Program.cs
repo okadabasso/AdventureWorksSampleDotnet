@@ -39,36 +39,74 @@ namespace AdventureWorksSample1
 
         private static void Main(string[] args)
         {
-            var t = typeof(int);
-
-
-            SampleDbFunctionExecute();
-            //FindAssociation();
+            SampleInsert();
+            SampleQuery();
             Console.ReadLine();
+        }
+        static void SampleQuery()
+        {
+            using (var context = new AdventureWorks1.Models6.SampleDbContext())
+            {
+                foreach(var item in context.Table1.Where(x => x.Table2s.Any()))
+                {
+                    Console.WriteLine($"{item.Id}, {item.Name}");
+                    foreach(var innerItem in item.Table2s)
+                    {
+                        Console.WriteLine($"\t{innerItem.Id}, {innerItem.Name}");
+                    }
+                }
+            }
+        }
+        static void SampleInsert()
+        {
+            using (var context = new AdventureWorks1.Models6.SampleDbContext())
+                using(var trx = context.Database.BeginTransaction())
+            {
+                var item = context.Table1.First(x => x.Id == 5);
+                var item2 = new AdventureWorks1.Models6.Table2() {
+                    Name = "entry " + item.Id.ToString() + " - " + DateTime.Now.ToString(),
+                    Table1 = item
+                };
+                context.Table2.Add(item2);
+                context.SaveChanges();
+                trx.Commit();
+            }
+        }
+        static void SampleDbSequence()
+        {
+            using (var context = new AdventureWorks1.Models6.SampleDbContext())
+            {
+                var sequence = new AdventureWorks1.Models6.SeqSampleTable1(context);
+                var result = sequence.NextValue();
+                Console.WriteLine("result = {0}", result);
+
+                result = sequence.NextValue();
+                Console.WriteLine("result = {0}", result);
+            }
         }
         static void SampleDbFunctionExecute()
         {
-            using (var context = new Sample.Entities.SampleDbContext())
+            using (var context = new AdventureWorks1.Models5.SampleDbContext())
             {
-                var procedure = new Sample.Entities.UfnGetDocumentStatusText();
+                var procedure = new AdventureWorks1.Models5.UfnGetDocumentStatusText();
                 var result = procedure.Execute(2);
                 Console.WriteLine("result = {0}", result);
             }
         }
         static void SampleDbProcedureExecute()
         {
-            using (var context = new Sample.Entities.SampleDbContext())
+            using (var context = new AdventureWorks1.Models5.SampleDbContext())
             {
-                var procedure = new Sample.Entities.UspGetEmployeeManagers();
+                var procedure = new AdventureWorks1.Models5.UspGetEmployeeManagers();
                 var query = procedure.Execute(290);
 
             }
         }
         static void SampleDbProcedureQuery()
         {
-            using (var context = new Sample.Entities.SampleDbContext())
+            using (var context = new AdventureWorks1.Models5.SampleDbContext())
             {
-                var procedure = new Sample.Entities.UspGetEmployeeManagers();
+                var procedure = new AdventureWorks1.Models5.UspGetEmployeeManagers();
                 var query = procedure.Query<EmployeeManager>(290);
                 foreach(var item in query)
                 {
@@ -78,15 +116,15 @@ namespace AdventureWorksSample1
         }
         static void SampleQuery(string name)
         {
-            using(var context = new Sample.Entities.SampleDbContext())
+            using(var context = new AdventureWorks1.Models5.SampleDbContext())
             {
-                var query = context.Product.Include(x => x.BillOfMaterials).Where(x => x.Name.StartsWith(name)).OrderBy(x => x.ProductId);
-                foreach(var product in query)
+                var query = context.SpecialOfferProduct.Where(x => x.Product.Name.StartsWith(name));
+                foreach(var offer in query)
                 {
-                    Console.WriteLine($"{product.ProductId} {product.Name} {product.SellEndDate} {product.ModifiedDate}");
-                    foreach(var n in product.BillOfMaterials)
+                    Console.WriteLine($"{offer.SpecialOfferId} {offer.Product.Name}");
+                    foreach(var n in offer.SalesOrderDetails)
                     {
-                        Console.WriteLine($"\t{n.ComponentId} {n.BillOfMaterialsId} {n.UnitMeasureCode}");
+                        Console.WriteLine($"\t{n.LineTotal} {n.OrderQty}");
 
                     }
                 }
