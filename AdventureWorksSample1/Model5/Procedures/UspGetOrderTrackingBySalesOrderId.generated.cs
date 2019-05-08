@@ -19,6 +19,7 @@ namespace Sample.Entities
             this.context = context;
         }
 
+        ///<summary>execute command dbo.uspGetOrderTrackingBySalesOrderID</summary>
         public int Execute(
             int? salesOrderId
         )
@@ -26,18 +27,23 @@ namespace Sample.Entities
             var returnValue = new SqlParameter() {ParameterName = "@return_value",  Direction = System.Data.ParameterDirection.ReturnValue};
             var p0 = new SqlParameter("@SalesOrderID",  salesOrderId);
 
-            var affected = context.Database.ExecuteSqlCommand(@"EXEC @return_value = [dbo].[uspGetOrderTrackingBySalesOrderID] @SalesOrderID = @SalesOrderID",
-                returnValue, p0);
+            var affected = context.Database.ExecuteSqlCommand(@"EXEC @return_value = [dbo].[uspGetOrderTrackingBySalesOrderID]
+@SalesOrderID = @SalesOrderID",
+                returnValue, 
+                p0);
 
             return (int)returnValue.Value;
         }
+        ///<summary>execute query dbo.uspGetOrderTrackingBySalesOrderID</summary>
         public IEnumerable<T> Query<T>(
-            int? salesOrderId        )
+            int? salesOrderId
+        )
         {
             var p0 = new SqlParameter("@SalesOrderID",  salesOrderId);
 
-            var result = context.Database.SqlQuery<T>(@"EXEC [dbo].[uspGetOrderTrackingBySalesOrderID] @SalesOrderID = @SalesOrderID"
-                , p0);
+            var result = context.Database.SqlQuery<T>(@"EXEC [dbo].[uspGetOrderTrackingBySalesOrderID]
+@SalesOrderID = @SalesOrderID", 
+                p0);
 
             return result;
         }

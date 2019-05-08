@@ -19,6 +19,7 @@ namespace Sample.Entities
             this.context = context;
         }
 
+        ///<summary>execute command dbo.uspGetEmployeeManagers</summary>
         public int Execute(
             int? businessEntityId
         )
@@ -26,18 +27,23 @@ namespace Sample.Entities
             var returnValue = new SqlParameter() {ParameterName = "@return_value",  Direction = System.Data.ParameterDirection.ReturnValue};
             var p0 = new SqlParameter("@BusinessEntityID",  businessEntityId);
 
-            var affected = context.Database.ExecuteSqlCommand(@"EXEC @return_value = [dbo].[uspGetEmployeeManagers] @BusinessEntityID = @BusinessEntityID",
-                returnValue, p0);
+            var affected = context.Database.ExecuteSqlCommand(@"EXEC @return_value = [dbo].[uspGetEmployeeManagers]
+@BusinessEntityID = @BusinessEntityID",
+                returnValue, 
+                p0);
 
             return (int)returnValue.Value;
         }
+        ///<summary>execute query dbo.uspGetEmployeeManagers</summary>
         public IEnumerable<T> Query<T>(
-            int? businessEntityId        )
+            int? businessEntityId
+        )
         {
             var p0 = new SqlParameter("@BusinessEntityID",  businessEntityId);
 
-            var result = context.Database.SqlQuery<T>(@"EXEC [dbo].[uspGetEmployeeManagers] @BusinessEntityID = @BusinessEntityID"
-                , p0);
+            var result = context.Database.SqlQuery<T>(@"EXEC [dbo].[uspGetEmployeeManagers]
+@BusinessEntityID = @BusinessEntityID", 
+                p0);
 
             return result;
         }

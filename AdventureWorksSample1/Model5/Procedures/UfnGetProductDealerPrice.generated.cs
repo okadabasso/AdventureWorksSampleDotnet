@@ -28,8 +28,12 @@ namespace Sample.Entities
             var p0 = new SqlParameter("@ProductID",  productId);
             var p1 = new SqlParameter("@OrderDate",  orderDate);
 
-            var affected = context.Database.ExecuteSqlCommand(@"SELECT @return_value = [dbo].[ufnGetProductDealerPrice]( @ProductID, @OrderDate)",
-                returnValue, p0, p1);
+            var affected = context.Database.ExecuteSqlCommand(@"SELECT @return_value = [dbo].[ufnGetProductDealerPrice](
+                @ProductID,
+                @OrderDate)",
+                returnValue, 
+                p0, 
+                p1);
 
             return (decimal?)returnValue.Value;
         }

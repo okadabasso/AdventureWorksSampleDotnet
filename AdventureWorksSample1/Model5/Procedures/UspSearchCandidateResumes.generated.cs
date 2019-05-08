@@ -19,6 +19,7 @@ namespace Sample.Entities
             this.context = context;
         }
 
+        ///<summary>execute command dbo.uspSearchCandidateResumes</summary>
         public int Execute(
             string searchString, 
             bool? useInflectional, 
@@ -32,24 +33,41 @@ namespace Sample.Entities
             var p2 = new SqlParameter("@useThesaurus",  useThesaurus);
             var p3 = new SqlParameter("@language",  language);
 
-            var affected = context.Database.ExecuteSqlCommand(@"EXEC @return_value = [dbo].[uspSearchCandidateResumes] @searchString = @searchString, @useInflectional = @useInflectional, @useThesaurus = @useThesaurus, @language = @language",
-                returnValue, p0, p1, p2, p3);
+            var affected = context.Database.ExecuteSqlCommand(@"EXEC @return_value = [dbo].[uspSearchCandidateResumes]
+@searchString = @searchString,
+@useInflectional = @useInflectional,
+@useThesaurus = @useThesaurus,
+@language = @language",
+                returnValue, 
+                p0, 
+                p1, 
+                p2, 
+                p3);
 
             return (int)returnValue.Value;
         }
+        ///<summary>execute query dbo.uspSearchCandidateResumes</summary>
         public IEnumerable<T> Query<T>(
             string searchString, 
             bool? useInflectional, 
             bool? useThesaurus, 
-            int? language        )
+            int? language
+        )
         {
             var p0 = new SqlParameter("@searchString",  searchString);
             var p1 = new SqlParameter("@useInflectional",  useInflectional);
             var p2 = new SqlParameter("@useThesaurus",  useThesaurus);
             var p3 = new SqlParameter("@language",  language);
 
-            var result = context.Database.SqlQuery<T>(@"EXEC [dbo].[uspSearchCandidateResumes] @searchString = @searchString, @useInflectional = @useInflectional, @useThesaurus = @useThesaurus, @language = @language"
-                , p0, p1, p2, p3);
+            var result = context.Database.SqlQuery<T>(@"EXEC [dbo].[uspSearchCandidateResumes]
+@searchString = @searchString,
+@useInflectional = @useInflectional,
+@useThesaurus = @useThesaurus,
+@language = @language", 
+                p0, 
+                p1, 
+                p2, 
+                p3);
 
             return result;
         }

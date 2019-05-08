@@ -19,6 +19,7 @@ namespace Sample.Entities
             this.context = context;
         }
 
+        ///<summary>execute command HumanResources.uspUpdateEmployeePersonalInfo</summary>
         public int Execute(
             int? businessEntityId, 
             string nationalIdNumber, 
@@ -34,17 +35,29 @@ namespace Sample.Entities
             var p3 = new SqlParameter("@MaritalStatus",  maritalStatus);
             var p4 = new SqlParameter("@Gender",  gender);
 
-            var affected = context.Database.ExecuteSqlCommand(@"EXEC @return_value = [HumanResources].[uspUpdateEmployeePersonalInfo] @BusinessEntityID = @BusinessEntityID, @NationalIDNumber = @NationalIDNumber, @BirthDate = @BirthDate, @MaritalStatus = @MaritalStatus, @Gender = @Gender",
-                returnValue, p0, p1, p2, p3, p4);
+            var affected = context.Database.ExecuteSqlCommand(@"EXEC @return_value = [HumanResources].[uspUpdateEmployeePersonalInfo]
+@BusinessEntityID = @BusinessEntityID,
+@NationalIDNumber = @NationalIDNumber,
+@BirthDate = @BirthDate,
+@MaritalStatus = @MaritalStatus,
+@Gender = @Gender",
+                returnValue, 
+                p0, 
+                p1, 
+                p2, 
+                p3, 
+                p4);
 
             return (int)returnValue.Value;
         }
+        ///<summary>execute query HumanResources.uspUpdateEmployeePersonalInfo</summary>
         public IEnumerable<T> Query<T>(
             int? businessEntityId, 
             string nationalIdNumber, 
             DateTime? birthDate, 
             string maritalStatus, 
-            string gender        )
+            string gender
+        )
         {
             var p0 = new SqlParameter("@BusinessEntityID",  businessEntityId);
             var p1 = new SqlParameter("@NationalIDNumber",  nationalIdNumber);
@@ -52,8 +65,17 @@ namespace Sample.Entities
             var p3 = new SqlParameter("@MaritalStatus",  maritalStatus);
             var p4 = new SqlParameter("@Gender",  gender);
 
-            var result = context.Database.SqlQuery<T>(@"EXEC [HumanResources].[uspUpdateEmployeePersonalInfo] @BusinessEntityID = @BusinessEntityID, @NationalIDNumber = @NationalIDNumber, @BirthDate = @BirthDate, @MaritalStatus = @MaritalStatus, @Gender = @Gender"
-                , p0, p1, p2, p3, p4);
+            var result = context.Database.SqlQuery<T>(@"EXEC [HumanResources].[uspUpdateEmployeePersonalInfo]
+@BusinessEntityID = @BusinessEntityID,
+@NationalIDNumber = @NationalIDNumber,
+@BirthDate = @BirthDate,
+@MaritalStatus = @MaritalStatus,
+@Gender = @Gender", 
+                p0, 
+                p1, 
+                p2, 
+                p3, 
+                p4);
 
             return result;
         }

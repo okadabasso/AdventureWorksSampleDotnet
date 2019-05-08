@@ -19,6 +19,7 @@ namespace Sample.Entities
             this.context = context;
         }
 
+        ///<summary>execute command dbo.uspLogError</summary>
         public int Execute(
             ref int? errorLogId
         )
@@ -26,19 +27,24 @@ namespace Sample.Entities
             var returnValue = new SqlParameter() {ParameterName = "@return_value",  Direction = System.Data.ParameterDirection.ReturnValue};
             var p0 = new SqlParameter("@ErrorLogID",  errorLogId){ Direction = System.Data.ParameterDirection.InputOutput };
 
-            var affected = context.Database.ExecuteSqlCommand(@"EXEC @return_value = [dbo].[uspLogError] @ErrorLogID = @ErrorLogID",
-                returnValue, p0);
+            var affected = context.Database.ExecuteSqlCommand(@"EXEC @return_value = [dbo].[uspLogError]
+@ErrorLogID = @ErrorLogID",
+                returnValue, 
+                p0);
 
             errorLogId = (int?)p0.Value;
             return (int)returnValue.Value;
         }
+        ///<summary>execute query dbo.uspLogError</summary>
         public IEnumerable<T> Query<T>(
-            ref int? errorLogId        )
+            ref int? errorLogId
+        )
         {
             var p0 = new SqlParameter("@ErrorLogID",  errorLogId){ Direction = System.Data.ParameterDirection.InputOutput };
 
-            var result = context.Database.SqlQuery<T>(@"EXEC [dbo].[uspLogError] @ErrorLogID = @ErrorLogID"
-                , p0);
+            var result = context.Database.SqlQuery<T>(@"EXEC [dbo].[uspLogError]
+@ErrorLogID = @ErrorLogID", 
+                p0);
 
             errorLogId = (int?)p0.Value;
             return result;

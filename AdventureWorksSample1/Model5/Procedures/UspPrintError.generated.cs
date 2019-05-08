@@ -19,6 +19,7 @@ namespace Sample.Entities
             this.context = context;
         }
 
+        ///<summary>execute command dbo.uspPrintError</summary>
         public int Execute(
 
         )
@@ -30,12 +31,13 @@ namespace Sample.Entities
 
             return (int)returnValue.Value;
         }
+        ///<summary>execute query dbo.uspPrintError</summary>
         public IEnumerable<T> Query<T>(
+
         )
         {
 
-            var result = context.Database.SqlQuery<T>(@"EXEC [dbo].[uspPrintError]"
-                );
+            var result = context.Database.SqlQuery<T>(@"EXEC [dbo].[uspPrintError]");
 
             return result;
         }

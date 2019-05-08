@@ -19,6 +19,7 @@ namespace Sample.Entities
             this.context = context;
         }
 
+        ///<summary>execute command Demo.usp_DemoReset</summary>
         public int Execute(
 
         )
@@ -30,12 +31,13 @@ namespace Sample.Entities
 
             return (int)returnValue.Value;
         }
+        ///<summary>execute query Demo.usp_DemoReset</summary>
         public IEnumerable<T> Query<T>(
+
         )
         {
 
-            var result = context.Database.SqlQuery<T>(@"EXEC [Demo].[usp_DemoReset]"
-                );
+            var result = context.Database.SqlQuery<T>(@"EXEC [Demo].[usp_DemoReset]");
 
             return result;
         }

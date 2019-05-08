@@ -27,8 +27,10 @@ namespace Sample.Entities
             returnValue.Size = 16;
             var p0 = new SqlParameter("@Status",  status);
 
-            var affected = context.Database.ExecuteSqlCommand(@"SELECT @return_value = [dbo].[ufnGetDocumentStatusText]( @Status)",
-                returnValue, p0);
+            var affected = context.Database.ExecuteSqlCommand(@"SELECT @return_value = [dbo].[ufnGetDocumentStatusText](
+                @Status)",
+                returnValue, 
+                p0);
 
             return (string)returnValue.Value;
         }

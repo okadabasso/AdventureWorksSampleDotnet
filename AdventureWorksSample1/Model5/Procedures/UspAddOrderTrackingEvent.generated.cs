@@ -19,6 +19,7 @@ namespace Sample.Entities
             this.context = context;
         }
 
+        ///<summary>execute command dbo.uspAddOrderTrackingEvent</summary>
         public int Execute(
             int? salesOrderId, 
             int? trackingEventId, 
@@ -30,22 +31,35 @@ namespace Sample.Entities
             var p1 = new SqlParameter("@TrackingEventID",  trackingEventId);
             var p2 = new SqlParameter("@EventDetails",  eventDetails);
 
-            var affected = context.Database.ExecuteSqlCommand(@"EXEC @return_value = [dbo].[uspAddOrderTrackingEvent] @SalesOrderID = @SalesOrderID, @TrackingEventID = @TrackingEventID, @EventDetails = @EventDetails",
-                returnValue, p0, p1, p2);
+            var affected = context.Database.ExecuteSqlCommand(@"EXEC @return_value = [dbo].[uspAddOrderTrackingEvent]
+@SalesOrderID = @SalesOrderID,
+@TrackingEventID = @TrackingEventID,
+@EventDetails = @EventDetails",
+                returnValue, 
+                p0, 
+                p1, 
+                p2);
 
             return (int)returnValue.Value;
         }
+        ///<summary>execute query dbo.uspAddOrderTrackingEvent</summary>
         public IEnumerable<T> Query<T>(
             int? salesOrderId, 
             int? trackingEventId, 
-            string eventDetails        )
+            string eventDetails
+        )
         {
             var p0 = new SqlParameter("@SalesOrderID",  salesOrderId);
             var p1 = new SqlParameter("@TrackingEventID",  trackingEventId);
             var p2 = new SqlParameter("@EventDetails",  eventDetails);
 
-            var result = context.Database.SqlQuery<T>(@"EXEC [dbo].[uspAddOrderTrackingEvent] @SalesOrderID = @SalesOrderID, @TrackingEventID = @TrackingEventID, @EventDetails = @EventDetails"
-                , p0, p1, p2);
+            var result = context.Database.SqlQuery<T>(@"EXEC [dbo].[uspAddOrderTrackingEvent]
+@SalesOrderID = @SalesOrderID,
+@TrackingEventID = @TrackingEventID,
+@EventDetails = @EventDetails", 
+                p0, 
+                p1, 
+                p2);
 
             return result;
         }

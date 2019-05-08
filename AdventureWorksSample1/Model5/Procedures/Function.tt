@@ -103,14 +103,17 @@ namespace Sample.Entities
             if(position > 0){
 #>,<#
             }
-#> <#= parameter.ParameterName #><#
+#>
+
+                <#= parameter.ParameterName #><#
             position++;
         }
 #>)",
                 returnValue<#
         position = 0;
         foreach(var parameter in routine.Parameters.Where(x => x.OrdinalPosition > 0)){
-#>, p<#= position #><#
+#>, 
+                p<#= position #><#
                 position++;
         }
 #>);

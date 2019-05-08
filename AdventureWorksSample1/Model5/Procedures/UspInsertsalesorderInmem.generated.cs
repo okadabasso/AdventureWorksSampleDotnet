@@ -19,6 +19,7 @@ namespace Sample.Entities
             this.context = context;
         }
 
+        ///<summary>execute command Sales.usp_InsertSalesOrder_inmem</summary>
         public int Execute(
             ref int? salesOrderId, 
             DateTime? dueDate, 
@@ -58,12 +59,47 @@ namespace Sample.Entities
             var p15 = new SqlParameter("@CurrencyRateID",  currencyRateId);
             var p16 = new SqlParameter("@Comment",  comment);
 
-            var affected = context.Database.ExecuteSqlCommand(@"EXEC @return_value = [Sales].[usp_InsertSalesOrder_inmem] @SalesOrderID = @SalesOrderID, @DueDate = @DueDate, @CustomerID = @CustomerID, @BillToAddressID = @BillToAddressID, @ShipToAddressID = @ShipToAddressID, @ShipMethodID = @ShipMethodID, @SalesOrderDetails = @SalesOrderDetails, @Status = @Status, @OnlineOrderFlag = @OnlineOrderFlag, @PurchaseOrderNumber = @PurchaseOrderNumber, @AccountNumber = @AccountNumber, @SalesPersonID = @SalesPersonID, @TerritoryID = @TerritoryID, @CreditCardID = @CreditCardID, @CreditCardApprovalCode = @CreditCardApprovalCode, @CurrencyRateID = @CurrencyRateID, @Comment = @Comment",
-                returnValue, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16);
+            var affected = context.Database.ExecuteSqlCommand(@"EXEC @return_value = [Sales].[usp_InsertSalesOrder_inmem]
+@SalesOrderID = @SalesOrderID,
+@DueDate = @DueDate,
+@CustomerID = @CustomerID,
+@BillToAddressID = @BillToAddressID,
+@ShipToAddressID = @ShipToAddressID,
+@ShipMethodID = @ShipMethodID,
+@SalesOrderDetails = @SalesOrderDetails,
+@Status = @Status,
+@OnlineOrderFlag = @OnlineOrderFlag,
+@PurchaseOrderNumber = @PurchaseOrderNumber,
+@AccountNumber = @AccountNumber,
+@SalesPersonID = @SalesPersonID,
+@TerritoryID = @TerritoryID,
+@CreditCardID = @CreditCardID,
+@CreditCardApprovalCode = @CreditCardApprovalCode,
+@CurrencyRateID = @CurrencyRateID,
+@Comment = @Comment",
+                returnValue, 
+                p0, 
+                p1, 
+                p2, 
+                p3, 
+                p4, 
+                p5, 
+                p6, 
+                p7, 
+                p8, 
+                p9, 
+                p10, 
+                p11, 
+                p12, 
+                p13, 
+                p14, 
+                p15, 
+                p16);
 
             salesOrderId = (int?)p0.Value;
             return (int)returnValue.Value;
         }
+        ///<summary>execute query Sales.usp_InsertSalesOrder_inmem</summary>
         public IEnumerable<T> Query<T>(
             ref int? salesOrderId, 
             DateTime? dueDate, 
@@ -81,7 +117,8 @@ namespace Sample.Entities
             int? creditCardId, 
             string creditCardApprovalCode, 
             int? currencyRateId, 
-            string comment        )
+            string comment
+        )
         {
             var p0 = new SqlParameter("@SalesOrderID",  salesOrderId){ Direction = System.Data.ParameterDirection.InputOutput };
             var p1 = new SqlParameter("@DueDate",  dueDate);
@@ -101,8 +138,41 @@ namespace Sample.Entities
             var p15 = new SqlParameter("@CurrencyRateID",  currencyRateId);
             var p16 = new SqlParameter("@Comment",  comment);
 
-            var result = context.Database.SqlQuery<T>(@"EXEC [Sales].[usp_InsertSalesOrder_inmem] @SalesOrderID = @SalesOrderID, @DueDate = @DueDate, @CustomerID = @CustomerID, @BillToAddressID = @BillToAddressID, @ShipToAddressID = @ShipToAddressID, @ShipMethodID = @ShipMethodID, @SalesOrderDetails = @SalesOrderDetails, @Status = @Status, @OnlineOrderFlag = @OnlineOrderFlag, @PurchaseOrderNumber = @PurchaseOrderNumber, @AccountNumber = @AccountNumber, @SalesPersonID = @SalesPersonID, @TerritoryID = @TerritoryID, @CreditCardID = @CreditCardID, @CreditCardApprovalCode = @CreditCardApprovalCode, @CurrencyRateID = @CurrencyRateID, @Comment = @Comment"
-                , p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16);
+            var result = context.Database.SqlQuery<T>(@"EXEC [Sales].[usp_InsertSalesOrder_inmem]
+@SalesOrderID = @SalesOrderID,
+@DueDate = @DueDate,
+@CustomerID = @CustomerID,
+@BillToAddressID = @BillToAddressID,
+@ShipToAddressID = @ShipToAddressID,
+@ShipMethodID = @ShipMethodID,
+@SalesOrderDetails = @SalesOrderDetails,
+@Status = @Status,
+@OnlineOrderFlag = @OnlineOrderFlag,
+@PurchaseOrderNumber = @PurchaseOrderNumber,
+@AccountNumber = @AccountNumber,
+@SalesPersonID = @SalesPersonID,
+@TerritoryID = @TerritoryID,
+@CreditCardID = @CreditCardID,
+@CreditCardApprovalCode = @CreditCardApprovalCode,
+@CurrencyRateID = @CurrencyRateID,
+@Comment = @Comment", 
+                p0, 
+                p1, 
+                p2, 
+                p3, 
+                p4, 
+                p5, 
+                p6, 
+                p7, 
+                p8, 
+                p9, 
+                p10, 
+                p11, 
+                p12, 
+                p13, 
+                p14, 
+                p15, 
+                p16);
 
             salesOrderId = (int?)p0.Value;
             return result;

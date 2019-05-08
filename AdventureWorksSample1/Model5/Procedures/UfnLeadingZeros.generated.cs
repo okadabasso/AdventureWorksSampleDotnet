@@ -27,8 +27,10 @@ namespace Sample.Entities
             returnValue.Size = 8;
             var p0 = new SqlParameter("@Value",  value);
 
-            var affected = context.Database.ExecuteSqlCommand(@"SELECT @return_value = [dbo].[ufnLeadingZeros]( @Value)",
-                returnValue, p0);
+            var affected = context.Database.ExecuteSqlCommand(@"SELECT @return_value = [dbo].[ufnLeadingZeros](
+                @Value)",
+                returnValue, 
+                p0);
 
             return (string)returnValue.Value;
         }

@@ -38,8 +38,9 @@ namespace Sample.Entities
             this.context = context;
         }
 
+        ///<summary>execute command <#= routine.SpecificSchema  #>.<#= routine.SpecificName  #></summary>
         public int Execute(
-<#
+<#      // create arguments
         var position = 0;
         foreach(var parameter in routine.Parameters){
             string modifier  = "";
@@ -65,7 +66,7 @@ namespace Sample.Entities
         )
         {
             var returnValue = new SqlParameter() {ParameterName = "@return_value",  Direction = System.Data.ParameterDirection.ReturnValue};
-<#
+<#      // create parameters
         position = 0;
         foreach(var parameter in routine.Parameters){
             string direction   = "";
@@ -88,6 +89,7 @@ namespace Sample.Entities
             }
             position++;
         }
+        // call procedure
 #>
 
             var affected = context.Database.ExecuteSqlCommand(@"EXEC @return_value = [<#= routine.SpecificSchema #>].[<#= routine.SpecificName #>]<#
@@ -96,19 +98,22 @@ namespace Sample.Entities
             if(position > 0){
 #>,<#
             }
-#> <#= parameter.ParameterName #> = <#= parameter.ParameterName #><#
+#>
+
+<#= parameter.ParameterName #> = <#= parameter.ParameterName #><#
             position++;
         }
 #>",
                 returnValue<#
         position = 0;
         foreach(var parameter in routine.Parameters){
-#>, p<#= position #><#
+#>, 
+                p<#= position #><#
                 position++;
         }
 #>);
 
-<#
+<#      // get output paraemeter values
         position = 0;
         foreach(var parameter in routine.Parameters){
             if(parameter.ParameterMode == "INOUT" || parameter.ParameterMode == "OUTPUT" ){
@@ -122,8 +127,9 @@ namespace Sample.Entities
 #>
             return (int)returnValue.Value;
         }
+        ///<summary>execute query <#= routine.SpecificSchema  #>.<#= routine.SpecificName  #></summary>
         public IEnumerable<T> Query<T>(
-<#
+<#      // create arguments
         position = 0;
         foreach(var parameter in routine.Parameters){
             string modifier  = "";
@@ -144,9 +150,11 @@ namespace Sample.Entities
             <#= modifier #><#= parameter.ObjectTypeName#> <#= NamingConvention.Camelize(parameter.ObjectName) #><#
             position++;
         }
-#>        )
+#>
+
+        )
         {
-<#
+<#      // create parameters
         position = 0;
         foreach(var parameter in routine.Parameters){
             string direction   = "";
@@ -169,6 +177,8 @@ namespace Sample.Entities
             }
             position++;
         }
+
+        // execute query
 #>
 
             var result = context.Database.SqlQuery<T>(@"EXEC [<#= routine.SpecificSchema #>].[<#= routine.SpecificName #>]<#
@@ -177,21 +187,23 @@ namespace Sample.Entities
             if(position > 0){
 #>,<#
             }
-#> <#= parameter.ParameterName #> = <#= parameter.ParameterName #><#
+#>
+
+<#= parameter.ParameterName #> = <#= parameter.ParameterName #><#
             position++;
         }
-#>"
-                <#
+#>"<#
         if(routine.Parameters.Count > 0){
             position = 0;
             foreach(var parameter in routine.Parameters){
-#>, p<#= position #><#
+#>, 
+                p<#= position #><#
                     position++;
             }
         }
 #>);
 
-<#
+<#      // get output parameters
         position = 0;
         foreach(var parameter in routine.Parameters){
             if(parameter.ParameterMode == "INOUT" || parameter.ParameterMode == "OUTPUT" ){

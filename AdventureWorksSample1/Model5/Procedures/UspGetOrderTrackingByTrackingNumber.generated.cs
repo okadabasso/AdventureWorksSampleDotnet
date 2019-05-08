@@ -19,6 +19,7 @@ namespace Sample.Entities
             this.context = context;
         }
 
+        ///<summary>execute command dbo.uspGetOrderTrackingByTrackingNumber</summary>
         public int Execute(
             string carrierTrackingNumber
         )
@@ -26,18 +27,23 @@ namespace Sample.Entities
             var returnValue = new SqlParameter() {ParameterName = "@return_value",  Direction = System.Data.ParameterDirection.ReturnValue};
             var p0 = new SqlParameter("@CarrierTrackingNumber",  carrierTrackingNumber);
 
-            var affected = context.Database.ExecuteSqlCommand(@"EXEC @return_value = [dbo].[uspGetOrderTrackingByTrackingNumber] @CarrierTrackingNumber = @CarrierTrackingNumber",
-                returnValue, p0);
+            var affected = context.Database.ExecuteSqlCommand(@"EXEC @return_value = [dbo].[uspGetOrderTrackingByTrackingNumber]
+@CarrierTrackingNumber = @CarrierTrackingNumber",
+                returnValue, 
+                p0);
 
             return (int)returnValue.Value;
         }
+        ///<summary>execute query dbo.uspGetOrderTrackingByTrackingNumber</summary>
         public IEnumerable<T> Query<T>(
-            string carrierTrackingNumber        )
+            string carrierTrackingNumber
+        )
         {
             var p0 = new SqlParameter("@CarrierTrackingNumber",  carrierTrackingNumber);
 
-            var result = context.Database.SqlQuery<T>(@"EXEC [dbo].[uspGetOrderTrackingByTrackingNumber] @CarrierTrackingNumber = @CarrierTrackingNumber"
-                , p0);
+            var result = context.Database.SqlQuery<T>(@"EXEC [dbo].[uspGetOrderTrackingByTrackingNumber]
+@CarrierTrackingNumber = @CarrierTrackingNumber", 
+                p0);
 
             return result;
         }

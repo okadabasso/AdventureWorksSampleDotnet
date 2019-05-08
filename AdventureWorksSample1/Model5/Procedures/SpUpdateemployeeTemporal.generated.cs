@@ -19,6 +19,7 @@ namespace Sample.Entities
             this.context = context;
         }
 
+        ///<summary>execute command HumanResources.sp_UpdateEmployee_Temporal</summary>
         public int Execute(
             int? businessEntityId, 
             string loginId, 
@@ -38,11 +39,26 @@ namespace Sample.Entities
             var p5 = new SqlParameter("@VacationHours",  vacationHours);
             var p6 = new SqlParameter("@SickLeaveHours",  sickLeaveHours);
 
-            var affected = context.Database.ExecuteSqlCommand(@"EXEC @return_value = [HumanResources].[sp_UpdateEmployee_Temporal] @BusinessEntityID = @BusinessEntityID, @LoginID = @LoginID, @JobTitle = @JobTitle, @MaritalStatus = @MaritalStatus, @Gender = @Gender, @VacationHours = @VacationHours, @SickLeaveHours = @SickLeaveHours",
-                returnValue, p0, p1, p2, p3, p4, p5, p6);
+            var affected = context.Database.ExecuteSqlCommand(@"EXEC @return_value = [HumanResources].[sp_UpdateEmployee_Temporal]
+@BusinessEntityID = @BusinessEntityID,
+@LoginID = @LoginID,
+@JobTitle = @JobTitle,
+@MaritalStatus = @MaritalStatus,
+@Gender = @Gender,
+@VacationHours = @VacationHours,
+@SickLeaveHours = @SickLeaveHours",
+                returnValue, 
+                p0, 
+                p1, 
+                p2, 
+                p3, 
+                p4, 
+                p5, 
+                p6);
 
             return (int)returnValue.Value;
         }
+        ///<summary>execute query HumanResources.sp_UpdateEmployee_Temporal</summary>
         public IEnumerable<T> Query<T>(
             int? businessEntityId, 
             string loginId, 
@@ -50,7 +66,8 @@ namespace Sample.Entities
             string maritalStatus, 
             string gender, 
             short? vacationHours, 
-            short? sickLeaveHours        )
+            short? sickLeaveHours
+        )
         {
             var p0 = new SqlParameter("@BusinessEntityID",  businessEntityId);
             var p1 = new SqlParameter("@LoginID",  loginId);
@@ -60,8 +77,21 @@ namespace Sample.Entities
             var p5 = new SqlParameter("@VacationHours",  vacationHours);
             var p6 = new SqlParameter("@SickLeaveHours",  sickLeaveHours);
 
-            var result = context.Database.SqlQuery<T>(@"EXEC [HumanResources].[sp_UpdateEmployee_Temporal] @BusinessEntityID = @BusinessEntityID, @LoginID = @LoginID, @JobTitle = @JobTitle, @MaritalStatus = @MaritalStatus, @Gender = @Gender, @VacationHours = @VacationHours, @SickLeaveHours = @SickLeaveHours"
-                , p0, p1, p2, p3, p4, p5, p6);
+            var result = context.Database.SqlQuery<T>(@"EXEC [HumanResources].[sp_UpdateEmployee_Temporal]
+@BusinessEntityID = @BusinessEntityID,
+@LoginID = @LoginID,
+@JobTitle = @JobTitle,
+@MaritalStatus = @MaritalStatus,
+@Gender = @Gender,
+@VacationHours = @VacationHours,
+@SickLeaveHours = @SickLeaveHours", 
+                p0, 
+                p1, 
+                p2, 
+                p3, 
+                p4, 
+                p5, 
+                p6);
 
             return result;
         }

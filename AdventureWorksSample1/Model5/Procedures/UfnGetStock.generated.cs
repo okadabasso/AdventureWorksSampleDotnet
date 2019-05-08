@@ -26,8 +26,10 @@ namespace Sample.Entities
             var returnValue = new SqlParameter() {ParameterName = "@return_value",  Direction = System.Data.ParameterDirection.Output};
             var p0 = new SqlParameter("@ProductID",  productId);
 
-            var affected = context.Database.ExecuteSqlCommand(@"SELECT @return_value = [dbo].[ufnGetStock]( @ProductID)",
-                returnValue, p0);
+            var affected = context.Database.ExecuteSqlCommand(@"SELECT @return_value = [dbo].[ufnGetStock](
+                @ProductID)",
+                returnValue, 
+                p0);
 
             return (int?)returnValue.Value;
         }
