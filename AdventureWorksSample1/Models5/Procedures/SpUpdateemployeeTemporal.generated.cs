@@ -7,14 +7,14 @@ using System.Data.Entity;
 using System.Data.SqlClient;
 namespace AdventureWorks1.Models5
 {
-    public partial class SpUpdateemployeeTemporal
+    public partial class SpUpdateEmployeeTemporal
     {
         private readonly SampleDbContext  context;
-        public SpUpdateemployeeTemporal()
+        public SpUpdateEmployeeTemporal()
         {
             context = new SampleDbContext ();
         }
-        public SpUpdateemployeeTemporal(SampleDbContext  context)
+        public SpUpdateEmployeeTemporal(SampleDbContext  context)
         {
             this.context = context;
         }

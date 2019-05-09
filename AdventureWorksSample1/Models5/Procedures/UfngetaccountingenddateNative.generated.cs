@@ -7,14 +7,14 @@ using System.Data.Entity;
 using System.Data.SqlClient;
 namespace AdventureWorks1.Models5
 {
-    public partial class UfngetaccountingenddateNative
+    public partial class UfnGetAccountingEndDateNative
     {
         private readonly  SampleDbContext context;
-        public UfngetaccountingenddateNative()
+        public UfnGetAccountingEndDateNative()
         {
             context = new  SampleDbContext();
         }
-        public UfngetaccountingenddateNative( SampleDbContext context)
+        public UfnGetAccountingEndDateNative( SampleDbContext context)
         {
             this.context = context;
         }

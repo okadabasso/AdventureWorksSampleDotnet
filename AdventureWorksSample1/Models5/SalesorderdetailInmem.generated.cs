@@ -7,9 +7,9 @@ using System.Data.Entity;
 namespace AdventureWorks1.Models5
 {
     [Table("Sales.SalesOrderDetail_inmem")]
-    public partial class SalesorderdetailInmem
+    public partial class SalesOrderDetailInmem
     {
-        public SalesorderdetailInmem()
+        public SalesOrderDetailInmem()
         {
             SalesOrderId = 0;
             SalesOrderDetailId = 0;
@@ -63,9 +63,9 @@ namespace AdventureWorks1.Models5
         [Column("ModifiedDate", Order = 8, TypeName = "datetime2")]
         public DateTime ModifiedDate { get; set; }
 
-        public virtual SalesorderheaderInmem SalesorderheaderInmem { get; set; }
+        public virtual SalesOrderHeaderInmem SalesOrderHeaderInmem { get; set; }
 
-        public virtual SpecialofferproductInmem SpecialofferproductInmem { get; set; }
+        public virtual SpecialOfferProductInmem SpecialOfferProductInmem { get; set; }
 
     }
 }

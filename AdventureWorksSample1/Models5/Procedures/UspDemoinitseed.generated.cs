@@ -7,14 +7,14 @@ using System.Data.Entity;
 using System.Data.SqlClient;
 namespace AdventureWorks1.Models5
 {
-    public partial class UspDemoinitseed
+    public partial class UspDemoInitSeed
     {
         private readonly SampleDbContext  context;
-        public UspDemoinitseed()
+        public UspDemoInitSeed()
         {
             context = new SampleDbContext ();
         }
-        public UspDemoinitseed(SampleDbContext  context)
+        public UspDemoInitSeed(SampleDbContext  context)
         {
             this.context = context;
         }

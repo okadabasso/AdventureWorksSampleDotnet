@@ -7,14 +7,14 @@ using System.Data.Entity;
 using System.Data.SqlClient;
 namespace AdventureWorks1.Models5
 {
-    public partial class SpDeletepersonTemporal
+    public partial class SpDeletePersonTemporal
     {
         private readonly SampleDbContext  context;
-        public SpDeletepersonTemporal()
+        public SpDeletePersonTemporal()
         {
             context = new SampleDbContext ();
         }
-        public SpDeletepersonTemporal(SampleDbContext  context)
+        public SpDeletePersonTemporal(SampleDbContext  context)
         {
             this.context = context;
         }

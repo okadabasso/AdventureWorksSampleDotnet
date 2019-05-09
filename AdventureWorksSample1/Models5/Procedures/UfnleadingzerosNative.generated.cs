@@ -7,14 +7,14 @@ using System.Data.Entity;
 using System.Data.SqlClient;
 namespace AdventureWorks1.Models5
 {
-    public partial class UfnleadingzerosNative
+    public partial class UfnLeadingZerosNative
     {
         private readonly  SampleDbContext context;
-        public UfnleadingzerosNative()
+        public UfnLeadingZerosNative()
         {
             context = new  SampleDbContext();
         }
-        public UfnleadingzerosNative( SampleDbContext context)
+        public UfnLeadingZerosNative( SampleDbContext context)
         {
             this.context = context;
         }

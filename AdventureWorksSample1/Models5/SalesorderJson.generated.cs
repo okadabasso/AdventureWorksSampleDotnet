@@ -7,9 +7,9 @@ using System.Data.Entity;
 namespace AdventureWorks1.Models5
 {
     [Table("Sales.SalesOrder_json")]
-    public partial class SalesorderJson
+    public partial class SalesOrderJson
     {
-        public SalesorderJson()
+        public SalesOrderJson()
         {
             SalesOrderId = 0;
             RevisionNumber = 0;

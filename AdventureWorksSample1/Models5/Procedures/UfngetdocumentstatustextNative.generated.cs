@@ -7,14 +7,14 @@ using System.Data.Entity;
 using System.Data.SqlClient;
 namespace AdventureWorks1.Models5
 {
-    public partial class UfngetdocumentstatustextNative
+    public partial class UfnGetDocumentStatusTextNative
     {
         private readonly  SampleDbContext context;
-        public UfngetdocumentstatustextNative()
+        public UfnGetDocumentStatusTextNative()
         {
             context = new  SampleDbContext();
         }
-        public UfngetdocumentstatustextNative( SampleDbContext context)
+        public UfnGetDocumentStatusTextNative( SampleDbContext context)
         {
             this.context = context;
         }

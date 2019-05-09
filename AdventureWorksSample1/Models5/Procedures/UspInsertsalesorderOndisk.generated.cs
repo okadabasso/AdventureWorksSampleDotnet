@@ -7,14 +7,14 @@ using System.Data.Entity;
 using System.Data.SqlClient;
 namespace AdventureWorks1.Models5
 {
-    public partial class UspInsertsalesorderOndisk
+    public partial class UspInsertSalesOrderOndisk
     {
         private readonly SampleDbContext  context;
-        public UspInsertsalesorderOndisk()
+        public UspInsertSalesOrderOndisk()
         {
             context = new SampleDbContext ();
         }
-        public UspInsertsalesorderOndisk(SampleDbContext  context)
+        public UspInsertSalesOrderOndisk(SampleDbContext  context)
         {
             this.context = context;
         }

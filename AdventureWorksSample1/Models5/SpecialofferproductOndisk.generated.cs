@@ -7,14 +7,14 @@ using System.Data.Entity;
 namespace AdventureWorks1.Models5
 {
     [Table("Sales.SpecialOfferProduct_ondisk")]
-    public partial class SpecialofferproductOndisk
+    public partial class SpecialOfferProductOndisk
     {
-        public SpecialofferproductOndisk()
+        public SpecialOfferProductOndisk()
         {
             SpecialOfferId = 0;
             ProductId = 0;
             ModifiedDate = DateTime.Parse("0001/01/01 0:00:00");
-            SalesorderdetailOndisks = new HashSet<SalesorderdetailOndisk>();
+            SalesOrderDetailOndisks = new HashSet<SalesOrderDetailOndisk>();
 
         }
 
@@ -34,11 +34,11 @@ namespace AdventureWorks1.Models5
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SalesorderdetailOndisk> SalesorderdetailOndisks { get; set; }
+        public virtual ICollection<SalesOrderDetailOndisk> SalesOrderDetailOndisks { get; set; }
 
         public virtual ProductOndisk ProductOndisk { get; set; }
 
-        public virtual SpecialofferOndisk SpecialofferOndisk { get; set; }
+        public virtual SpecialOfferOndisk SpecialOfferOndisk { get; set; }
 
     }
 }

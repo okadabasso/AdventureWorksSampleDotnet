@@ -80,13 +80,13 @@ namespace AdventureWorks1.Models5
         public virtual DbSet<CustomerPii> CustomerPii { get; set; }
         public virtual DbSet<OrderTracking> OrderTracking { get; set; }
         public virtual DbSet<PersonCreditCard> PersonCreditCard { get; set; }
-        public virtual DbSet<SalesorderJson> SalesorderJson { get; set; }
+        public virtual DbSet<SalesOrderJson> SalesOrderJson { get; set; }
         public virtual DbSet<SalesOrderDetail> SalesOrderDetail { get; set; }
-        public virtual DbSet<SalesorderdetailInmem> SalesorderdetailInmem { get; set; }
-        public virtual DbSet<SalesorderdetailOndisk> SalesorderdetailOndisk { get; set; }
+        public virtual DbSet<SalesOrderDetailInmem> SalesOrderDetailInmem { get; set; }
+        public virtual DbSet<SalesOrderDetailOndisk> SalesOrderDetailOndisk { get; set; }
         public virtual DbSet<SalesOrderHeader> SalesOrderHeader { get; set; }
-        public virtual DbSet<SalesorderheaderInmem> SalesorderheaderInmem { get; set; }
-        public virtual DbSet<SalesorderheaderOndisk> SalesorderheaderOndisk { get; set; }
+        public virtual DbSet<SalesOrderHeaderInmem> SalesOrderHeaderInmem { get; set; }
+        public virtual DbSet<SalesOrderHeaderOndisk> SalesOrderHeaderOndisk { get; set; }
         public virtual DbSet<SalesOrderHeaderSalesReason> SalesOrderHeaderSalesReason { get; set; }
         public virtual DbSet<SalesPerson> SalesPerson { get; set; }
         public virtual DbSet<SalesPersonQuotaHistory> SalesPersonQuotaHistory { get; set; }
@@ -96,11 +96,11 @@ namespace AdventureWorks1.Models5
         public virtual DbSet<SalesTerritoryHistory> SalesTerritoryHistory { get; set; }
         public virtual DbSet<ShoppingCartItem> ShoppingCartItem { get; set; }
         public virtual DbSet<SpecialOffer> SpecialOffer { get; set; }
-        public virtual DbSet<SpecialofferInmem> SpecialofferInmem { get; set; }
-        public virtual DbSet<SpecialofferOndisk> SpecialofferOndisk { get; set; }
+        public virtual DbSet<SpecialOfferInmem> SpecialOfferInmem { get; set; }
+        public virtual DbSet<SpecialOfferOndisk> SpecialOfferOndisk { get; set; }
         public virtual DbSet<SpecialOfferProduct> SpecialOfferProduct { get; set; }
-        public virtual DbSet<SpecialofferproductInmem> SpecialofferproductInmem { get; set; }
-        public virtual DbSet<SpecialofferproductOndisk> SpecialofferproductOndisk { get; set; }
+        public virtual DbSet<SpecialOfferProductInmem> SpecialOfferProductInmem { get; set; }
+        public virtual DbSet<SpecialOfferProductOndisk> SpecialOfferProductOndisk { get; set; }
         public virtual DbSet<Store> Store { get; set; }
         public virtual DbSet<TrackingEvent> TrackingEvent { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -487,7 +487,7 @@ namespace AdventureWorks1.Models5
                 .IsFixedLength();
 
             modelBuilder.Entity<ProductInmem>()
-                .HasMany(e => e.SpecialofferproductInmems)
+                .HasMany(e => e.SpecialOfferProductInmems)
                 .WithRequired(e => e.ProductInmem)
                 .HasForeignKey(e => e.ProductId)
                 .WillCascadeOnDelete(false);
@@ -525,7 +525,7 @@ namespace AdventureWorks1.Models5
                 .IsFixedLength();
 
             modelBuilder.Entity<ProductOndisk>()
-                .HasMany(e => e.SpecialofferproductOndisks)
+                .HasMany(e => e.SpecialOfferProductOndisks)
                 .WithRequired(e => e.ProductOndisk)
                 .HasForeignKey(e => e.ProductId)
                 .WillCascadeOnDelete(false);
@@ -840,23 +840,23 @@ namespace AdventureWorks1.Models5
                 .Property(e => e.AccountNumber)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<SalesorderJson>()
+            modelBuilder.Entity<SalesOrderJson>()
                 .Property(e => e.CreditCardApprovalCode)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<SalesorderJson>()
+            modelBuilder.Entity<SalesOrderJson>()
                 .Property(e => e.SubTotal)
                 .HasPrecision(19, 4);
 
-            modelBuilder.Entity<SalesorderJson>()
+            modelBuilder.Entity<SalesOrderJson>()
                 .Property(e => e.TaxAmt)
                 .HasPrecision(19, 4);
 
-            modelBuilder.Entity<SalesorderJson>()
+            modelBuilder.Entity<SalesOrderJson>()
                 .Property(e => e.Freight)
                 .HasPrecision(19, 4);
 
-            modelBuilder.Entity<SalesorderJson>()
+            modelBuilder.Entity<SalesOrderJson>()
                 .Property(e => e.TotalDue)
                 .HasPrecision(19, 4);
 
@@ -868,19 +868,19 @@ namespace AdventureWorks1.Models5
                 .Property(e => e.UnitPriceDiscount)
                 .HasPrecision(19, 4);
 
-            modelBuilder.Entity<SalesorderdetailInmem>()
+            modelBuilder.Entity<SalesOrderDetailInmem>()
                 .Property(e => e.UnitPrice)
                 .HasPrecision(19, 4);
 
-            modelBuilder.Entity<SalesorderdetailInmem>()
+            modelBuilder.Entity<SalesOrderDetailInmem>()
                 .Property(e => e.UnitPriceDiscount)
                 .HasPrecision(19, 4);
 
-            modelBuilder.Entity<SalesorderdetailOndisk>()
+            modelBuilder.Entity<SalesOrderDetailOndisk>()
                 .Property(e => e.UnitPrice)
                 .HasPrecision(19, 4);
 
-            modelBuilder.Entity<SalesorderdetailOndisk>()
+            modelBuilder.Entity<SalesOrderDetailOndisk>()
                 .Property(e => e.UnitPriceDiscount)
                 .HasPrecision(19, 4);
 
@@ -914,47 +914,47 @@ namespace AdventureWorks1.Models5
                 .Property(e => e.TotalDue)
                 .HasPrecision(19, 4);
 
-            modelBuilder.Entity<SalesorderheaderInmem>()
-                .HasMany(e => e.SalesorderdetailInmems)
-                .WithRequired(e => e.SalesorderheaderInmem)
+            modelBuilder.Entity<SalesOrderHeaderInmem>()
+                .HasMany(e => e.SalesOrderDetailInmems)
+                .WithRequired(e => e.SalesOrderHeaderInmem)
                 .HasForeignKey(e => e.SalesOrderId)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<SalesorderheaderInmem>()
+            modelBuilder.Entity<SalesOrderHeaderInmem>()
                 .Property(e => e.CreditCardApprovalCode)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<SalesorderheaderInmem>()
+            modelBuilder.Entity<SalesOrderHeaderInmem>()
                 .Property(e => e.SubTotal)
                 .HasPrecision(19, 4);
 
-            modelBuilder.Entity<SalesorderheaderInmem>()
+            modelBuilder.Entity<SalesOrderHeaderInmem>()
                 .Property(e => e.TaxAmt)
                 .HasPrecision(19, 4);
 
-            modelBuilder.Entity<SalesorderheaderInmem>()
+            modelBuilder.Entity<SalesOrderHeaderInmem>()
                 .Property(e => e.Freight)
                 .HasPrecision(19, 4);
 
-            modelBuilder.Entity<SalesorderheaderOndisk>()
-                .HasMany(e => e.SalesorderdetailOndisks)
-                .WithRequired(e => e.SalesorderheaderOndisk)
+            modelBuilder.Entity<SalesOrderHeaderOndisk>()
+                .HasMany(e => e.SalesOrderDetailOndisks)
+                .WithRequired(e => e.SalesOrderHeaderOndisk)
                 .HasForeignKey(e => e.SalesOrderId)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<SalesorderheaderOndisk>()
+            modelBuilder.Entity<SalesOrderHeaderOndisk>()
                 .Property(e => e.CreditCardApprovalCode)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<SalesorderheaderOndisk>()
+            modelBuilder.Entity<SalesOrderHeaderOndisk>()
                 .Property(e => e.SubTotal)
                 .HasPrecision(19, 4);
 
-            modelBuilder.Entity<SalesorderheaderOndisk>()
+            modelBuilder.Entity<SalesOrderHeaderOndisk>()
                 .Property(e => e.TaxAmt)
                 .HasPrecision(19, 4);
 
-            modelBuilder.Entity<SalesorderheaderOndisk>()
+            modelBuilder.Entity<SalesOrderHeaderOndisk>()
                 .Property(e => e.Freight)
                 .HasPrecision(19, 4);
 
@@ -1060,15 +1060,15 @@ namespace AdventureWorks1.Models5
                 .HasForeignKey(e => e.SpecialOfferId)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<SpecialofferInmem>()
-                .HasMany(e => e.SpecialofferproductInmems)
-                .WithRequired(e => e.SpecialofferInmem)
+            modelBuilder.Entity<SpecialOfferInmem>()
+                .HasMany(e => e.SpecialOfferProductInmems)
+                .WithRequired(e => e.SpecialOfferInmem)
                 .HasForeignKey(e => e.SpecialOfferId)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<SpecialofferOndisk>()
-                .HasMany(e => e.SpecialofferproductOndisks)
-                .WithRequired(e => e.SpecialofferOndisk)
+            modelBuilder.Entity<SpecialOfferOndisk>()
+                .HasMany(e => e.SpecialOfferProductOndisks)
+                .WithRequired(e => e.SpecialOfferOndisk)
                 .HasForeignKey(e => e.SpecialOfferId)
                 .WillCascadeOnDelete(false);
 
@@ -1082,9 +1082,9 @@ namespace AdventureWorks1.Models5
                  })
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<SpecialofferproductInmem>()
-                .HasMany(e => e.SalesorderdetailInmems)
-                .WithRequired(e => e.SpecialofferproductInmem)
+            modelBuilder.Entity<SpecialOfferProductInmem>()
+                .HasMany(e => e.SalesOrderDetailInmems)
+                .WithRequired(e => e.SpecialOfferProductInmem)
                 .HasForeignKey(e => new { 
                     e.SpecialOfferId
 ,                    e.ProductId
@@ -1092,9 +1092,9 @@ namespace AdventureWorks1.Models5
                  })
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<SpecialofferproductOndisk>()
-                .HasMany(e => e.SalesorderdetailOndisks)
-                .WithRequired(e => e.SpecialofferproductOndisk)
+            modelBuilder.Entity<SpecialOfferProductOndisk>()
+                .HasMany(e => e.SalesOrderDetailOndisks)
+                .WithRequired(e => e.SpecialOfferProductOndisk)
                 .HasForeignKey(e => new { 
                     e.SpecialOfferId
 ,                    e.ProductId

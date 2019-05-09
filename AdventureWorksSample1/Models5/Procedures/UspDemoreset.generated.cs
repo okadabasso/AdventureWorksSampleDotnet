@@ -7,14 +7,14 @@ using System.Data.Entity;
 using System.Data.SqlClient;
 namespace AdventureWorks1.Models5
 {
-    public partial class UspDemoreset
+    public partial class UspDemoReset
     {
         private readonly SampleDbContext  context;
-        public UspDemoreset()
+        public UspDemoReset()
         {
             context = new SampleDbContext ();
         }
-        public UspDemoreset(SampleDbContext  context)
+        public UspDemoReset(SampleDbContext  context)
         {
             this.context = context;
         }

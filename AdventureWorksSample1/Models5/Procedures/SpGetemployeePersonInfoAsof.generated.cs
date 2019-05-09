@@ -7,14 +7,14 @@ using System.Data.Entity;
 using System.Data.SqlClient;
 namespace AdventureWorks1.Models5
 {
-    public partial class SpGetemployeePersonInfoAsof
+    public partial class SpGetEmployeePersonInfoAsOf
     {
         private readonly SampleDbContext  context;
-        public SpGetemployeePersonInfoAsof()
+        public SpGetEmployeePersonInfoAsOf()
         {
             context = new SampleDbContext ();
         }
-        public SpGetemployeePersonInfoAsof(SampleDbContext  context)
+        public SpGetEmployeePersonInfoAsOf(SampleDbContext  context)
         {
             this.context = context;
         }

@@ -7,9 +7,9 @@ using System.Data.Entity;
 namespace AdventureWorks1.Models5
 {
     [Table("Sales.SalesOrderHeader_inmem")]
-    public partial class SalesorderheaderInmem
+    public partial class SalesOrderHeaderInmem
     {
-        public SalesorderheaderInmem()
+        public SalesOrderHeaderInmem()
         {
             SalesOrderId = 0;
             RevisionNumber = 0;
@@ -34,7 +34,7 @@ namespace AdventureWorks1.Models5
             Freight = 0;
             Comment = null;
             ModifiedDate = DateTime.Parse("0001/01/01 0:00:00");
-            SalesorderdetailInmems = new HashSet<SalesorderdetailInmem>();
+            SalesOrderDetailInmems = new HashSet<SalesOrderDetailInmem>();
 
         }
 
@@ -138,7 +138,7 @@ namespace AdventureWorks1.Models5
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SalesorderdetailInmem> SalesorderdetailInmems { get; set; }
+        public virtual ICollection<SalesOrderDetailInmem> SalesOrderDetailInmems { get; set; }
 
     }
 }

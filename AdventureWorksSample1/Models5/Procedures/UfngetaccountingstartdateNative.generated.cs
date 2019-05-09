@@ -7,14 +7,14 @@ using System.Data.Entity;
 using System.Data.SqlClient;
 namespace AdventureWorks1.Models5
 {
-    public partial class UfngetaccountingstartdateNative
+    public partial class UfnGetAccountingStartDateNative
     {
         private readonly  SampleDbContext context;
-        public UfngetaccountingstartdateNative()
+        public UfnGetAccountingStartDateNative()
         {
             context = new  SampleDbContext();
         }
-        public UfngetaccountingstartdateNative( SampleDbContext context)
+        public UfnGetAccountingStartDateNative( SampleDbContext context)
         {
             this.context = context;
         }

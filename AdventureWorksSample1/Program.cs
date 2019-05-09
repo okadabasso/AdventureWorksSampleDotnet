@@ -20,9 +20,22 @@ namespace AdventureWorksSample1
     {
         private static void Main(string[] args)
         {
-            SampleInsert();
-            SampleQuery();
+            NamingConventionSample();
             Console.ReadLine();
+        }
+        static void NamingConventionSample()
+        {
+            Console.WriteLine(NamingConvention.Pascalize("abc_def_ghi"));
+            Console.WriteLine(NamingConvention.Pascalize("ufnSample1_WordBreak"));
+            Console.WriteLine(NamingConvention.Pascalize("UFNSample1__WordBreak"));
+
+            Console.WriteLine(NamingConvention.Camelize("abc_def_ghi"));
+            Console.WriteLine(NamingConvention.Camelize("ufnSample1_WordBreak"));
+            Console.WriteLine(NamingConvention.Camelize("UFNSample1_WordBreak"));
+
+            Console.WriteLine(NamingConvention.Snake("table1"));
+            Console.WriteLine(NamingConvention.Snake("UFNSample1__WordBreak"));
+
         }
         static void SampleQuery()
         {

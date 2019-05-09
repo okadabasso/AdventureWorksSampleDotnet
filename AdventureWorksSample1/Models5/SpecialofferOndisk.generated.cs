@@ -7,9 +7,9 @@ using System.Data.Entity;
 namespace AdventureWorks1.Models5
 {
     [Table("Sales.SpecialOffer_ondisk")]
-    public partial class SpecialofferOndisk
+    public partial class SpecialOfferOndisk
     {
-        public SpecialofferOndisk()
+        public SpecialOfferOndisk()
         {
             SpecialOfferId = 0;
             Description = null;
@@ -21,7 +21,7 @@ namespace AdventureWorks1.Models5
             MinQty = 0;
             MaxQty = null;
             ModifiedDate = DateTime.Parse("0001/01/01 0:00:00");
-            SpecialofferproductOndisks = new HashSet<SpecialofferproductOndisk>();
+            SpecialOfferProductOndisks = new HashSet<SpecialOfferProductOndisk>();
 
         }
 
@@ -75,7 +75,7 @@ namespace AdventureWorks1.Models5
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SpecialofferproductOndisk> SpecialofferproductOndisks { get; set; }
+        public virtual ICollection<SpecialOfferProductOndisk> SpecialOfferProductOndisks { get; set; }
 
     }
 }

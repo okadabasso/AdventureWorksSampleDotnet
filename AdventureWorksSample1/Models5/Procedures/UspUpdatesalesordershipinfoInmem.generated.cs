@@ -7,14 +7,14 @@ using System.Data.Entity;
 using System.Data.SqlClient;
 namespace AdventureWorks1.Models5
 {
-    public partial class UspUpdatesalesordershipinfoInmem
+    public partial class UspUpdateSalesOrderShipInfoInmem
     {
         private readonly SampleDbContext  context;
-        public UspUpdatesalesordershipinfoInmem()
+        public UspUpdateSalesOrderShipInfoInmem()
         {
             context = new SampleDbContext ();
         }
-        public UspUpdatesalesordershipinfoInmem(SampleDbContext  context)
+        public UspUpdateSalesOrderShipInfoInmem(SampleDbContext  context)
         {
             this.context = context;
         }

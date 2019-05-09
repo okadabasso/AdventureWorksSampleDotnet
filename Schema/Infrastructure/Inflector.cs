@@ -258,7 +258,19 @@ namespace Schema.Infrastructure
 
             if (word.Contains('_') || word.Contains('-') || word.Contains(' '))
             {
-                var pascalized = CamelizeDefault(word, true);
+                var pascalized = "";
+                var elements = word.Split('_', '-', ' ');
+                foreach(var element in elements)
+                {
+                    if(element.Length == 0)
+                    {
+                        pascalized += '_';
+                    }
+                    else
+                    {
+                        pascalized += NormalizeCamelCase(element, true);
+                    }
+                }
                 return pascalized;
             }
 
@@ -283,7 +295,19 @@ namespace Schema.Infrastructure
 
             if (word.Contains('_') || word.Contains('-') || word.Contains(' '))
             {
-                var pascalized = CamelizeDefault(word, false);
+                var pascalized = "";
+                var elements = word.Split('_', '-', ' ');
+                foreach (var element in elements)
+                {
+                    if (element.Length == 0)
+                    {
+                        pascalized += '_';
+                    }
+                    else
+                    {
+                        pascalized += NormalizeCamelCase(element, pascalized.Length != 0 );
+                    }
+                }
                 return pascalized;
             }
 
@@ -410,6 +434,10 @@ namespace Schema.Infrastructure
 
                 foreach (var element in baseWord.Split('_', '-', ' '))
                 {
+                    if(element.Length == 0)
+                    {
+                        continue;
+                    }
                     writer.Write(upcaseFirst || !isFirst ? element.Substring(0, 1).ToUpper() : element.Substring(0, 1).ToLower());
 
                     if (element.Length > 1)

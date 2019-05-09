@@ -7,14 +7,14 @@ using System.Data.Entity;
 using System.Data.SqlClient;
 namespace AdventureWorks1.Models5
 {
-    public partial class UfngetpurchaseorderstatustextNative
+    public partial class UfnGetPurchaseOrderStatusTextNative
     {
         private readonly  SampleDbContext context;
-        public UfngetpurchaseorderstatustextNative()
+        public UfnGetPurchaseOrderStatusTextNative()
         {
             context = new  SampleDbContext();
         }
-        public UfngetpurchaseorderstatustextNative( SampleDbContext context)
+        public UfnGetPurchaseOrderStatusTextNative( SampleDbContext context)
         {
             this.context = context;
         }

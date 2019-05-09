@@ -35,7 +35,7 @@ namespace AdventureWorks1.Models5
             SellEndDate = null;
             DiscontinuedDate = null;
             ModifiedDate = DateTime.Parse("0001/01/01 0:00:00");
-            SpecialofferproductOndisks = new HashSet<SpecialofferproductOndisk>();
+            SpecialOfferProductOndisks = new HashSet<SpecialOfferProductOndisk>();
 
         }
 
@@ -150,7 +150,7 @@ namespace AdventureWorks1.Models5
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SpecialofferproductOndisk> SpecialofferproductOndisks { get; set; }
+        public virtual ICollection<SpecialOfferProductOndisk> SpecialOfferProductOndisks { get; set; }
 
     }
 }
