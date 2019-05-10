@@ -10,8 +10,8 @@ namespace Schema.Queries
 {
     public class ColumnListQuery
     {
-        DbConnection connection;
-        static readonly string sql = @"
+        protected DbConnection connection;
+        protected virtual string sql => @"
 select
 	COLUMNS.*,
 	CASE COLUMNPROPERTY (OBJECT_ID(COLUMNS.TABLE_SCHEMA + '.' + COLUMNS.TABLE_NAME ),COLUMNS.COLUMN_NAME ,'IsIdentity') 

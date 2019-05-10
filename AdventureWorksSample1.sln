@@ -12,6 +12,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Schema", "Schema\Schema.csproj", "{F47B365B-B876-4F00-BE4C-8EE694E1F74D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Schema.MySql", "Schema.MySql\Schema.MySql.csproj", "{5897C8D9-7550-44E7-91DC-E6FB429348A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sakila", "Sakila\Sakila.csproj", "{79543018-42EB-4507-9DA8-04E58EB45B85}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +30,14 @@ Global
 		{F47B365B-B876-4F00-BE4C-8EE694E1F74D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F47B365B-B876-4F00-BE4C-8EE694E1F74D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F47B365B-B876-4F00-BE4C-8EE694E1F74D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5897C8D9-7550-44E7-91DC-E6FB429348A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5897C8D9-7550-44E7-91DC-E6FB429348A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5897C8D9-7550-44E7-91DC-E6FB429348A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5897C8D9-7550-44E7-91DC-E6FB429348A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79543018-42EB-4507-9DA8-04E58EB45B85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79543018-42EB-4507-9DA8-04E58EB45B85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79543018-42EB-4507-9DA8-04E58EB45B85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79543018-42EB-4507-9DA8-04E58EB45B85}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

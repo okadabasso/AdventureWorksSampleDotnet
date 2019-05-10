@@ -27,6 +27,10 @@ namespace Schema
         protected virtual ParameterListQuery parameterListQuery => new ParameterListQuery(connection);
         protected virtual SequenceListQuery sequenceListQuery => new SequenceListQuery(connection);
 
+        public SchemaManager()
+        {
+
+        }
         public SchemaManager(DbConnection connection)
         {
             this.connection = connection;

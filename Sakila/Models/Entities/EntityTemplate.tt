@@ -1,0 +1,190 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Data" #>
+<#@ assembly name="EnvDTE" #>
+<#@ assembly name="$(SolutionDir)\Schema\bin\Debug\Schema.dll" #>
+<#@ assembly name="$(SolutionDir)\Schema.MySql\bin\Debug\Schema.MySql.dll" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="EnvDTE" #>
+<#@ import namespace="Schema" #>
+<#@ import namespace="Schema.Infrastructure" #>
+<#@ import namespace="Schema.MySql" #>
+<#@ output extension=".generated.cs" #>
+<#
+    var modelNamespace = "Sakila.Models";
+    var connectionString = "server=localhost;database=sakila;uid=sakilauser;pwd=sakilauser";
+
+    var schemaManager = new MySqlSchemaManager(connectionString);
+    var tables = schemaManager.GetTables();
+
+#>
+<#  foreach(var table in tables){ 
+        // EntityFrameworkCore cannot map "hierarchyid"
+        if( table.PrimaryKeyColumns.Any(x => table.Columns.Any(y => y.ColumnName == x && y.DataType == "hierarchyid"))){
+            continue;
+        }
+#>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+namespace <#= modelNamespace #>
+{
+    [Table("<#= table.TableName#>")]
+    public partial class <#= table.ObjectName#>
+    {
+        public <#= table.ObjectName#>()
+        {
+<#      foreach(var column in table.Columns){ 
+            // hierarchyid is not supported on .NET Framework 4.7
+            if(column.DataType == "hierarchyid") {  continue;  } 
+            if(column.DefaultValue == null){ #>
+            <#= column.ObjectName #> = null;
+<#          } else { 
+                if(column.DataType == "date" || column.DataType == "datetime" || column.DataType == "datetime2" || column.DataType == "smalldatetime"){ #>
+            <#= column.ObjectName #> = DateTime.Parse(<#= column.DefaultValueLiteral #>);
+<#              } else if(column.DataType == "time"){ #>
+            <#= column.ObjectName #> = TimeSpan.Parse(<#= column.DefaultValueLiteral #>);
+<#              } else if(column.DataType == "uniqueidentifier"){ #>
+            <#= column.ObjectName #> = Guid.Parse(<#= column.DefaultValueLiteral #>);
+<#              } else { #>
+            <#= column.ObjectName #> = <#= column.DefaultValueLiteral #>;
+<#              } 
+            } 
+      } 
+#>
+<#  
+        // このテーブルを参照する
+        var dependentsForInit = tables.Where(x => x.ForeignKeys.Any(y => y.ReferencedTable.NameEquals(table)))
+            .SelectMany(x => x.ForeignKeys.Where(r => r.ReferencedTable.NameEquals(table)))
+            .GroupBy(x => new { x.BaseTable.TableSchema, x.BaseTable.TableName });
+
+        foreach (var group in dependentsForInit)
+        {
+            var n = 0;
+            foreach(var fkey in group)
+            {
+                var variableName = Schema.Infrastructure.Inflector.Currnet.Pluralize(fkey.BaseTable.ObjectName) + $"{n:#}";
+                if( fkey.BaseTable.PrimaryKeyColumns.Any(x => fkey.BaseTable.Columns.Any(y => y.ColumnName == x && y.DataType == "hierarchyid"))){
+                     continue;
+                }
+                if(fkey.DependentRole.Multiplicity == "*"){
+#>
+            <#= variableName  #> = new HashSet<<#= fkey.BaseTable.ObjectName #>>();
+<#              }
+                n++;
+            }        
+        }
+#>
+
+        }
+
+<#      foreach(var column in table.Columns){
+            // hierarchyid is not supported on .NET Framework 4.7
+            if(column.DataType == "hierarchyid") {  
+                continue;
+            }#>
+        ///<summary><#= column.Description ?? $"column:{column.ColumnName}" #></summary>
+<# 
+            if(table.PrimaryKeyColumns.Any(x => x == column.ColumnName)) {  #>
+        [Key]
+<#          }
+            if(!table.PrimaryKeyColumns.Any() && column.OrdinalPosition == 1) {  #>
+        [Key]
+<#          }
+            if(column.ObjectType.IsClass && column.IsNullable == "NO") {  #>
+        [Required]
+<#          } 
+            if(table.PrimaryKeyColumns.Any(x => x == column.ColumnName)){  
+#>
+        [Column("<#= column.ColumnName #>", Order = <#= column.OrdinalPosition - 1 #>, TypeName = "<#= column.DataType #>")]
+<#          }  
+            else if( table.ForeignKeys.Any(x => x.Columns.Contains(column.ColumnName))){  
+#>
+        [Column("<#= column.ColumnName #>")]
+<#          }  
+            else{  
+#>
+        [Column("<#= column.ColumnName #>", Order = <#= column.OrdinalPosition - 1 #>, TypeName = "<#= column.DataType #>")]
+<#          }  
+            if(column.IsIdentity == "YES")  {  #>
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+<#          } #>
+        public <#= column.ObjectTypeName #> <#= column.ObjectName #> { get; set; }
+
+<#      } 
+  
+        // このテーブルを参照する
+        var dependents = tables.Where(x => x.ForeignKeys.Any(y => y.ReferencedTable.NameEquals(table)))
+            .SelectMany(x => x.ForeignKeys.Where(r => r.ReferencedTable.NameEquals(table)))
+            .GroupBy(x => new { x.BaseTable.TableSchema, x.BaseTable.TableName });
+
+        foreach (var group in dependents)
+        {
+            var n = 0;
+
+            foreach(var fkey in group)
+            { 
+                if( fkey.BaseTable.PrimaryKeyColumns.Any(x => fkey.BaseTable.Columns.Any(y => y.ColumnName == x && y.DataType == "hierarchyid"))){
+                     continue;
+                }
+
+                if(fkey.DependentRole.Multiplicity == "*"){
+                    var variableName = NamingConvention.Pluralize(fkey.BaseTable.ObjectName) + $"{n:#}";
+#>
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<<#= fkey.BaseTable.ObjectName #>> <#= variableName  #> { get; set; }
+
+<#                
+                }
+                else{
+#>
+        public virtual <#= fkey.BaseTable.ObjectName #> <#= $"{fkey.BaseTable.ObjectName}{n:#}"  #> { get; set; }
+
+<#                
+                }
+                n++;
+            }
+        }
+        // このテーブルが参照する
+        var query = table.ForeignKeys
+            .GroupBy(x => new { x.ReferencedTable.TableSchema, x.ReferencedTable.TableName});
+        foreach (var group in query)
+        {
+            var n = 0;
+            foreach (var fkey in group)
+            { 
+                // hierarchyid is not supported on .NET Framework 4.7
+                //if( fkey.ReferencedTable.PrimaryKeyColumns.Any(x => fkey.ReferencedTable.Columns.Any(y => y.ColumnName == x && y.DataType == "hierarchyid"))){
+                //     continue;
+                //}
+                var required = fkey.DependentRole.Required;
+#>
+        public virtual <#= fkey.ReferencedTable.ObjectName #> <#= $"{fkey.ReferencedTable.ObjectName}{n:#}"  #> { get; set; }
+
+<#
+                n++;
+            }
+        }
+#>
+    }
+}
+<#      SaveOutput(table.ObjectName + ".generated.cs"); 
+    } #>
+<#+
+private void SaveOutput(string outputFileName) {
+  string templateDirectory = Path.GetDirectoryName(Host.TemplateFile);
+  string outputFilePath = Path.Combine(templateDirectory, outputFileName);
+  File.WriteAllText(outputFilePath, this.GenerationEnvironment.ToString()); 
+  this.GenerationEnvironment.Remove(0, this.GenerationEnvironment.Length);
+
+  var visualStudio = (this.Host as IServiceProvider).GetService(typeof(EnvDTE.DTE)) as EnvDTE.DTE;
+  var project = visualStudio.Solution.FindProjectItem(this.Host.TemplateFile).ContainingProject as EnvDTE.Project;
+  project.ProjectItems.AddFromFile(outputFilePath);
+}
+#>
