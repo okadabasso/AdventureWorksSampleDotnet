@@ -8,13 +8,25 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using System.Configuration;
 using Schema.Infrastructure;
+using Schema.Queries;
 
 namespace Schema
 {
     public class SchemaManager : IDisposable
     {
-        private bool isInternalConnection;
-        private readonly DbConnection connection;
+        protected bool isInternalConnection;
+        protected readonly DbConnection connection;
+
+        protected virtual ColumnListQuery columnQuery => new ColumnListQuery(connection);
+        protected virtual TableConstraintListQuery constraintQuery => new TableConstraintListQuery(connection);
+        protected virtual ConstraintColumnListQuery constraintColumnQuery => new ConstraintColumnListQuery(connection);
+        protected virtual ReferentialConstraintQuery referentialConstraintQuery => new ReferentialConstraintQuery(connection);
+        protected virtual IndexListQuery indexQuery => new IndexListQuery(connection);
+        protected virtual IndexColumnListQuery indexColumnQuery => new IndexColumnListQuery(connection);
+        protected virtual RoutineListQuery routineListQuery => new RoutineListQuery(connection);
+        protected virtual ParameterListQuery parameterListQuery => new ParameterListQuery(connection);
+        protected virtual SequenceListQuery sequenceListQuery => new SequenceListQuery(connection);
+
         public SchemaManager(DbConnection connection)
         {
             this.connection = connection;
@@ -23,19 +35,24 @@ namespace Schema
 
         public SchemaManager(string connectionString)
         {
-            var factory = DbProviderFactories.GetFactory("System.Data.SqlClient");
-            this.connection = factory.CreateConnection();
-            this.connection.ConnectionString = connectionString;
+            this.connection = CreateConnection(connectionString);
             this.connection.Open();
             this.isInternalConnection = true;
         }
         public SchemaManager(string connectionString, string providerName)
         {
-            var factory = DbProviderFactories.GetFactory(providerName);
-            this.connection = factory.CreateConnection();
-            this.connection.ConnectionString = connectionString;
+            this.connection = CreateConnection(connectionString, providerName);
             this.connection.Open();
             this.isInternalConnection = true;
+        }
+        DbConnection CreateConnection(string connectionString, string providerName = "System.Data.SqlClient")
+        {
+            var factory = DbProviderFactories.GetFactory(providerName);
+            var connection = factory.CreateConnection();
+            connection.ConnectionString = connectionString;
+
+            return connection;
+
         }
         public void Dispose()
         {
@@ -104,21 +121,13 @@ namespace Schema
             {
                 return;
             }
-            var columnQuery = new Queries.ColumnListQuery(connection);
-            var constraintQuery = new Queries.TableConstraintListQuery(connection);
-            var constraintColumnQuery = new Queries.ConstraintColumnListQuery(connection);
-            var referentialConstraintQuery = new Queries.ReferentialConstraintQuery(connection);
-            var indexQuery = new Queries.IndexListQuery(connection);
-            var indexColumnQuery = new Queries.IndexColumnListQuery(connection);
-
             table.Columns = columnQuery.Execute(table.TableSchema, table.TableName).ToList();
-
             table.Constraints = constraintQuery.Execute(table.TableSchema, table.TableName).ToList();
 
             table.ReferentialConstraints = new List<ReferentialConstraint>();
             foreach (var constraint in table.Constraints.Where(x => x.ConstraintType == "PRIMARY KEY" || x.ConstraintType == "FOREIGN KEY"))
             {
-                constraint.ConstraintColumns = constraintColumnQuery.Execute(constraint.ConstraintSchema, constraint.ConstraintName).ToList();
+                constraint.ConstraintColumns = constraintColumnQuery.Execute(constraint.ConstraintSchema, constraint.ConstraintName, table.TableSchema, table.TableName).ToList();
                 if (constraint.ConstraintType == "FOREIGN KEY")
                 {
                     var referentialConstraint = referentialConstraintQuery.Execute(constraint.ConstraintSchema, constraint.ConstraintName).First();
@@ -126,6 +135,7 @@ namespace Schema
                 }
             }
 
+            // mysql does not have "sys.indexes"
             table.Indexes = indexQuery.Execute(table.TableSchema, table.TableName).ToList();
             var indexColumns = indexColumnQuery.Execute(table.TableSchema, table.TableName);
             foreach (var index in table.Indexes)
@@ -135,20 +145,17 @@ namespace Schema
         }
         public List<Routine> GetRoutines()
         {
-            var query = new Queries.RoutineListQuery(connection);
-            var routines = query.Execute().ToList();
+            var routines = routineListQuery.Execute().ToList();
             foreach(var routine in routines)
             {
-                var parameterQuery = new Queries.ParameterListQuery(connection);
-                routine.Parameters = parameterQuery.Execute(routine.SpecificSchema, routine.SpecificName).ToList();
+                routine.Parameters = parameterListQuery.Execute(routine.SpecificSchema, routine.SpecificName).ToList();
 
             }
             return routines;
         }
         public List<Sequence> GetSequences()
         {
-            var query = new Queries.SequenceListQuery(connection);
-            var sequences = query.Execute().ToList();
+            var sequences = sequenceListQuery.Execute().ToList();
             return sequences;
         }
 

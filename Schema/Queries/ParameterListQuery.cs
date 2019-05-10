@@ -23,7 +23,7 @@ order by
         {
             this.connection = connection;
         }
-        public Query<Parameter> Execute(string specificSchema, string specificName)
+        public IEnumerable<Parameter> Execute(string specificSchema, string specificName)
         {
             var query = new Query<Parameter>(connection, sql, new { specificSchema = specificSchema, specificName = specificName });
             return query;

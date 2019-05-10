@@ -14,7 +14,7 @@ namespace Schema.Queries
         {
             this.connection = connection;
         }
-        public Query<Table> Execute()
+        public IEnumerable<Table> Execute()
         {
             var query = new Query<Table>(connection, "select * from INFORMATION_SCHEMA.TABLES where TABLE_TYPE='BASE TABLE' order by TABLE_SCHEMA, TABLE_NAME");
             return query;

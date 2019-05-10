@@ -179,18 +179,11 @@ namespace Schema.Infrastructure
 
         public static Func<object> CreateDefaultValueFunc(Type t)
         {
-            var parameter = Expression.Parameter(typeof(Type), "t");
-            var defaultMethod = typeof(Expression).GetMethod("Default");
-            var methodCall = Expression.Call(defaultMethod, parameter);
-            var defaultExpression = Expression.Lambda<Func<Type, DefaultExpression>>(
-                methodCall, parameter
-                );
+            var defaultValue = Expression.Convert(Expression.Default(t), typeof(object));
+            var d = Expression.Lambda<Func<object>>(defaultValue);
+            var o = d.Compile();
 
-            var typedDefault = defaultExpression.Compile()(t);
-            var defaultValueFunc = Expression.Lambda<Func<object>>(Expression.Convert(typedDefault, typeof(object))).Compile();
-            return defaultValueFunc;
-
-
+            return o;
         }
     }
 }

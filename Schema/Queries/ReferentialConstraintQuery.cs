@@ -31,7 +31,7 @@ where
         {
             this.connection = connection;
         }
-        public Query<ReferentialConstraint> Execute(string constraintSchema, string constraintName)
+        public IEnumerable<ReferentialConstraint> Execute(string constraintSchema, string constraintName)
         {
             var query = new Query<ReferentialConstraint>(connection, sql, new { constraintSchema = constraintSchema, constraintName = constraintName });
             return query;

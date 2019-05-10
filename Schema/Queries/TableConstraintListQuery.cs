@@ -25,7 +25,7 @@ order by
         {
             this.connection = connection;
         }
-        public Query<TableConstraint> Execute(string tableSchema, string tableName)
+        public IEnumerable<TableConstraint> Execute(string tableSchema, string tableName)
         {
             var query = new Query<TableConstraint>(connection, sql, new { tableSchema = tableSchema, tableName = tableName });
             return query;

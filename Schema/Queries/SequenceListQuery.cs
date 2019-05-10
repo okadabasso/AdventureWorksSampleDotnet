@@ -1,4 +1,5 @@
-﻿using System.Data.Common;
+﻿using System.Collections.Generic;
+using System.Data.Common;
 using Schema.Infrastructure;
 namespace Schema.Queries
 {
@@ -16,7 +17,7 @@ order by
         {
             this.connection = connection;
         }
-        public Query<Sequence> Execute()
+        public IEnumerable<Sequence> Execute()
         {
             var query = new Query<Sequence>(connection, sql);
             return query;

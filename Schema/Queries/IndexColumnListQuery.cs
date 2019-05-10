@@ -9,16 +9,15 @@ namespace Schema.Queries
 {
     public class IndexColumnListQuery
     {
-        DbConnection connection;
-        private string sql = @"select
+        protected DbConnection connection;
+        protected virtual string sql => @"select
 	SCHEMA_NAME(objects.schema_id) as TABLE_SCHEMA,
 	objects.name as TABLE_NAME,
 	indexes.name as INDEX_NAME,
 	indexes.type_desc as TYPE_DESC,
 	indexes.index_id as INDEX_ID,
 	index_columns.index_column_id as INDEX_COLUMN_ID,
-	columns.name as COLUMN_NAME,
-	indexes.is_primary_key as IS_PRIMARY_KEY
+	columns.name as COLUMN_NAME
 from 
 	sys.objects
 	inner join sys.indexes
@@ -40,7 +39,7 @@ order by
         {
             this.connection = connection;
         }
-        public Query<IndexColumn> Execute(string tableSchema, string tableName)
+        public virtual IEnumerable<IndexColumn> Execute(string tableSchema, string tableName)
         {
             var query = new Query<IndexColumn>(connection, sql, new { tableSchema = tableSchema, tableName = tableName });
             return query;

@@ -28,7 +28,7 @@ namespace Schema
         public string ColumnName { get; set; }
 
         [Column("ORDINAL_POSITION")]
-        public int OrdinalPosition { get; set; }
+        public long OrdinalPosition { get; set; }
 
     }
 }

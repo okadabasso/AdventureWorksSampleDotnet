@@ -15,7 +15,7 @@ namespace Schema.Queries
         {
             this.connection = connection;
         }
-        public Query<Routine> Execute()
+        public IEnumerable<Routine> Execute()
         {
             var query = new Query<Routine>(connection, sql);
             return query;

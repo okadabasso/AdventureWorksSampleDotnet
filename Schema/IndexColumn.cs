@@ -19,17 +19,12 @@ namespace Schema
         public string TypeDesc { get; set; }
 
         [Column("INDEX_ID")]
-        public int IndexId { get; set; }
+        public long IndexId { get; set; }
 
         [Column("INDEX_COLUMN_ID")]
-        public int IndexColumnId { get; set; }
+        public long IndexColumnId { get; set; }
 
         [Column("COLUMN_NAME")]
         public string ColumnName { get; set; }
-
-        [Column("IS_PRIMARY_KEY")]
-        public bool? IsPrimaryKey { get; set; }
-
-
     }
 }

@@ -54,15 +54,29 @@ namespace Schema.Infrastructure
                 CreateColumnMapping();
 
             }
-            return rowMapper(this);
+            try
+            {
+                return rowMapper(this);
 
+            }
+            catch(Exception ex)
+            {
+                using(var writer = new System.IO.StreamWriter("testc.txt"))
+                {
+                    writer.WriteLine(ex.Message);
+                    writer.WriteLine(ex.StackTrace);
+
+                }
+                Console.WriteLine(ex.Message);
+                throw;
+            }
         }
 
         private void CreateColumnMapping()
         {
             foreach (DataRow row in schemaTable.Rows)
             {
-                columnMapping.Add(row["ColumnName"].ToString(), (int)row["ColumnOrdinal"]);
+                columnMapping.Add(row["ColumnName"].ToString(), (int)row["ColumnOrdinal"] - 1);
             }
         }
 
@@ -116,7 +130,8 @@ namespace Schema.Infrastructure
                 Expression.Call(
                     thisParameter,
                     readValueMethod,
-                    Expression.Constant(name)
+                    Expression.Constant(name),
+                    Expression.Constant(propertyType)
                 ), 
                 propertyType
             );
@@ -131,9 +146,30 @@ namespace Schema.Infrastructure
             return columnValueReader;
         }
 
-        private object ReadValue(string columnName)
+        private object ReadValue(string columnName, Type propertyType)
         {
-            return FilterDbNull(reader[columnMapping[columnName]]);
+            var value = FilterDbNull(reader[columnName]);
+            if (value == null)
+            {
+                return null;
+            }
+               
+            try
+            {
+                var destinationType = Nullable.GetUnderlyingType(propertyType) ?? propertyType;
+                var converted = Convert.ChangeType(value, destinationType);
+                return converted;
+
+            }
+            catch
+            {
+                // hack: return default value to deny overflow exception
+                var defaultValue = Expression.Convert(Expression.Default(propertyType), typeof(object));
+                var d = Expression.Lambda<Func<object>>(defaultValue);
+                var o = d.Compile()();
+
+                return o;
+            }
         }
         private bool HasColumn(string columnName)
         {

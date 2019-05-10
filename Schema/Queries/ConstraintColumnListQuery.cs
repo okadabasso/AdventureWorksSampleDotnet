@@ -17,6 +17,8 @@ from
 where
 	KEY_COLUMN_USAGE.CONSTRAINT_SCHEMA = @constraintSchema
 	and KEY_COLUMN_USAGE.CONSTRAINT_NAME = @constraintName
+	and KEY_COLUMN_USAGE.TABLE_SCHEMA = @tableSchema
+	and KEY_COLUMN_USAGE.TABLE_NAME = @tableName
 order by
 	KEY_COLUMN_USAGE.ORDINAL_POSITION
 ";
@@ -24,9 +26,9 @@ order by
         {
             this.connection = connection;
         }
-        public Query<KeyColumnUsage> Execute(string constraintSchema, string constraintName)
+        public IEnumerable<KeyColumnUsage> Execute(string constraintSchema, string constraintName, string tableSchema, string tableName)
         {
-            var query = new Query<KeyColumnUsage>(connection, sql, new { constraintSchema = constraintSchema, constraintName = constraintName });
+            var query = new Query<KeyColumnUsage>(connection, sql, new { constraintSchema = constraintSchema, constraintName = constraintName, tableSchema = tableSchema, tableName = tableName });
             return query;
         }
     }

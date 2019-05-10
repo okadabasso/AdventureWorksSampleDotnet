@@ -23,7 +23,7 @@ namespace Schema
         public string ColumnName { get; set; }
 
         [Column("ORDINAL_POSITION")]
-        public int? OrdinalPosition { get; set; }
+        public ulong? OrdinalPosition { get; set; }
 
         [Column("COLUMN_DEFAULT")]
         public string ColumnDefault { get; set; }
@@ -35,22 +35,22 @@ namespace Schema
         public string DataType { get; set; }
 
         [Column("CHARACTER_MAXIMUM_LENGTH")]
-        public int? CharacterMaximumLength { get; set; }
+        public ulong? CharacterMaximumLength { get; set; }
 
         [Column("CHARACTER_OCTET_LENGTH")]
-        public int? CharacterOctetLength { get; set; }
+        public ulong? CharacterOctetLength { get; set; }
 
         [Column("NUMERIC_PRECISION")]
-        public byte? NumericPrecision { get; set; }
+        public ulong? NumericPrecision { get; set; }
 
         [Column("NUMERIC_PRECISION_RADIX")]
-        public short? NumericPrecisionRadix { get; set; }
+        public ulong? NumericPrecisionRadix { get; set; }
 
         [Column("NUMERIC_SCALE")]
-        public int? NumericScale { get; set; }
+        public ulong? NumericScale { get; set; }
 
         [Column("DATETIME_PRECISION")]
-        public short? DatetimePrecision { get; set; }
+        public ulong? DatetimePrecision { get; set; }
 
         [Column("CHARACTER_SET_CATALOG")]
         public string CharacterSetCatalog { get; set; }
@@ -166,7 +166,7 @@ namespace Schema
             }
         }
 
-        public int? Length
+        public ulong? Length
         {
             get {
                 if (CharacterOctetLength.HasValue)
@@ -174,10 +174,10 @@ namespace Schema
                     return CharacterOctetLength.Value;
                 }
 
-                return default(int?);
+                return default(ulong?);
             }
         }
-        public int? Precision
+        public ulong? Precision
         {
             get {
                 if (CharacterMaximumLength.HasValue)
@@ -193,17 +193,17 @@ namespace Schema
                     return DatetimePrecision.Value;
                 }
 
-                return default(int?);
+                return default(ulong?);
             }
         }
-        public int? Scale
+        public ulong? Scale
         {
             get {
                 if (NumericScale.HasValue)
                 {
                     return NumericScale.Value;
                 }
-                return default(int?);
+                return default(ulong?);
             }
         }
         public bool IsFixedLength

@@ -20,7 +20,8 @@ namespace AdventureWorksSample1
     {
         private static void Main(string[] args)
         {
-            NamingConventionSample();
+ 
+            // NamingConventionSample();
             Console.ReadLine();
         }
         static void NamingConventionSample()

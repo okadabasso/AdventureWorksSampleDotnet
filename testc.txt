@@ -1,0 +1,8 @@
+UInt64 型の値が大きすぎるか、または小さすぎます。
+   場所 System.Convert.ToUInt64(Int32 value)
+   場所 System.Int32.System.IConvertible.ToUInt64(IFormatProvider provider)
+   場所 System.Convert.ChangeType(Object value, Type conversionType, IFormatProvider provider)
+   場所 System.Convert.ChangeType(Object value, Type conversionType)
+   場所 Schema.Infrastructure.QueryEnumerator`1.ReadValue(String columnName, Type propertyType) 場所 C:\Users\MichiakiOkada\OneDrive\ドキュメント\Visual Studio 2017\Projects\AdventureWorksSample1\Schema\Infrastructure\QueryEnumerator.cs:行 166
+   場所 lambda_method(Closure , QueryEnumerator`1 )
+   場所 Schema.Infrastructure.QueryEnumerator`1.GetT() 場所 C:\Users\MichiakiOkada\OneDrive\ドキュメント\Visual Studio 2017\Projects\AdventureWorksSample1\Schema\Infrastructure\QueryEnumerator.cs:行 59

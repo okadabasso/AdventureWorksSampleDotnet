@@ -10,8 +10,8 @@ namespace Schema.Queries
 {
     public class IndexListQuery
     {
-        DbConnection connection;
-        private string sql = @"select
+        protected DbConnection connection;
+        protected virtual string sql => @"select
 	*
 from 
 	sys.indexes
@@ -24,7 +24,7 @@ order by
         {
             this.connection = connection;
         }
-        public Query<Index> Execute(string tableSchema, string tableName)
+        public virtual IEnumerable<Index> Execute(string tableSchema, string tableName)
         {
             var query = new Query<Index>(connection, sql, new { tableSchema = tableSchema, tableName = tableName });
             return query;
