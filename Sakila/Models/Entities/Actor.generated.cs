@@ -10,34 +10,31 @@ namespace Sakila.Models
     {
         public Actor()
         {
-            ActorId = 0;
-            FirstName = null;
-            LastName = null;
-            LastUpdate = null;
             FilmActors = new HashSet<FilmActor>();
 
         }
 
-        ///<summary>column:actor_id</summary>
+        ///<summary></summary>
         [Key]
         [Column("actor_id", Order = 0, TypeName = "smallint")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public short ActorId { get; set; }
 
-        ///<summary>column:first_name</summary>
+        ///<summary></summary>
         [Required]
         [Column("first_name", Order = 1, TypeName = "varchar")]
+        [StringLength(45)]
         public string FirstName { get; set; }
 
-        ///<summary>column:last_name</summary>
+        ///<summary></summary>
         [Required]
         [Column("last_name", Order = 2, TypeName = "varchar")]
+        [StringLength(45)]
         public string LastName { get; set; }
 
-        ///<summary>column:last_update</summary>
-        [Required]
+        ///<summary></summary>
         [Column("last_update", Order = 3, TypeName = "timestamp")]
-        public byte[] LastUpdate { get; set; }
+        public DateTime LastUpdate { get; set; }
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -10,24 +10,23 @@ namespace Sakila.Models
     {
         public FilmText()
         {
-            FilmId = 0;
-            Title = null;
-            Description = null;
 
         }
 
-        ///<summary>column:film_id</summary>
+        ///<summary></summary>
         [Key]
         [Column("film_id", Order = 0, TypeName = "smallint")]
         public short FilmId { get; set; }
 
-        ///<summary>column:title</summary>
+        ///<summary></summary>
         [Required]
         [Column("title", Order = 1, TypeName = "varchar")]
+        [StringLength(255)]
         public string Title { get; set; }
 
-        ///<summary>column:description</summary>
+        ///<summary></summary>
         [Column("description", Order = 2, TypeName = "text")]
+        [StringLength(65535)]
         public string Description { get; set; }
 
     }

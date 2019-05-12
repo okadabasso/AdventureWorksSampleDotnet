@@ -10,26 +10,22 @@ namespace Sakila.Models
     {
         public FilmCategory()
         {
-            FilmId = 0;
-            CategoryId = 0;
-            LastUpdate = null;
 
         }
 
-        ///<summary>column:film_id</summary>
+        ///<summary></summary>
         [Key]
         [Column("film_id", Order = 0, TypeName = "smallint")]
         public short FilmId { get; set; }
 
-        ///<summary>column:category_id</summary>
+        ///<summary></summary>
         [Key]
         [Column("category_id", Order = 1, TypeName = "tinyint")]
-        public byte CategoryId { get; set; }
+        public sbyte CategoryId { get; set; }
 
-        ///<summary>column:last_update</summary>
-        [Required]
+        ///<summary></summary>
         [Column("last_update", Order = 2, TypeName = "timestamp")]
-        public byte[] LastUpdate { get; set; }
+        public DateTime LastUpdate { get; set; }
 
         public virtual Category Category { get; set; }
 

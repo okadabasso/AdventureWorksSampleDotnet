@@ -10,26 +10,22 @@ namespace Sakila.Models
     {
         public FilmActor()
         {
-            ActorId = 0;
-            FilmId = 0;
-            LastUpdate = null;
 
         }
 
-        ///<summary>column:actor_id</summary>
+        ///<summary></summary>
         [Key]
         [Column("actor_id", Order = 0, TypeName = "smallint")]
         public short ActorId { get; set; }
 
-        ///<summary>column:film_id</summary>
+        ///<summary></summary>
         [Key]
         [Column("film_id", Order = 1, TypeName = "smallint")]
         public short FilmId { get; set; }
 
-        ///<summary>column:last_update</summary>
-        [Required]
+        ///<summary></summary>
         [Column("last_update", Order = 2, TypeName = "timestamp")]
-        public byte[] LastUpdate { get; set; }
+        public DateTime LastUpdate { get; set; }
 
         public virtual Actor Actor { get; set; }
 

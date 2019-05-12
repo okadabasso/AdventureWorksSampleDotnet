@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Data.Common;
@@ -15,7 +15,11 @@ select
 		WHEN 'auto_increment' THEN 'YES' 
 		ELSE 'NO' 
 	END IS_IDENTITY,
-	columns.column_comment as description
+	COLUMNS.COLUMN_COMMENT  as DESCRIPTION,
+    case 
+        when COLUMN_TYPE like '%unsigned%' then 'YES' 
+        else 'NO' 
+    end as IS_UNSIGNED
 from
 	INFORMATION_SCHEMA.COLUMNS
 

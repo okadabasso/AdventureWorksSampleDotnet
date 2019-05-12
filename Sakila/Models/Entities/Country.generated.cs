@@ -10,28 +10,25 @@ namespace Sakila.Models
     {
         public Country()
         {
-            CountryId = 0;
-            Country1 = null;
-            LastUpdate = null;
             Cities = new HashSet<City>();
 
         }
 
-        ///<summary>column:country_id</summary>
+        ///<summary></summary>
         [Key]
         [Column("country_id", Order = 0, TypeName = "smallint")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public short CountryId { get; set; }
 
-        ///<summary>column:country</summary>
+        ///<summary></summary>
         [Required]
         [Column("country", Order = 1, TypeName = "varchar")]
+        [StringLength(50)]
         public string Country1 { get; set; }
 
-        ///<summary>column:last_update</summary>
-        [Required]
+        ///<summary></summary>
         [Column("last_update", Order = 2, TypeName = "timestamp")]
-        public byte[] LastUpdate { get; set; }
+        public DateTime LastUpdate { get; set; }
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

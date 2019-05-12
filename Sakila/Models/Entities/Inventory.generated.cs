@@ -10,33 +10,27 @@ namespace Sakila.Models
     {
         public Inventory()
         {
-            InventoryId = null;
-            FilmId = 0;
-            StoreId = 0;
-            LastUpdate = null;
             Rentals = new HashSet<Rental>();
 
         }
 
-        ///<summary>column:inventory_id</summary>
+        ///<summary></summary>
         [Key]
-        [Required]
         [Column("inventory_id", Order = 0, TypeName = "mediumint")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public object InventoryId { get; set; }
+        public int InventoryId { get; set; }
 
-        ///<summary>column:film_id</summary>
+        ///<summary></summary>
         [Column("film_id")]
         public short FilmId { get; set; }
 
-        ///<summary>column:store_id</summary>
+        ///<summary></summary>
         [Column("store_id")]
-        public byte StoreId { get; set; }
+        public sbyte StoreId { get; set; }
 
-        ///<summary>column:last_update</summary>
-        [Required]
+        ///<summary></summary>
         [Column("last_update", Order = 3, TypeName = "timestamp")]
-        public byte[] LastUpdate { get; set; }
+        public DateTime LastUpdate { get; set; }
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

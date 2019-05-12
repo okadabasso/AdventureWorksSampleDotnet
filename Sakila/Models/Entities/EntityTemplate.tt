@@ -5,6 +5,8 @@
 <#@ assembly name="$(SolutionDir)\Schema\bin\Debug\Schema.dll" #>
 <#@ assembly name="$(SolutionDir)\Schema.MySql\bin\Debug\Schema.MySql.dll" #>
 <#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Data" #>
+<#@ import namespace="System.Data.Common" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="System.IO" #>
@@ -15,9 +17,12 @@
 <#@ output extension=".generated.cs" #>
 <#
     var modelNamespace = "Sakila.Models";
-    var connectionString = "server=localhost;database=sakila;uid=sakilauser;pwd=sakilauser";
+    var connectionString = "server=172.19.154.73;database=sakila;uid=sakilauser;pwd=sakilauser";
 
     var schemaManager = new MySqlSchemaManager(connectionString);
+    TypeHelper.TypeMapping["timestamp"] = typeof(DateTime);
+    TypeHelper.TypeMapping["tinyint"] = typeof(sbyte);
+    TypeHelper.DbTypeMapping["timestamp"] = DbType.DateTime;
     var tables = schemaManager.GetTables();
 
 #>
@@ -39,24 +44,6 @@ namespace <#= modelNamespace #>
     {
         public <#= table.ObjectName#>()
         {
-<#      foreach(var column in table.Columns){ 
-            // hierarchyid is not supported on .NET Framework 4.7
-            if(column.DataType == "hierarchyid") {  continue;  } 
-            if(column.DefaultValue == null){ #>
-            <#= column.ObjectName #> = null;
-<#          } else { 
-                if(column.DataType == "date" || column.DataType == "datetime" || column.DataType == "datetime2" || column.DataType == "smalldatetime"){ #>
-            <#= column.ObjectName #> = DateTime.Parse(<#= column.DefaultValueLiteral #>);
-<#              } else if(column.DataType == "time"){ #>
-            <#= column.ObjectName #> = TimeSpan.Parse(<#= column.DefaultValueLiteral #>);
-<#              } else if(column.DataType == "uniqueidentifier"){ #>
-            <#= column.ObjectName #> = Guid.Parse(<#= column.DefaultValueLiteral #>);
-<#              } else { #>
-            <#= column.ObjectName #> = <#= column.DefaultValueLiteral #>;
-<#              } 
-            } 
-      } 
-#>
 <#  
         // このテーブルを参照する
         var dependentsForInit = tables.Where(x => x.ForeignKeys.Any(y => y.ReferencedTable.NameEquals(table)))
@@ -110,6 +97,9 @@ namespace <#= modelNamespace #>
             else{  
 #>
         [Column("<#= column.ColumnName #>", Order = <#= column.OrdinalPosition - 1 #>, TypeName = "<#= column.DataType #>")]
+<#          }  
+            if(column.ObjectType == typeof(string) && column.CharacterMaximumLength > 0){ #>
+        [StringLength(<#= column.Precision #>)]
 <#          }  
             if(column.IsIdentity == "YES")  {  #>
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

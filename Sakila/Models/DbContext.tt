@@ -17,7 +17,7 @@
     var contextName = "SampleDbContext";
     var connectionName = "sampledb";
     var modelNamespace = "Sakila.Models";
-    var connectionString = "server=localhost;database=sakila;uid=sakilauser;pwd=sakilauser";
+    var connectionString = "server= 172.19.154.73;database=sakila;uid=sakilauser;pwd=sakilauser";
 
     var schemaManager = new MySqlSchemaManager(connectionString);
 
@@ -46,7 +46,7 @@ namespace <#= modelNamespace #>
             continue;
         }
 #>
-        public DbSet<<#= table.ObjectName #>> <#= table.ObjectName #> { get; set; }
+        public DbSet<<#= table.ObjectName #>> <#= NamingConvention.Pluralize(table.ObjectName) #> { get; set; }
 <#  } #>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -126,14 +126,7 @@ namespace <#= modelNamespace #>
             }
         }
         foreach(var column in table.Columns){
-            if(column.IsString && !column.IsUnicode){
-#>
-            modelBuilder.Entity<<#= table.ObjectName #>>()
-                .Property(e => e.<#= column.ObjectName #>)
-                .IsUnicode(false);
 
-<#
-            }
             if(column.IsString && column.IsFixedLength){
 #>
             modelBuilder.Entity<<#= table.ObjectName #>>()

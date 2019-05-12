@@ -86,6 +86,9 @@ namespace Schema
         [Column("DESCRIPTION")]
         public string Description { get; set; }
 
+        [Column("IS_UNSIGNED")]
+        public string IS_UNSIGNED { get; set; }
+
         public string ObjectName
         {
             get {

@@ -65,7 +65,8 @@ namespace Schema.Infrastructure
             {"bit", typeof(bool) },
             {"uniqueidentifier", typeof(Guid) },
             {"xml", typeof(string) },
-            {"hierarchyid", typeof(byte[]) }
+            {"hierarchyid", typeof(byte[]) },
+            {"mediumint", typeof(int) }
 
         };
         public static readonly Dictionary<string, DbType> DbTypeMapping = new Dictionary<string, DbType>
@@ -87,7 +88,7 @@ namespace Schema.Infrastructure
             {"datetime", DbType.DateTime },
             {"timestamp", DbType.Binary },
             {"tinyint", DbType.Byte},
-            {"smallint", DbType.UInt16},
+            {"smallint", DbType.Int16},
             {"int", DbType.Int32 },
             {"bigint", DbType.Int64 },
             {"real", DbType.Single },
@@ -99,7 +100,8 @@ namespace Schema.Infrastructure
             {"bit", DbType.Boolean },
             {"uniqueidentifier", DbType.Guid },
             {"xml", DbType.Xml },
-            {"hierarchyid", DbType.Binary }
+            {"hierarchyid", DbType.Binary },
+            {"mediumint", DbType.Int32}
 
         };
         public static Type GetObjectType(string dataType, bool nullable)
