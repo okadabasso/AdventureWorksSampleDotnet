@@ -87,7 +87,10 @@ namespace Schema
         public string Description { get; set; }
 
         [Column("IS_UNSIGNED")]
-        public string IS_UNSIGNED { get; set; }
+        public string IsUnsigned{ get; set; }
+
+        [Column("COLUMN_TYPE")]
+        public string MySqlColumnType { get; set; }
 
         public string ObjectName
         {
@@ -104,13 +107,21 @@ namespace Schema
         public Type ObjectType
         {
             get {
-                return TypeHelper.GetObjectType(DataType, IsNullable == "YES");
+                if(MySqlColumnType == "tinyint(1)")
+                {
+                    return typeof(bool);
+                }
+                return TypeHelper.GetObjectType(DataType, IsNullable == "YES", IsUnsigned == "YES");
             }
         }
         public string ObjectTypeName
         {
             get {
-                return TypeHelper.GetObjectTypeName(DataType, IsNullable == "YES");
+                if (MySqlColumnType == "tinyint(1)")
+                {
+                    return "bool";
+                }
+                return TypeHelper.GetObjectTypeName(DataType, IsNullable == "YES", IsUnsigned == "YES");
             }
         }
         public object DefaultValue

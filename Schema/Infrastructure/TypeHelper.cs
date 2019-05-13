@@ -69,6 +69,15 @@ namespace Schema.Infrastructure
             {"mediumint", typeof(int) }
 
         };
+        public static readonly Dictionary<string, Type> UnsignedTypeMapping = new Dictionary<string, Type>
+        {
+            {"tinyint", typeof(byte) },
+            {"smallint", typeof(ushort) },
+            {"int", typeof(uint) },
+            {"bigint", typeof(ulong) },
+            {"mediumint", typeof(uint) }
+
+        };
         public static readonly Dictionary<string, DbType> DbTypeMapping = new Dictionary<string, DbType>
         {
             {"image", DbType.Binary },
@@ -104,11 +113,15 @@ namespace Schema.Infrastructure
             {"mediumint", DbType.Int32}
 
         };
-        public static Type GetObjectType(string dataType, bool nullable)
+        public static Type GetObjectType(string dataType, bool nullable, bool isUnsigned = false)
         {
             if (TypeHelper.TypeMapping.ContainsKey(dataType))
             {
                 var baseType = TypeHelper.TypeMapping[dataType];
+                if (isUnsigned)
+                {
+                    baseType = UnsignedTypeMapping[dataType];
+                }
                 if (nullable && baseType != typeof(object) && baseType != typeof(string) && baseType != typeof(byte[]))
                 {
                     var nullableType = typeof(Nullable<>);
@@ -123,11 +136,15 @@ namespace Schema.Infrastructure
             return typeof(object);
 
         }
-        public static string GetObjectTypeName(string dataType, bool nullable)
+        public static string GetObjectTypeName(string dataType, bool nullable, bool isUnsigned = false)
         {
             if (TypeHelper.TypeMapping.ContainsKey(dataType))
             {
                 var baseType = TypeHelper.TypeMapping[dataType];
+                if (isUnsigned)
+                {
+                    baseType = UnsignedTypeMapping[dataType];
+                }
                 if (TypeHelper.TypeAlias.ContainsKey(baseType.FullName))
                 {
 
