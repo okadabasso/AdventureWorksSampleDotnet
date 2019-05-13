@@ -60,9 +60,9 @@ namespace AdventureWorks1.Models5
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SalesOrderHeader> SalesOrderHeaders { get; set; }
 
-        public virtual Currency Currency { get; set; }
+        public virtual Currency FromCurrency { get; set; }
 
-        public virtual Currency Currency1 { get; set; }
+        public virtual Currency ToCurrency { get; set; }
 
     }
 }

@@ -63,9 +63,9 @@ namespace AdventureWorks1.Models5
         [Column("ModifiedDate", Order = 8, TypeName = "datetime")]
         public DateTime ModifiedDate { get; set; }
 
-        public virtual Product Product { get; set; }
+        public virtual Product ComponentProduct { get; set; }
 
-        public virtual Product Product1 { get; set; }
+        public virtual Product ProductAssemblyProduct { get; set; }
 
         public virtual UnitMeasure UnitMeasure { get; set; }
 

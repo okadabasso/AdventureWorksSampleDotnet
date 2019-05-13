@@ -15,8 +15,8 @@ namespace AdventureWorks1.Models5
             Name = null;
             ModifiedDate = DateTime.Parse("0001/01/01 0:00:00");
             CountryRegionCurrencies = new HashSet<CountryRegionCurrency>();
-            CurrencyRates = new HashSet<CurrencyRate>();
-            CurrencyRates1 = new HashSet<CurrencyRate>();
+            FromCurrencyRates = new HashSet<CurrencyRate>();
+            ToCurrencyRates = new HashSet<CurrencyRate>();
 
         }
 
@@ -43,11 +43,11 @@ namespace AdventureWorks1.Models5
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CurrencyRate> CurrencyRates { get; set; }
+        public virtual ICollection<CurrencyRate> FromCurrencyRates { get; set; }
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CurrencyRate> CurrencyRates1 { get; set; }
+        public virtual ICollection<CurrencyRate> ToCurrencyRates { get; set; }
 
     }
 }

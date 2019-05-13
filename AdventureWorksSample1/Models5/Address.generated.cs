@@ -21,8 +21,8 @@ namespace AdventureWorks1.Models5
             Rowguid = Guid.Parse("00000000-0000-0000-0000-000000000000");
             ModifiedDate = DateTime.Parse("0001/01/01 0:00:00");
             BusinessEntityAddresses = new HashSet<BusinessEntityAddress>();
-            SalesOrderHeaders = new HashSet<SalesOrderHeader>();
-            SalesOrderHeaders1 = new HashSet<SalesOrderHeader>();
+            BillToSalesOrderHeaders = new HashSet<SalesOrderHeader>();
+            ShipToSalesOrderHeaders = new HashSet<SalesOrderHeader>();
 
         }
 
@@ -77,11 +77,11 @@ namespace AdventureWorks1.Models5
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SalesOrderHeader> SalesOrderHeaders { get; set; }
+        public virtual ICollection<SalesOrderHeader> BillToSalesOrderHeaders { get; set; }
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SalesOrderHeader> SalesOrderHeaders1 { get; set; }
+        public virtual ICollection<SalesOrderHeader> ShipToSalesOrderHeaders { get; set; }
 
         public virtual StateProvince StateProvince { get; set; }
 

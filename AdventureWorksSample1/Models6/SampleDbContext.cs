@@ -97,28 +97,6 @@ namespace AdventureWorks1.Models6
                  })
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Table5>()
-                .HasMany(e => e.Table7s)
-                .WithOptional(e => e.Table5)
-                .HasForeignKey(e => new { 
-                    e.Table5bKey1
-,                    e.Table5bKey2
-                
-                 })
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Table5b>()
-                .HasMany(e => e.Table7s)
-                .WithOptional(e => e.Table5b)
-                .HasForeignKey(e => e.Table5bKey1)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Table5b>()
-                .HasMany(e => e.Table7s1)
-                .WithOptional(e => e.Table5b1)
-                .HasForeignKey(e => e.Table5bKey1)
-                .WillCascadeOnDelete(false);
-
             modelBuilder.Entity<Table8>()
                 .Property(e => e.Code)
                 .IsUnicode(false);

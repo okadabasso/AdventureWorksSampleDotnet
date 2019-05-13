@@ -67,11 +67,11 @@ namespace <#= modelNamespace #>
             var n = 0;
             foreach(var fkey in group)
             {
-                var variableName = Schema.Infrastructure.Inflector.Currnet.Pluralize(fkey.BaseTable.ObjectName) + $"{n:#}";
                 if( fkey.BaseTable.PrimaryKeyColumns.Any(x => fkey.BaseTable.Columns.Any(y => y.ColumnName == x && y.DataType == "hierarchyid"))){
                      continue;
                 }
                 if(fkey.DependentRole.Multiplicity == "*"){
+                    var variableName = Schema.Infrastructure.Inflector.Currnet.Pluralize(fkey.DependentRole.ReferenceName) + $"{n:#}";
 #>
             <#= variableName  #> = new HashSet<<#= fkey.BaseTable.ObjectName #>>();
 <#              }
@@ -133,7 +133,7 @@ namespace <#= modelNamespace #>
                 }
 
                 if(fkey.DependentRole.Multiplicity == "*"){
-                    var variableName = NamingConvention.Pluralize(fkey.BaseTable.ObjectName) + $"{n:#}";
+                    var variableName = NamingConvention.Pluralize(fkey.DependentRole.ReferenceName);
 #>
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -143,7 +143,7 @@ namespace <#= modelNamespace #>
                 }
                 else{
 #>
-        public virtual <#= fkey.BaseTable.ObjectName #> <#= $"{fkey.BaseTable.ObjectName}{n:#}"  #> { get; set; }
+        public virtual <#= fkey.BaseTable.ObjectName #> <#= $"{fkey.DependentRole.ReferenceName}{n:#}"  #> { get; set; }
 
 <#                
                 }
@@ -164,7 +164,7 @@ namespace <#= modelNamespace #>
                 //}
                 var required = fkey.DependentRole.Required;
 #>
-        public virtual <#= fkey.ReferencedTable.ObjectName #> <#= $"{fkey.ReferencedTable.ObjectName}{n:#}"  #> { get; set; }
+        public virtual <#= fkey.ReferencedTable.ObjectName #> <#= $"{fkey.PrincipalRole.ReferenceName}{n:#}"  #> { get; set; }
 
 <#
                 n++;

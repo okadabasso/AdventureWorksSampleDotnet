@@ -12,5 +12,7 @@ namespace Schema
         public string Multiplicity { get; set; }
 
         public bool Required { get; set; }
+
+        public string ReferenceName { get; set; }
     }
 }

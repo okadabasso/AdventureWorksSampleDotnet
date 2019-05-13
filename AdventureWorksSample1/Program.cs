@@ -20,9 +20,98 @@ namespace AdventureWorksSample1
     {
         private static void Main(string[] args)
         {
- 
+            SampleQuery("Mountain");
             // NamingConventionSample();
             Console.ReadLine();
+        }
+        static void InferRoleName()
+        {
+            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["AdventureWorks"].ConnectionString))
+            {
+                using (var schemaManager = new SchemaManager(connection))
+                {
+                    var tables = schemaManager.GetTables();
+                    foreach (var table in tables)
+                    {
+                        Console.WriteLine(table.ObjectName);
+
+                        // このテーブルを参照する
+                        var dependents = tables.Where(x => x.ForeignKeys.Any(y => y.ReferencedTable.NameEquals(table)))
+                            .SelectMany(x => x.ForeignKeys.Where(r => r.ReferencedTable.NameEquals(table)))
+                            .GroupBy(x => new { x.BaseTable.TableSchema, x.BaseTable.TableName });
+
+                        foreach (var group in dependents)
+                        {
+                            var n = 0;
+                            foreach (var fkey in group)
+                            {
+                                // one or many
+                                var multiplicityA = (fkey.PrincipalRole.Required ? "1.." : "0..") + fkey.PrincipalRole.Multiplicity;
+                                var multiplicityB = (fkey.DependentRole.Required ? "1.." : "0..") + fkey.DependentRole.Multiplicity;
+                                Console.Write($"{table.ObjectName}\t ({multiplicityA}) <---- ({multiplicityB})");
+                                Console.Write($" {fkey.BaseTable.TableName} as {fkey.DependentRole.RoleName}{n:#}");
+                                Console.WriteLine($" by {string.Join(",", fkey.Columns)}");
+                                n++;
+
+                                var primaryRoleName = NamingConvention.Pascalize(fkey.PrincipalRole.RoleName);
+                                var dependentRoleName = NamingConvention.Pascalize(fkey.DependentRole.RoleName);
+
+                                var primaryName = NamingConvention.Snake(fkey.ReferenceColumns.ToList()[0]).Split('_');
+                                var dependentName = NamingConvention.Snake(fkey.Columns[0]).Split('_');
+                                var diff = new Diff<string>();
+                                var differences = diff.Calculate(primaryName, dependentName).ToList();
+                                if(differences.Count == 1 && differences[0].OriginalLength == differences[0].ModifiedLength)
+                                {
+                                    Console.Write("\t" + fkey.DependentRole.RoleName);
+                                    Console.Write(" - ");
+                                    Console.Write(fkey.PrincipalRole.RoleName);
+                                    Console.WriteLine();
+
+                                }
+                                else
+                                {
+                                    var length = 0;
+                                    foreach (var d in differences)
+                                    {
+                                        if (d.Modified)
+                                        {
+                                            length = d.ModifiedStart + d.ModifiedLength;
+                                        }
+                                    }
+                                    var name = string.Join("", dependentName.Take(length).Select(x => NamingConvention.Pascalize(x)));
+                                    if(name == primaryRoleName)
+                                    {
+                                        Console.Write("\t" + dependentRoleName);
+                                    }
+                                    else
+                                    {
+
+                                        Console.Write("\t" + name + dependentRoleName);
+                                        Console.Write(" - ");
+
+                                    }
+
+                                    Console.Write(" - ");
+                                    if(name == primaryRoleName)
+                                    {
+                                        Console.Write(name);
+                                    }
+                                    else
+                                    {
+                                        Console.Write(name + primaryRoleName);
+                                    }
+                                    Console.WriteLine();
+
+                                }
+
+                            }
+                        }
+
+                    }
+                }
+
+            }
+
         }
         static void NamingConventionSample()
         {

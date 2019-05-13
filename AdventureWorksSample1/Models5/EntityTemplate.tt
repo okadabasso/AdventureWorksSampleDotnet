@@ -68,15 +68,15 @@ namespace <#= modelNamespace #>
                 }
 #>            modelBuilder.Entity<<#= table.ObjectName #>>()
 <#
-                var variableName = NamingConvention.Pluralize(fkey.BaseTable.ObjectName) + $"{n:#}";
+                var variableName = NamingConvention.Pluralize(fkey.DependentRole.ReferenceName);
                 if(fkey.DependentRole.Multiplicity == "*"){
 #>
                 .HasMany(e => e.<#= variableName #>)
 <#
                     if(fkey.PrincipalRole.Required){ #>
-                .WithRequired(e => e.<#= fkey.ReferencedTable.ObjectName + $"{n:#}" #>)<#
+                .WithRequired(e => e.<#= fkey.PrincipalRole.ReferenceName #>)<#
                     } else { #>
-                .WithOptional(e => e.<#= fkey.ReferencedTable.ObjectName + $"{n:#}" #>)<#
+                .WithOptional(e => e.<#= fkey.PrincipalRole.ReferenceName #>)<#
                     } 
                     if(fkey.Columns.Count > 1 ){ #>
 
@@ -101,12 +101,12 @@ namespace <#= modelNamespace #>
                 }
                 else{
 #>
-                .HasOptional(e => e.<#= fkey.BaseTable.ObjectName + $"{n:#}" #>)
+                .HasOptional(e => e.<#= fkey.DependentRole.ReferenceName#>)
 <#
                     if(fkey.PrincipalRole.Required){ #>
-                .WithRequired(e => e.<#= fkey.ReferencedTable.ObjectName + $"{n:#}" #>)<#
+                .WithRequired(e => e.<#= fkey.PrincipalRole.ReferenceName #>)<#
                     } else { #>
-                .WithOptional(e => e.<#= fkey.ReferencedTable.ObjectName + $"{n:#}" #>)<#
+                .WithOptional(e => e.<#= fkey.PrincipalRole.ReferenceName #>)<#
                     } 
                 } 
                 if(fkey.ReferentialConstraint.DeleteRule == "NO ACTION"){ #>
@@ -200,7 +200,7 @@ namespace <#= modelNamespace #>
             var n = 0;
             foreach(var fkey in group)
             {
-                var variableName = Schema.Infrastructure.Inflector.Currnet.Pluralize(fkey.BaseTable.ObjectName) + $"{n:#}";
+                var variableName = Schema.Infrastructure.Inflector.Currnet.Pluralize(fkey.DependentRole.ReferenceName);
                 if( fkey.BaseTable.PrimaryKeyColumns.Any(x => fkey.BaseTable.Columns.Any(y => y.ColumnName == x && y.DataType == "hierarchyid"))){
                      continue;
                 }
@@ -269,7 +269,7 @@ namespace <#= modelNamespace #>
                 }
 
                 if(fkey.DependentRole.Multiplicity == "*"){
-                    var variableName = NamingConvention.Pluralize(fkey.BaseTable.ObjectName) + $"{n:#}";
+                    var variableName = Schema.Infrastructure.Inflector.Currnet.Pluralize(fkey.DependentRole.ReferenceName);
 #>
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -300,7 +300,7 @@ namespace <#= modelNamespace #>
                 //}
                 var required = fkey.DependentRole.Required;
 #>
-        public virtual <#= fkey.ReferencedTable.ObjectName #> <#= $"{fkey.ReferencedTable.ObjectName}{n:#}"  #> { get; set; }
+        public virtual <#= fkey.ReferencedTable.ObjectName #> <#= fkey.PrincipalRole.ReferenceName #> { get; set; }
 
 <#
                 n++;

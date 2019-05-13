@@ -15,7 +15,6 @@ namespace AdventureWorks1.Models6
             Key2 = 0;
             Name = null;
             Table6s = new HashSet<Table6>();
-            Table7s = new HashSet<Table7>();
 
         }
 
@@ -36,10 +35,6 @@ namespace AdventureWorks1.Models6
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Table6> Table6s { get; set; }
-
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Table7> Table7s { get; set; }
 
     }
 }

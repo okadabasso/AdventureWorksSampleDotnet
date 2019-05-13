@@ -162,9 +162,9 @@ namespace AdventureWorks1.Models5
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SalesOrderHeaderSalesReason> SalesOrderHeaderSalesReasons { get; set; }
 
-        public virtual Address Address { get; set; }
+        public virtual Address BillToAddress { get; set; }
 
-        public virtual Address Address1 { get; set; }
+        public virtual Address ShipToAddress { get; set; }
 
         public virtual CreditCard CreditCard { get; set; }
 

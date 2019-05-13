@@ -49,6 +49,8 @@
     <Compile Include="Index.cs" />
     <Compile Include="IndexColumn.cs" />
     <Compile Include="Infrastructure\DatabaseAdapter.cs" />
+    <Compile Include="Infrastructure\Diff.cs" />
+    <Compile Include="Infrastructure\Difference.cs" />
     <Compile Include="Infrastructure\Inflector.cs" />
     <Compile Include="Infrastructure\NamingConvention.cs" />
     <Compile Include="Infrastructure\ParameterFactory.cs" />

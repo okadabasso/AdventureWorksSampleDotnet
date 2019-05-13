@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Schema.Infrastructure;
 
 namespace Schema
 {
@@ -48,9 +49,9 @@ namespace Schema
 
             ReferentialConstraint = referentialConstraint;
 
-            MakeRoles();
+            BuildRoles();
         }
-        public void MakeRoles()
+        private void BuildRoles()
         {
             // principal role
             // pkey または uniqueに対してのみ外部キーが設定可能
@@ -77,7 +78,46 @@ namespace Schema
                 DependentRole.Multiplicity = "*";
             }
             DependentRole.Required = false;
+            BuildReferenceNames();
+        }
+        private void BuildReferenceNames()
+        {
+            var principalRoleName = NamingConvention.Pascalize(PrincipalRole.RoleName);
+            var dependentRoleName = NamingConvention.Pascalize(DependentRole.RoleName);
 
+            var primaryNameElements = NamingConvention.Snake(ReferenceColumns.ToList()[0]).Split('_');
+            var dependentNameElements = NamingConvention.Snake(Columns[0]).Split('_');
+            var diff = new Diff<string>();
+            var differences = diff.Calculate(primaryNameElements, dependentNameElements).ToList();
+            if (differences.Count == 1 && differences[0].OriginalLength == differences[0].ModifiedLength)
+            {
+                PrincipalRole.ReferenceName = principalRoleName;
+                DependentRole.ReferenceName = dependentRoleName;
+            }
+            else
+            {
+                var last = differences.Where(x => x.Modified).LastOrDefault();
+                var length = last.ModifiedStart + last.ModifiedLength;
+
+                var name = string.Join("", dependentNameElements.Take(length).Select(x => NamingConvention.Pascalize(x)));
+                if (name == principalRoleName)
+                {
+                    PrincipalRole.ReferenceName = principalRoleName;
+                }
+                else
+                {
+                    PrincipalRole.ReferenceName = name + principalRoleName;
+                }
+
+                if (name == principalRoleName)
+                {
+                    DependentRole.ReferenceName = dependentRoleName;
+                }
+                else
+                {
+                    DependentRole.ReferenceName = name + dependentRoleName;
+                }
+            }
         }
 
 

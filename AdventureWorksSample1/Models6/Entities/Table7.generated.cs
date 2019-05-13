@@ -15,6 +15,10 @@ namespace AdventureWorks1.Models6
             Name = null;
             Table5bKey1 = null;
             Table5bKey2 = null;
+            Table5B2Key1 = null;
+            Table5B2Key2 = null;
+            Table5B3Key1 = null;
+            Table5B3Key2 = null;
 
         }
 
@@ -29,18 +33,28 @@ namespace AdventureWorks1.Models6
         public string Name { get; set; }
 
         ///<summary>column:table5b_key1</summary>
-        [Column("table5b_key1")]
+        [Column("table5b_key1", Order = 2, TypeName = "int")]
         public int? Table5bKey1 { get; set; }
 
         ///<summary>column:table5b_key2</summary>
-        [Column("table5b_key2")]
+        [Column("table5b_key2", Order = 3, TypeName = "int")]
         public int? Table5bKey2 { get; set; }
 
-        public virtual Table5b Table5b { get; set; }
+        ///<summary>column:table5b2_key1</summary>
+        [Column("table5b2_key1", Order = 4, TypeName = "int")]
+        public int? Table5B2Key1 { get; set; }
 
-        public virtual Table5b Table5b1 { get; set; }
+        ///<summary>column:table5b2_key2</summary>
+        [Column("table5b2_key2", Order = 5, TypeName = "int")]
+        public int? Table5B2Key2 { get; set; }
 
-        public virtual Table5 Table5 { get; set; }
+        ///<summary>column:table5b3_key1</summary>
+        [Column("table5b3_key1", Order = 6, TypeName = "int")]
+        public int? Table5B3Key1 { get; set; }
+
+        ///<summary>column:table5b3_key2</summary>
+        [Column("table5b3_key2", Order = 7, TypeName = "int")]
+        public int? Table5B3Key2 { get; set; }
 
     }
 }

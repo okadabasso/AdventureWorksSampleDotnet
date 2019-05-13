@@ -69,15 +69,15 @@ namespace <#= modelNamespace #>
                 }
 #>            modelBuilder.Entity<<#= table.ObjectName #>>()
 <#
-                var variableName = NamingConvention.Pluralize(fkey.BaseTable.ObjectName) + $"{n:#}";
                 if(fkey.DependentRole.Multiplicity == "*"){
+                    var variableName = NamingConvention.Pluralize(fkey.DependentRole.ReferenceName);
 #>
                 .HasMany(e => e.<#= variableName #>)
 <#
                     if(fkey.PrincipalRole.Required){ #>
-                .WithRequired(e => e.<#= fkey.ReferencedTable.ObjectName + $"{n:#}" #>)<#
+                .WithRequired(e => e.<#= fkey.PrincipalRole.ReferenceName #>)<#
                     } else { #>
-                .WithOptional(e => e.<#= fkey.ReferencedTable.ObjectName + $"{n:#}" #>)<#
+                .WithOptional(e => e.<#= fkey.PrincipalRole.ReferenceName #>)<#
                     } 
                     if(fkey.Columns.Count > 1 ){ #>
 
@@ -102,12 +102,12 @@ namespace <#= modelNamespace #>
                 }
                 else{
 #>
-                .HasOptional(e => e.<#= fkey.BaseTable.ObjectName + $"{n:#}" #>)
+                .HasOptional(e => e.<#= fkey.DependentRole.ReferenceName + $"{n:#}" #>)
 <#
                     if(fkey.PrincipalRole.Required){ #>
-                .WithRequired(e => e.<#= fkey.ReferencedTable.ObjectName + $"{n:#}" #>)<#
+                .WithRequired(e => e.<#= fkey.PrincipalRole.ReferenceName + $"{n:#}" #>)<#
                     } else { #>
-                .WithOptional(e => e.<#= fkey.ReferencedTable.ObjectName + $"{n:#}" #>)<#
+                .WithOptional(e => e.<#= fkey.PrincipalRole.ReferenceName + $"{n:#}" #>)<#
                     } 
                 } 
                 if(fkey.ReferentialConstraint.DeleteRule == "NO ACTION"){ #>

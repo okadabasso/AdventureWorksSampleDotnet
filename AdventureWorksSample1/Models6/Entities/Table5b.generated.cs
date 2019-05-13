@@ -13,8 +13,6 @@ namespace AdventureWorks1.Models6
         {
             Key1 = 0;
             Name = null;
-            Table7s = new HashSet<Table7>();
-            Table7s1 = new HashSet<Table7>();
 
         }
 
@@ -28,14 +26,6 @@ namespace AdventureWorks1.Models6
         [Required]
         [Column("name", Order = 1, TypeName = "nvarchar")]
         public string Name { get; set; }
-
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Table7> Table7s { get; set; }
-
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Table7> Table7s1 { get; set; }
 
     }
 }

@@ -36,8 +36,8 @@ namespace AdventureWorks1.Models5
             DiscontinuedDate = null;
             Rowguid = Guid.Parse("00000000-0000-0000-0000-000000000000");
             ModifiedDate = DateTime.Parse("0001/01/01 0:00:00");
-            BillOfMaterials = new HashSet<BillOfMaterials>();
-            BillOfMaterials1 = new HashSet<BillOfMaterials>();
+            ComponentBillOfMaterials = new HashSet<BillOfMaterials>();
+            ProductAssemblyBillOfMaterials = new HashSet<BillOfMaterials>();
             ProductCostHistories = new HashSet<ProductCostHistory>();
             ProductInventories = new HashSet<ProductInventory>();
             ProductListPriceHistories = new HashSet<ProductListPriceHistory>();
@@ -167,11 +167,11 @@ namespace AdventureWorks1.Models5
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BillOfMaterials> BillOfMaterials { get; set; }
+        public virtual ICollection<BillOfMaterials> ComponentBillOfMaterials { get; set; }
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BillOfMaterials> BillOfMaterials1 { get; set; }
+        public virtual ICollection<BillOfMaterials> ProductAssemblyBillOfMaterials { get; set; }
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -221,9 +221,9 @@ namespace AdventureWorks1.Models5
 
         public virtual ProductSubcategory ProductSubcategory { get; set; }
 
-        public virtual UnitMeasure UnitMeasure { get; set; }
+        public virtual UnitMeasure SizeUnitMeasure { get; set; }
 
-        public virtual UnitMeasure UnitMeasure1 { get; set; }
+        public virtual UnitMeasure WeightUnitMeasure { get; set; }
 
     }
 }

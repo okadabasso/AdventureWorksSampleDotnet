@@ -15,8 +15,8 @@ namespace AdventureWorks1.Models5
             Name = null;
             ModifiedDate = DateTime.Parse("0001/01/01 0:00:00");
             BillOfMaterials = new HashSet<BillOfMaterials>();
-            Products = new HashSet<Product>();
-            Products1 = new HashSet<Product>();
+            SizeProducts = new HashSet<Product>();
+            WeightProducts = new HashSet<Product>();
             ProductVendors = new HashSet<ProductVendor>();
 
         }
@@ -44,11 +44,11 @@ namespace AdventureWorks1.Models5
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Product> Products { get; set; }
+        public virtual ICollection<Product> SizeProducts { get; set; }
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Product> Products1 { get; set; }
+        public virtual ICollection<Product> WeightProducts { get; set; }
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

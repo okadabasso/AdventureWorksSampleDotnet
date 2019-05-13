@@ -182,14 +182,14 @@ namespace AdventureWorks1.Models5
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Address>()
-                .HasMany(e => e.SalesOrderHeaders)
-                .WithRequired(e => e.Address)
+                .HasMany(e => e.BillToSalesOrderHeaders)
+                .WithRequired(e => e.BillToAddress)
                 .HasForeignKey(e => e.BillToAddressId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Address>()
-                .HasMany(e => e.SalesOrderHeaders1)
-                .WithRequired(e => e.Address1)
+                .HasMany(e => e.ShipToSalesOrderHeaders)
+                .WithRequired(e => e.ShipToAddress)
                 .HasForeignKey(e => e.ShipToAddressId)
                 .WillCascadeOnDelete(false);
 
@@ -377,14 +377,14 @@ namespace AdventureWorks1.Models5
                 .HasPrecision(8, 2);
 
             modelBuilder.Entity<Product>()
-                .HasMany(e => e.BillOfMaterials)
-                .WithRequired(e => e.Product)
+                .HasMany(e => e.ComponentBillOfMaterials)
+                .WithRequired(e => e.ComponentProduct)
                 .HasForeignKey(e => e.ComponentId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Product>()
-                .HasMany(e => e.BillOfMaterials1)
-                .WithOptional(e => e.Product1)
+                .HasMany(e => e.ProductAssemblyBillOfMaterials)
+                .WithOptional(e => e.ProductAssemblyProduct)
                 .HasForeignKey(e => e.ProductAssemblyId)
                 .WillCascadeOnDelete(false);
 
@@ -645,14 +645,14 @@ namespace AdventureWorks1.Models5
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<UnitMeasure>()
-                .HasMany(e => e.Products)
-                .WithOptional(e => e.UnitMeasure)
+                .HasMany(e => e.SizeProducts)
+                .WithOptional(e => e.SizeUnitMeasure)
                 .HasForeignKey(e => e.SizeUnitMeasureCode)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<UnitMeasure>()
-                .HasMany(e => e.Products1)
-                .WithOptional(e => e.UnitMeasure1)
+                .HasMany(e => e.WeightProducts)
+                .WithOptional(e => e.WeightUnitMeasure)
                 .HasForeignKey(e => e.WeightUnitMeasureCode)
                 .WillCascadeOnDelete(false);
 
@@ -793,14 +793,14 @@ namespace AdventureWorks1.Models5
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Currency>()
-                .HasMany(e => e.CurrencyRates)
-                .WithRequired(e => e.Currency)
+                .HasMany(e => e.FromCurrencyRates)
+                .WithRequired(e => e.FromCurrency)
                 .HasForeignKey(e => e.FromCurrencyCode)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Currency>()
-                .HasMany(e => e.CurrencyRates1)
-                .WithRequired(e => e.Currency1)
+                .HasMany(e => e.ToCurrencyRates)
+                .WithRequired(e => e.ToCurrency)
                 .HasForeignKey(e => e.ToCurrencyCode)
                 .WillCascadeOnDelete(false);
 
