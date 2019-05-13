@@ -138,24 +138,16 @@ namespace Schema.Infrastructure
         }
         public static string GetObjectTypeName(string dataType, bool nullable, bool isUnsigned = false)
         {
-            if (TypeHelper.TypeMapping.ContainsKey(dataType))
+            var objectType = GetObjectType(dataType, nullable, isUnsigned);
+            var baseType = Nullable.GetUnderlyingType(objectType) ?? objectType;
+            if (TypeHelper.TypeAlias.ContainsKey(baseType.FullName))
             {
-                var baseType = TypeHelper.TypeMapping[dataType];
-                if (isUnsigned)
+                var typeAlias = TypeAlias[baseType.FullName];
+                if (nullable && typeAlias != "object" && typeAlias != "string" && typeAlias != "byte[]")
                 {
-                    baseType = UnsignedTypeMapping[dataType];
+                    typeAlias += "?";
                 }
-                if (TypeHelper.TypeAlias.ContainsKey(baseType.FullName))
-                {
-
-                    var typeAlias = TypeAlias[baseType.FullName];
-
-                    if (nullable && typeAlias != "object" && typeAlias != "string" && typeAlias != "byte[]")
-                    {
-                        typeAlias += "?";
-                    }
-                    return typeAlias;
-                }
+                return typeAlias;
             }
             return "object";
 
