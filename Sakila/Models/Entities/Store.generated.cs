@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
@@ -48,7 +48,7 @@ namespace Sakila.Models
 
         public virtual Address Address { get; set; }
 
-        public virtual Staff Staff { get; set; }
+        public virtual Staff ManagerStaff { get; set; }
 
     }
 }

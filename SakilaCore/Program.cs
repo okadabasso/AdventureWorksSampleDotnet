@@ -40,28 +40,17 @@ namespace SakilaCore
                 {
                     using (var context = new SakilaCore.Models.SampleDbContext())
                     {
-                        var addresses = context.Addresses
-                            .Include(x => x.City)
-                            .Include(x => x.City.Country)
-                            .Include(x => x.Stores)
-                            .Where(x => x.Stores.Any())
-                            ;
-                        foreach(var address in addresses)
+                        var query = context.Films
+                            .Include(x => x.Language)
+                            .Include(x => x.FilmActors).ThenInclude(x => x.Actor);
+                        foreach (var film in query)
                         {
-                            Console.WriteLine($"{address.City?.City1} {address.Address1} country={address.City?.Country?.Country1} ");
-                            foreach (var store in address.Stores)
+                            Console.WriteLine($"{film.Description} {film.Language.Name}");
+                            foreach (var actor in film.FilmActors)
                             {
-
-                                Console.WriteLine($"\t{store.StoreId}");
-                                var store2= context.Stores.Include(x => x.Staff).Where(x => x.StoreId == store.StoreId).FirstOrDefault();
-                                foreach(var staff in store2.Staffs)
-                                {
-                                    Console.WriteLine($"\t{staff.Username}");
-
-                                }
+                                Console.WriteLine($"{actor.Actor.FirstName} {actor.Actor.LastName}");
 
                             }
-
                         }
                     }
                     Console.WriteLine("Press ANY key to exit");

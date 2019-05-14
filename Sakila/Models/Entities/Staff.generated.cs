@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
@@ -12,7 +12,7 @@ namespace Sakila.Models
         {
             Payments = new HashSet<Payment>();
             Rentals = new HashSet<Rental>();
-            Stores = new HashSet<Store>();
+            ManagerStore = new HashSet<Store>();
 
         }
 
@@ -80,7 +80,7 @@ namespace Sakila.Models
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Store> Stores { get; set; }
+        public virtual ICollection<Store> ManagerStore { get; set; }
 
         public virtual Address Address { get; set; }
 

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
@@ -55,7 +55,12 @@ namespace Sakila.Models
         public string Phone { get; set; }
 
         ///<summary></summary>
-        [Column("last_update", Order = 7, TypeName = "timestamp")]
+        [Required]
+        [Column("location", Order = 7, TypeName = "geometry")]
+        public object Location { get; set; }
+
+        ///<summary></summary>
+        [Column("last_update", Order = 8, TypeName = "timestamp")]
         public DateTime LastUpdate { get; set; }
 
 

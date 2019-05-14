@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
@@ -112,8 +112,8 @@ namespace Sakila.Models
                 .HasForeignKey(e => e.LanguageId);
 
             modelBuilder.Entity<Language>()
-                .HasMany(e => e.Films1)
-                .WithOptional(e => e.Language1)
+                .HasMany(e => e.OriginalFilms)
+                .WithOptional(e => e.OriginalLanguage)
                 .HasForeignKey(e => e.OriginalLanguageId);
 
             modelBuilder.Entity<Language>()
@@ -140,8 +140,8 @@ namespace Sakila.Models
                 .HasForeignKey(e => e.StaffId);
 
             modelBuilder.Entity<Staff>()
-                .HasMany(e => e.Stores)
-                .WithRequired(e => e.Staff)
+                .HasMany(e => e.ManagerStore)
+                .WithRequired(e => e.ManagerStaff)
                 .HasForeignKey(e => e.ManagerStaffId);
 
             modelBuilder.Entity<Store>()

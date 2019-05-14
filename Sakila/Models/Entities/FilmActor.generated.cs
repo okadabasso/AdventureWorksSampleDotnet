@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
@@ -15,15 +15,14 @@ namespace Sakila.Models
 
         ///<summary></summary>
         [Key]
-        [Column("actor_id", Order = 0, TypeName = "smallint")]
+        [Column("actor_id", Order = 0)]
         public short ActorId { get; set; }
 
         ///<summary></summary>
         [Key]
-        [Column("film_id", Order = 1, TypeName = "smallint")]
+        [Column("film_id", Order = 1)]
         public short FilmId { get; set; }
-
-        ///<summary></summary>
+                ///<summary></summary>
         [Column("last_update", Order = 2, TypeName = "timestamp")]
         public DateTime LastUpdate { get; set; }
 

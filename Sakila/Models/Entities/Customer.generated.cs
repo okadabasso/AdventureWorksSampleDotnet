@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
@@ -56,7 +56,7 @@ namespace Sakila.Models
 
         ///<summary></summary>
         [Column("last_update", Order = 8, TypeName = "timestamp")]
-        public DateTime LastUpdate { get; set; }
+        public DateTime? LastUpdate { get; set; }
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

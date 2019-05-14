@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
@@ -38,7 +38,7 @@ namespace Sakila.Models
         public object ReleaseYear { get; set; }
 
         ///<summary></summary>
-        [Column("language_id")]
+        [Column("language_id", TypeName = "tinyint")]
         public sbyte LanguageId { get; set; }
 
         ///<summary></summary>
@@ -55,7 +55,7 @@ namespace Sakila.Models
 
         ///<summary></summary>
         [Column("length", Order = 8, TypeName = "smallint")]
-        public short? Length { get; set; }
+        public ushort? Length { get; set; }
 
         ///<summary></summary>
         [Column("replacement_cost", Order = 9, TypeName = "decimal")]
@@ -87,7 +87,7 @@ namespace Sakila.Models
 
         public virtual Language Language { get; set; }
 
-        public virtual Language Language1 { get; set; }
+        public virtual Language OriginalLanguage { get; set; }
 
     }
 }

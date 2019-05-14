@@ -17,7 +17,7 @@
 <#@ output extension=".generated.cs" #>
 <#
     var modelNamespace = "Sakila.Models";
-    var connectionString = "server=172.19.154.73;database=sakila;uid=sakilauser;pwd=sakilauser";
+    var connectionString = "server=localhost;database=sakila;uid=sakilauser;pwd=sakilauser";
 
     var schemaManager = new MySqlSchemaManager(connectionString);
     TypeHelper.TypeMapping["timestamp"] = typeof(DateTime);
@@ -55,11 +55,11 @@ namespace <#= modelNamespace #>
             var n = 0;
             foreach(var fkey in group)
             {
-                var variableName = Schema.Infrastructure.Inflector.Currnet.Pluralize(fkey.BaseTable.ObjectName) + $"{n:#}";
                 if( fkey.BaseTable.PrimaryKeyColumns.Any(x => fkey.BaseTable.Columns.Any(y => y.ColumnName == x && y.DataType == "hierarchyid"))){
                      continue;
                 }
                 if(fkey.DependentRole.Multiplicity == "*"){
+                var variableName = Schema.Infrastructure.Inflector.Currnet.Pluralize(fkey.DependentRole.ReferenceName);
 #>
             <#= variableName  #> = new HashSet<<#= fkey.BaseTable.ObjectName #>>();
 <#              }
@@ -124,7 +124,7 @@ namespace <#= modelNamespace #>
                 }
 
                 if(fkey.DependentRole.Multiplicity == "*"){
-                    var variableName = NamingConvention.Pluralize(fkey.BaseTable.ObjectName) + $"{n:#}";
+                    var variableName = NamingConvention.Pluralize(fkey.DependentRole.ReferenceName);
 #>
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -134,7 +134,7 @@ namespace <#= modelNamespace #>
                 }
                 else{
 #>
-        public virtual <#= fkey.BaseTable.ObjectName #> <#= $"{fkey.BaseTable.ObjectName}{n:#}"  #> { get; set; }
+        public virtual <#= fkey.BaseTable.ObjectName #> <#= fkey.DependentRole.ReferenceName #> { get; set; }
 
 <#                
                 }
@@ -155,7 +155,7 @@ namespace <#= modelNamespace #>
                 //}
                 var required = fkey.DependentRole.Required;
 #>
-        public virtual <#= fkey.ReferencedTable.ObjectName #> <#= $"{fkey.ReferencedTable.ObjectName}{n:#}"  #> { get; set; }
+        public virtual <#= fkey.ReferencedTable.ObjectName #> <#= fkey.PrincipalRole.ReferenceName #> { get; set; }
 
 <#
                 n++;

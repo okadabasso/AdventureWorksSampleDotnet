@@ -20,38 +20,22 @@ namespace Sakila
 
             using (var context = new Sakila.Models.SampleDbContext())
             {
-                context.Database.Connection.Open();
-                var function = new Models.InventoryHeldByCustomer(context);
-                var result = function.Execute(224);
-                Console.WriteLine($"result = {result}");
+                var query = context.Films
+                    .Include(x => x.Language)
+                    .Include(x => x.FilmActors).Include(x => x.FilmActors.Select(y => y.Actor));
+                foreach(var film in query)
+                {
+                    Console.WriteLine($"{film.Description} {film.Language.Name}");
+                    foreach(var actor in film.FilmActors)
+                    {
+                        Console.WriteLine($"{actor.Actor.FirstName} {actor.Actor.LastName}");
 
-                context.Database.Connection.Close();
+                    }
+                }
             }
 
             Console.ReadLine();
         }
-    }
-    [DbConfigurationType(typeof(MySqlEFConfiguration))]
-    public class NewContext : DbContext
-    {
-       
-        public NewContext()
-            : base("name=sampledb")
-        {
-
-        }
-        public DbSet<country> country { get; set; }
-    }
-    [Table("country")]
-    public class country {
-        [Key]
-        [Column("country_id", Order = 0)]
-        public short country_id { get; set; }
-
-        [Column("country")]
-        public string country1 { get; set; }
-        public DateTime? last_update { get; set; }
-
     }
 
 }
