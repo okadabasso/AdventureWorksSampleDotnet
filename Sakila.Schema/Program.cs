@@ -11,9 +11,6 @@ namespace Sakila.Schema
     {
         static void Main(string[] args)
         {
-            var contextName = "SampleDbContext";
-            var connectionName = "sampledb";
-            var modelNamespace = "Sakila.Models";
             var connectionString = "server= localhost;database=sakila;uid=sakilauser;pwd=sakilauser";
 
             var schemaManager = new MySqlSchemaManager(connectionString);
