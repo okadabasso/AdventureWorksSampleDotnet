@@ -3,6 +3,7 @@
 <#@ assembly name="System.Data" #>
 <#@ assembly name="EnvDTE" #>
 <#@ assembly name="$(SolutionDir)\Schema\bin\Debug\Schema.dll" #>
+<#@ assembly name="$(SolutionDir)\Schema.MySql\bin\Debug\Schema.MySql.dll" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
@@ -10,13 +11,15 @@
 <#@ import namespace="EnvDTE" #>
 <#@ import namespace="Schema" #>
 <#@ import namespace="Schema.Infrastructure" #>
+<#@ import namespace="Schema.MySql" #>
 <#@ output extension=".generated.cs" #>
 <#
-    var modelNamespace = "AdventureWorks.Models6";
     var contextName = "SampleDbContext";
-    var connectionString = "data source=localhost\\SQLEXPRESS;initial catalog=sampledb;integrated security=True;MultipleActiveResultSets=True;";
+    var connectionName = "sampledb";
+    var modelNamespace = "Sakila.Models";
+    var connectionString = "server= localhost;database=sakila;uid=sakilauser;pwd=sakilauser";
 
-    var schemaManager = new SchemaManager(connectionString);
+    var schemaManager = new MySqlSchemaManager(connectionString);
     var routines = schemaManager.GetRoutines();
 #>
 <#  foreach(var routine in routines.Where(x => x.RoutineType == "FUNCTION" && x.DataType != "TABLE")){ 
@@ -27,7 +30,8 @@ using System.Linq;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
+
 namespace <#= modelNamespace #>
 {
     public partial class <#= routine.ObjectName#>
@@ -68,7 +72,6 @@ namespace <#= modelNamespace #>
 
         )
         {
-            var returnValue = new SqlParameter() {ParameterName = "@return_value",  Direction = System.Data.ParameterDirection.Output};
 <#
         if(routine.Parameters.Count > 0 && routine.Parameters[0].IsString){
 #>
@@ -81,24 +84,24 @@ namespace <#= modelNamespace #>
         foreach(var parameter in routine.Parameters.Where(x => x.OrdinalPosition > 0)){
             if(parameter.ParameterMode == "IN"){
 #>
-            var p<#= position #> = new SqlParameter("<#= parameter.ParameterName #>",  <#= NamingConvention.Camelize(parameter.ObjectName) #>);
+            var p<#= position #> = new MySqlParameter("@<#= parameter.ParameterName #>",  <#= NamingConvention.Camelize(parameter.ObjectName) #>);
 <#
             }
             else if(parameter.ParameterMode == "INOUT"){
 #>
-            var p<#= position #> = new SqlParameter("<#= parameter.ParameterName #>",  <#= NamingConvention.Camelize(parameter.ObjectName) #>){ Direction = System.Data.ParameterDirection.InputOutput };
+            var p<#= position #> = new MySqlParameter("@<#= parameter.ParameterName #>",  <#= NamingConvention.Camelize(parameter.ObjectName) #>){ Direction = System.Data.ParameterDirection.InputOutput };
 <#
             }
             else if(parameter.ParameterMode == "OUT"){
 #>
-            var p<#= position #> = new SqlParameter() { ParameterName = "<#= parameter.ParameterName #>", Direction = System.Data.ParameterDirection.Output );
+            var p<#= position #> = new MySqlParameter() { ParameterName = "@<#= parameter.ParameterName #>", Direction = System.Data.ParameterDirection.Output );
 <#
             }
             position++;
         }
 #>
 
-            var affected = context.Database.ExecuteSqlCommand(@"SELECT @return_value = [<#= routine.SpecificSchema #>].[<#= routine.SpecificName #>](<#
+            var affected = context.Database.SqlQuery<<#= routine.ObjectTypeName #>>(@"SELECT <#= routine.SpecificName #>(<#
         position = 0;
         foreach(var parameter in routine.Parameters.Where(x => x.OrdinalPosition > 0)){
             if(position > 0){
@@ -106,14 +109,14 @@ namespace <#= modelNamespace #>
             }
 #>
 
-                <#= parameter.ParameterName #><#
+                @<#= parameter.ParameterName #><#
             position++;
         }
-#>)",
-                returnValue<#
+#>)"<#
         position = 0;
         foreach(var parameter in routine.Parameters.Where(x => x.OrdinalPosition > 0)){
 #>, 
+
                 p<#= position #><#
                 position++;
         }
@@ -131,7 +134,7 @@ namespace <#= modelNamespace #>
         }
 
 #>
-            return (<#= routine.ObjectTypeName #>)returnValue.Value;
+            return affected?.FirstOrDefault();
         }
     }
 }

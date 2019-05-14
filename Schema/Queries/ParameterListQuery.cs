@@ -9,8 +9,8 @@ namespace Schema.Queries
 {
     public class ParameterListQuery
     {
-        DbConnection connection;
-        private string sql = @"select 
+        protected DbConnection connection;
+        protected virtual string sql => @"select 
     * 
 from 
     INFORMATION_SCHEMA.PARAMETERS 
@@ -19,11 +19,12 @@ where
     and SPECIFIC_NAME = @specificName
 order by  
     SPECIFIC_SCHEMA,SPECIFIC_NAME, ORDINAL_POSITION";
+
         public ParameterListQuery(DbConnection connection)
         {
             this.connection = connection;
         }
-        public IEnumerable<Parameter> Execute(string specificSchema, string specificName)
+        public virtual IEnumerable<Parameter> Execute(string specificSchema, string specificName)
         {
             var query = new Query<Parameter>(connection, sql, new { specificSchema = specificSchema, specificName = specificName });
             return query;

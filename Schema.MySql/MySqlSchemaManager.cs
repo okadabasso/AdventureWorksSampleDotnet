@@ -14,6 +14,8 @@ namespace Schema.MySql
         protected override IndexListQuery indexQuery => new Queries.IndexListQuery(connection);
         protected override IndexColumnListQuery indexColumnQuery => new Queries.IndexColumnListQuery(connection);
 
+        protected override RoutineListQuery routineListQuery => new Queries.RoutineListQuery(connection);
+        protected override ParameterListQuery parameterListQuery => new Queries.ParameterListQuery(connection);
         protected override ReferentialConstraintQuery referentialConstraintQuery => new Queries.ReferentialConstraintQuery(connection);
         public MySqlSchemaManager(DbConnection connection)
             : base(connection)

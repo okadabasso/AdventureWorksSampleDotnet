@@ -97,6 +97,10 @@ namespace Schema
         public string ObjectName
         {
             get {
+                if (string.IsNullOrEmpty(ParameterName))
+                {
+                    return null;
+                }
                 // parameter prefixが付く場合はObjectNameからprefixを除外する
                 if(ParameterName.StartsWith("@") || ParameterName.StartsWith(":"))
                 {

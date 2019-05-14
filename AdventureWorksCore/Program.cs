@@ -10,7 +10,9 @@ namespace AdventureWorksCore
         {
             using(var context = new AdventureWorksContext())
             {
-                var query = context.Products.Where(x => x.ProductId == 316);
+                var query = context.Products
+                    .Include(x => x.ProductInventories)
+                    .Where(x => x.ProductId == 316);
                 foreach(var prodeuct in query)
                 {
                     Console.WriteLine($"{prodeuct.ProductId} {prodeuct.Name}");

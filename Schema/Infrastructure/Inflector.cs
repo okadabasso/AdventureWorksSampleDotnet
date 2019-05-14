@@ -334,6 +334,14 @@ namespace Schema.Infrastructure
 
         private string NormalizeCamelCase(string word, bool upcaseFirst)
         {
+            if (string.IsNullOrEmpty(word))
+            {
+                return word;
+            }
+            if(word.Length == 1)
+            {
+                return upcaseFirst ? word.ToUpper() : word.ToLower();
+            }
             using (TextWriter writer = new StringWriter())
             using (TextReader reader = new StringReader(word))
             {

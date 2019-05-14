@@ -9,13 +9,14 @@ namespace Schema.Queries
 {
     public class RoutineListQuery
     {
-        DbConnection connection;
-        private string sql = @"select * from INFORMATION_SCHEMA.ROUTINES order by  SPECIFIC_SCHEMA,SPECIFIC_NAME";
+        protected DbConnection connection;
+        protected virtual string sql => @"select * from INFORMATION_SCHEMA.ROUTINES order by  SPECIFIC_SCHEMA, SPECIFIC_NAME";
+
         public RoutineListQuery(DbConnection connection)
         {
             this.connection = connection;
         }
-        public IEnumerable<Routine> Execute()
+        public virtual IEnumerable<Routine> Execute()
         {
             var query = new Query<Routine>(connection, sql);
             return query;

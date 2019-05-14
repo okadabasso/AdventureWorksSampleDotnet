@@ -3,6 +3,7 @@
 <#@ assembly name="System.Data" #>
 <#@ assembly name="EnvDTE" #>
 <#@ assembly name="$(SolutionDir)\Schema\bin\Debug\Schema.dll" #>
+<#@ assembly name="$(SolutionDir)\Schema.MySql\bin\Debug\Schema.MySql.dll" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
@@ -10,13 +11,15 @@
 <#@ import namespace="EnvDTE" #>
 <#@ import namespace="Schema" #>
 <#@ import namespace="Schema.Infrastructure" #>
+<#@ import namespace="Schema.MySql" #>
 <#@ output extension=".generated.cs" #>
 <#
-    var modelNamespace = "AdventureWorks.Models6";
     var contextName = "SampleDbContext";
-    var connectionString = "data source=localhost\\SQLEXPRESS;initial catalog=sampledb;integrated security=True;MultipleActiveResultSets=True;";
+    var connectionName = "sampledb";
+    var modelNamespace = "Sakila.Models";
+    var connectionString = "server= localhost;database=sakila;uid=sakilauser;pwd=sakilauser";
 
-    var schemaManager = new SchemaManager(connectionString);
+    var schemaManager = new MySqlSchemaManager(connectionString);
     var routines = schemaManager.GetRoutines();
 #>
 <#  foreach(var routine in routines.Where(x => x.RoutineType == "PROCEDURE")){ 
@@ -27,7 +30,10 @@ using System.Linq;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
-using System.Data.SqlClient;
+using MySql.Data;
+using MySql.Data.EntityFramework;
+using MySql.Data.MySqlClient;
+
 namespace <#= modelNamespace #>
 {
     public partial class <#= routine.ObjectName #>
@@ -42,7 +48,7 @@ namespace <#= modelNamespace #>
             this.context = context;
         }
 
-        ///<summary>execute command <#= routine.SpecificSchema  #>.<#= routine.SpecificName  #></summary>
+        ///<summary>execute command <#= routine.SpecificName  #></summary>
         public int Execute(
 <#      // create arguments
         var position = 0;
@@ -69,55 +75,45 @@ namespace <#= modelNamespace #>
 
         )
         {
-            var returnValue = new SqlParameter() {ParameterName = "@return_value",  Direction = System.Data.ParameterDirection.ReturnValue};
 <#      // create parameters
         position = 0;
         foreach(var parameter in routine.Parameters){
             if(parameter.ParameterMode == "IN"){
 #>
-            var p<#= position #> = new SqlParameter("<#= parameter.ParameterName #>",  <#= NamingConvention.Camelize(parameter.ObjectName) #>);
+            var p<#= position #> = new MySqlParameter("@<#= parameter.ParameterName #>",  <#= NamingConvention.Camelize(parameter.ObjectName) #>);
 <#
             }
             else if(parameter.ParameterMode == "INOUT"){
 #>
-            var p<#= position #> = new SqlParameter("<#= parameter.ParameterName #>",  <#= NamingConvention.Camelize(parameter.ObjectName) #>){ Direction = System.Data.ParameterDirection.InputOutput };
+            var p<#= position #> = new MySqlParameter("@<#= parameter.ParameterName #>",  <#= NamingConvention.Camelize(parameter.ObjectName) #>){ Direction = System.Data.ParameterDirection.InputOutput };
 <#
             }
             else if(parameter.ParameterMode == "OUT"){
 #>
-            var p<#= position #> = new SqlParameter() { ParameterName = "<#= parameter.ParameterName #>", Direction = "System.Data.ParameterDirection.Output" );
+            var p<#= position #> = new MySqlParameter() { ParameterName = "@<#= parameter.ParameterName #>", Direction = System.Data.ParameterDirection.Output };
 <#
             }
             position++;
         }
         // call procedure
 #>
-
-            var affected = context.Database.ExecuteSqlCommand(@"EXEC @return_value = [<#= routine.SpecificSchema #>].[<#= routine.SpecificName #>]<#
+            var command = new MySqlCommand(@"<#= routine.SpecificName #>");
+            command.CommandType = System.Data.CommandType.StoredProcedure;
+            command.Connection = context.Database.Connection as MySql.Data.MySqlClient.MySqlConnection;
+<#
         position = 0;
         foreach(var parameter in routine.Parameters){
-            if(position > 0){
-#>,<#
-            }
+#>
+            command.Parameters.Add(p<#= position#>);
+<#
+        }
 #>
 
-<#= parameter.ParameterName #> = <#= parameter.ParameterName #><#
-            position++;
-        }
-#>",
-                returnValue<#
-        position = 0;
-        foreach(var parameter in routine.Parameters){
-#>, 
-                p<#= position #><#
-                position++;
-        }
-#>);
-
+            var affected = command.ExecuteNonQuery();
 <#      // get output paraemeter values
         position = 0;
         foreach(var parameter in routine.Parameters){
-            if(parameter.ParameterMode == "INOUT" || parameter.ParameterMode == "OUTPUT" ){
+            if(parameter.ParameterMode == "INOUT" || parameter.ParameterMode == "OUT" ){
 #>
             <#= NamingConvention.Camelize(parameter.ObjectName) #> = (<#= parameter.ObjectTypeName #>)p<#= position #>.Value;
 <#
@@ -126,94 +122,7 @@ namespace <#= modelNamespace #>
         }
 
 #>
-            return (int)returnValue.Value;
-        }
-        ///<summary>execute query <#= routine.SpecificSchema  #>.<#= routine.SpecificName  #></summary>
-        public IEnumerable<T> Query<T>(
-<#      // create arguments
-        position = 0;
-        foreach(var parameter in routine.Parameters){
-            string modifier  = "";
-            if(parameter.ParameterMode == "IN"){
-                modifier = "";
-            }
-            else if(parameter.ParameterMode == "INOUT"){
-                modifier = "ref ";
-            }
-            else if(parameter.ParameterMode == "OUT"){
-                modifier = "out ";
-            }
-            if(position > 0){
-#>, 
-<#
-            }
-#>
-            <#= modifier #><#= parameter.ObjectTypeName#> <#= NamingConvention.Camelize(parameter.ObjectName) #><#
-            position++;
-        }
-#>
-
-        )
-        {
-<#      // create parameters
-        position = 0;
-        foreach(var parameter in routine.Parameters){
-            if(parameter.ParameterMode == "IN"){
-#>
-            var p<#= position #> = new SqlParameter("<#= parameter.ParameterName #>",  <#= NamingConvention.Camelize(parameter.ObjectName) #>);
-<#
-            }
-            else if(parameter.ParameterMode == "INOUT"){
-#>
-            var p<#= position #> = new SqlParameter("<#= parameter.ParameterName #>",  <#= NamingConvention.Camelize(parameter.ObjectName) #>){ Direction = System.Data.ParameterDirection.InputOutput };
-<#
-            }
-            else if(parameter.ParameterMode == "OUT"){
-#>
-            var p<#= position #> = new SqlParameter() { ParameterName = "<#= parameter.ParameterName #>", Direction = System.Data.ParameterDirection.Output );
-<#
-            }
-            position++;
-        }
-
-        // execute query
-#>
-
-            var result = context.Database.SqlQuery<T>(@"EXEC [<#= routine.SpecificSchema #>].[<#= routine.SpecificName #>]<#
-        position = 0;
-        foreach(var parameter in routine.Parameters){
-            if(position > 0){
-#>,<#
-            }
-#>
-
-<#= parameter.ParameterName #> = <#= parameter.ParameterName #><#
-            position++;
-        }
-#>"<#
-        if(routine.Parameters.Count > 0){
-            position = 0;
-            foreach(var parameter in routine.Parameters){
-#>, 
-                p<#= position #><#
-                    position++;
-            }
-        }
-#>);
-
-<#      // get output parameters
-        position = 0;
-        foreach(var parameter in routine.Parameters){
-            if(parameter.ParameterMode == "INOUT" || parameter.ParameterMode == "OUTPUT" ){
-#>
-            <#= NamingConvention.Camelize(parameter.ObjectName) #> = (<#= parameter.ObjectTypeName #>)p<#= position #>.Value;
-<#
-            }
-            position++;
-        }
-
-#>
-            return result;
+            return 0;
         }
 
     }

@@ -119,6 +119,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Function.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Functions\GetCustomerBalance.generated.cs" />
+    <Compile Include="Models\Functions\InventoryHeldByCustomer.generated.cs" />
+    <Compile Include="Models\Functions\InventoryInStock.generated.cs" />
+    <Compile Include="Models\Procedures\FilmInStock.generated.cs" />
+    <Compile Include="Models\Procedures\FilmNotInStock.generated.cs" />
+    <Compile Include="Models\Procedures\RewardsReport.generated.cs" />
     <Compile Include="Models\Procedures\Routine.generated.cs" />
     <Compile Include="Models\Procedures\Routine1.generated.cs">
       <AutoGen>True</AutoGen>
