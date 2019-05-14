@@ -1,4 +1,4 @@
-﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ assembly name="System.Core" #>
 <#@ assembly name="System.Data" #>
 <#@ assembly name="EnvDTE" #>
@@ -104,7 +104,7 @@ namespace <#= modelNamespace #>
             if(column.IsIdentity == "YES")  {  #>
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 <#          } #>
-        public <#= column.ObjectTypeName #> <#= column.ObjectName #> { get; set; }
+        public <#= GetObjectTypeName(column) #> <#= column.ObjectName #> { get; set; }
 
 <#      } 
   
@@ -176,5 +176,41 @@ private void SaveOutput(string outputFileName) {
   var visualStudio = (this.Host as IServiceProvider).GetService(typeof(EnvDTE.DTE)) as EnvDTE.DTE;
   var project = visualStudio.Solution.FindProjectItem(this.Host.TemplateFile).ContainingProject as EnvDTE.Project;
   project.ProjectItems.AddFromFile(outputFilePath);
+}
+
+public Type GetObjectType(Column column)
+{
+    if (TypeHelper.TypeMapping.ContainsKey(column.DataType))
+    {
+        var baseType = TypeHelper.TypeMapping[column.DataType];
+        if (column.IsNullable == "YES" && baseType != typeof(object) && baseType != typeof(string) && baseType != typeof(byte[]))
+        {
+            var nullableType = typeof(Nullable<>);
+            var objectType = nullableType.MakeGenericType(baseType);
+            return objectType;
+        }
+        else
+        {
+            return baseType;
+        }
+    }
+    return typeof(object);
+
+}
+public string GetObjectTypeName(Column column)
+{
+    var objectType = GetObjectType(column);
+    var baseType = Nullable.GetUnderlyingType(objectType) ?? objectType;
+    if (TypeHelper.TypeAlias.ContainsKey(baseType.FullName))
+    {
+        var typeAlias = TypeHelper.TypeAlias[baseType.FullName];
+        if (column.IsNullable == "YES" && typeAlias != "object" && typeAlias != "string" && typeAlias != "byte[]")
+        {
+            typeAlias += "?";
+        }
+        return typeAlias;
+    }
+    return "object";
+
 }
 #>
