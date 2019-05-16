@@ -25,10 +25,10 @@ namespace AdventureWorks1.Models5
             Rowguid = Guid.Parse("00000000-0000-0000-0000-000000000000");
             ModifiedDate = DateTime.Parse("0001/01/01 0:00:00");
             BusinessEntityContacts = new HashSet<BusinessEntityContact>();
-            EmailAddresses = new HashSet<EmailAddress>();
-            PersonPhones = new HashSet<PersonPhone>();
             Customers = new HashSet<Customer>();
+            EmailAddresses = new HashSet<EmailAddress>();
             PersonCreditCards = new HashSet<PersonCreditCard>();
+            PersonPhones = new HashSet<PersonPhone>();
 
         }
 
@@ -94,21 +94,9 @@ namespace AdventureWorks1.Models5
         [Column("ModifiedDate", Order = 12, TypeName = "datetime")]
         public DateTime ModifiedDate { get; set; }
 
-        public virtual Employee Employee { get; set; }
-
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BusinessEntityContact> BusinessEntityContacts { get; set; }
-
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<EmailAddress> EmailAddresses { get; set; }
-
-        public virtual Password Password { get; set; }
-
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PersonPhone> PersonPhones { get; set; }
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -116,7 +104,19 @@ namespace AdventureWorks1.Models5
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EmailAddress> EmailAddresses { get; set; }
+
+        public virtual Employee Employee { get; set; }
+
+        public virtual Password Password { get; set; }
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PersonCreditCard> PersonCreditCards { get; set; }
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PersonPhone> PersonPhones { get; set; }
 
         public virtual BusinessEntity BusinessEntity { get; set; }
 

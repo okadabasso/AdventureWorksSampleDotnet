@@ -217,12 +217,12 @@ namespace AdventureWorks1.Models5
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<BusinessEntity>()
-                .HasOptional(e => e.Vendor)
+                .HasOptional(e => e.Store)
                 .WithRequired(e => e.BusinessEntity)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<BusinessEntity>()
-                .HasOptional(e => e.Store)
+                .HasOptional(e => e.Vendor)
                 .WithRequired(e => e.BusinessEntity)
                 .WillCascadeOnDelete(false);
 
@@ -230,12 +230,6 @@ namespace AdventureWorks1.Models5
                 .HasMany(e => e.BusinessEntityContacts)
                 .WithRequired(e => e.ContactType)
                 .HasForeignKey(e => e.ContactTypeId)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<CountryRegion>()
-                .HasMany(e => e.StateProvinces)
-                .WithRequired(e => e.CountryRegion)
-                .HasForeignKey(e => e.CountryRegionCode)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<CountryRegion>()
@@ -250,6 +244,12 @@ namespace AdventureWorks1.Models5
                 .HasForeignKey(e => e.CountryRegionCode)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<CountryRegion>()
+                .HasMany(e => e.StateProvinces)
+                .WithRequired(e => e.CountryRegion)
+                .HasForeignKey(e => e.CountryRegionCode)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<Password>()
                 .Property(e => e.PasswordHash)
                 .IsUnicode(false);
@@ -259,13 +259,14 @@ namespace AdventureWorks1.Models5
                 .IsUnicode(false);
 
             modelBuilder.Entity<Person>()
-                .HasOptional(e => e.Employee)
+                .HasMany(e => e.BusinessEntityContacts)
                 .WithRequired(e => e.Person)
+                .HasForeignKey(e => e.PersonId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Person>()
-                .HasMany(e => e.BusinessEntityContacts)
-                .WithRequired(e => e.Person)
+                .HasMany(e => e.Customers)
+                .WithOptional(e => e.Person)
                 .HasForeignKey(e => e.PersonId)
                 .WillCascadeOnDelete(false);
 
@@ -276,24 +277,23 @@ namespace AdventureWorks1.Models5
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Person>()
+                .HasOptional(e => e.Employee)
+                .WithRequired(e => e.Person)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Person>()
                 .HasOptional(e => e.Password)
                 .WithRequired(e => e.Person)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Person>()
-                .HasMany(e => e.PersonPhones)
+                .HasMany(e => e.PersonCreditCards)
                 .WithRequired(e => e.Person)
                 .HasForeignKey(e => e.BusinessEntityId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Person>()
-                .HasMany(e => e.Customers)
-                .WithOptional(e => e.Person)
-                .HasForeignKey(e => e.PersonId)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Person>()
-                .HasMany(e => e.PersonCreditCards)
+                .HasMany(e => e.PersonPhones)
                 .WithRequired(e => e.Person)
                 .HasForeignKey(e => e.BusinessEntityId)
                 .WillCascadeOnDelete(false);
@@ -419,18 +419,6 @@ namespace AdventureWorks1.Models5
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Product>()
-                .HasMany(e => e.TransactionHistories)
-                .WithRequired(e => e.Product)
-                .HasForeignKey(e => e.ProductId)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Product>()
-                .HasMany(e => e.WorkOrders)
-                .WithRequired(e => e.Product)
-                .HasForeignKey(e => e.ProductId)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Product>()
                 .HasMany(e => e.ProductVendors)
                 .WithRequired(e => e.Product)
                 .HasForeignKey(e => e.ProductId)
@@ -450,6 +438,18 @@ namespace AdventureWorks1.Models5
 
             modelBuilder.Entity<Product>()
                 .HasMany(e => e.SpecialOfferProducts)
+                .WithRequired(e => e.Product)
+                .HasForeignKey(e => e.ProductId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Product>()
+                .HasMany(e => e.TransactionHistories)
+                .WithRequired(e => e.Product)
+                .HasForeignKey(e => e.ProductId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Product>()
+                .HasMany(e => e.WorkOrders)
                 .WithRequired(e => e.Product)
                 .HasForeignKey(e => e.ProductId)
                 .WillCascadeOnDelete(false);
@@ -1009,12 +1009,6 @@ namespace AdventureWorks1.Models5
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<SalesTerritory>()
-                .HasMany(e => e.StateProvinces)
-                .WithRequired(e => e.SalesTerritory)
-                .HasForeignKey(e => e.TerritoryId)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<SalesTerritory>()
                 .HasMany(e => e.Customers)
                 .WithOptional(e => e.SalesTerritory)
                 .HasForeignKey(e => e.TerritoryId)
@@ -1034,6 +1028,12 @@ namespace AdventureWorks1.Models5
 
             modelBuilder.Entity<SalesTerritory>()
                 .HasMany(e => e.SalesTerritoryHistories)
+                .WithRequired(e => e.SalesTerritory)
+                .HasForeignKey(e => e.TerritoryId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<SalesTerritory>()
+                .HasMany(e => e.StateProvinces)
                 .WithRequired(e => e.SalesTerritory)
                 .HasForeignKey(e => e.TerritoryId)
                 .WillCascadeOnDelete(false);

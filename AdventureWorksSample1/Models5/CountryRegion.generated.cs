@@ -14,9 +14,9 @@ namespace AdventureWorks1.Models5
             CountryRegionCode = null;
             Name = null;
             ModifiedDate = DateTime.Parse("0001/01/01 0:00:00");
-            StateProvinces = new HashSet<StateProvince>();
             CountryRegionCurrencies = new HashSet<CountryRegionCurrency>();
             SalesTerritories = new HashSet<SalesTerritory>();
+            StateProvinces = new HashSet<StateProvince>();
 
         }
 
@@ -39,15 +39,15 @@ namespace AdventureWorks1.Models5
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<StateProvince> StateProvinces { get; set; }
-
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CountryRegionCurrency> CountryRegionCurrencies { get; set; }
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SalesTerritory> SalesTerritories { get; set; }
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StateProvince> StateProvinces { get; set; }
 
     }
 }

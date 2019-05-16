@@ -20,7 +20,7 @@ namespace AdventureWorksSample1
     {
         private static void Main(string[] args)
         {
-            ListAssociations();
+            SampleQuery("Mountain");
             // NamingConventionSample();
             Console.ReadLine();
         }

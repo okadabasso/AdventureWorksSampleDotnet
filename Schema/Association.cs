@@ -11,6 +11,9 @@ namespace Schema
     {
         public string ConstraintSchema { get; set; }
         public string ConstraintName { get; set; }
+
+        public string UpdateRule { get; set; }
+        public string DeleteRule { get; set; }
         public AssociationRole PrincipalRole { get; set; }
         public AssociationRole DependentRole { get; set; }
 
@@ -22,6 +25,8 @@ namespace Schema
         {
             ConstraintSchema = constraint.ConstraintSchema;
             ConstraintName = constraint.ConstraintName;
+            UpdateRule = constraint.UpdateRule;
+            DeleteRule = constraint.DeleteRule;
 
             BuildPrincipalRole(constraint, fkeyColumns, referencedKeyColumns, baseTableKeyColumns);
             BuildDependentRole(constraint, fkeyColumns, referencedKeyColumns, baseTableKeyColumns);
