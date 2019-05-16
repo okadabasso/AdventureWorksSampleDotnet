@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
 namespace Sakila.Models
 {
     [Table("film")]
@@ -35,7 +36,7 @@ namespace Sakila.Models
 
         ///<summary></summary>
         [Column("release_year", Order = 3, TypeName = "year")]
-        public object ReleaseYear { get; set; }
+        public short? ReleaseYear { get; set; }
 
         ///<summary></summary>
         [Column("language_id")]

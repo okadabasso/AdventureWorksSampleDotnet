@@ -17,12 +17,12 @@
     var contextName = "SampleDbContext";
     var connectionName = "sampledb";
     var modelNamespace = "Sakila.Models";
-    var connectionString = "server=localhost;database=sakila;uid=sakilauser;pwd=sakilauser";
+    var connectionString = "server=localhost;port=13306;database=sakila;uid=sakilauser;pwd=sakilauser";
 
     var schemaManager = new MySqlSchemaManager(connectionString);
 
     var tables = schemaManager.GetTables();
-
+    var associations = schemaManager.GetAssociations();
 #>
 using System;
 using System.Collections.Generic;
@@ -46,7 +46,7 @@ namespace <#= modelNamespace #>
             continue;
         }
 #>
-        public DbSet<<#= table.ObjectName #>> <#= NamingConvention.Pluralize(table.ObjectName) #> { get; set; }
+        public virtual DbSet<<#= table.ObjectName #>> <#= NamingConvention.Pluralize(table.ObjectName) #> { get; set; }
 <#  } #>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -59,74 +59,65 @@ namespace <#= modelNamespace #>
 
         
         // このテーブルを参照する
-        var dependentsForInit = tables.Where(x => x.ForeignKeys.Any(y => y.ReferencedTable.NameEquals(table)))
-            .SelectMany(x => x.ForeignKeys.Where(r => r.ReferencedTable.NameEquals(table)))
-            .GroupBy(x => new { x.BaseTable.TableSchema, x.BaseTable.ObjectName });
-
-        foreach (var group in dependentsForInit)
+        foreach (var association in associations.Where(x => x.PrincipalRole.RoleName == table.TableName).OrderBy(x => x.DependentRole.RoleName))
         {
-            var n = 0;
-            foreach(var fkey in group)
-            {
-                if( fkey.BaseTable.PrimaryKeyColumns.Any(x => fkey.BaseTable.Columns.Any(y => y.ColumnName == x && y.DataType == "hierarchyid"))){
-                     continue;
-                }
+            var baseTable = tables.FirstOrDefault(x => x.TableName == association.DependentRole.RoleName);
+            // base tableの主キーに hierarchyidが含まれている場合は除外する
+            if( baseTable.PrimaryKeyColumns.Any(x => baseTable.Columns.Any(y => y.ColumnName == x && y.DataType == "hierarchyid"))){
+                    continue;
+            }
 #>            modelBuilder.Entity<<#= table.ObjectName #>>()
 <#
-                if(fkey.DependentRole.Multiplicity == "*"){
-                    var variableName = NamingConvention.Pluralize(fkey.DependentRole.ReferenceName);
+            var variableName = NamingConvention.Pluralize(association.DependentRole.ReferenceName);
+            if(association.DependentRole.Multiplicity == "*"){
 #>
                 .HasMany(e => e.<#= variableName #>)
 <#
-                    if(fkey.PrincipalRole.Required){ #>
-                .WithRequired(e => e.<#= fkey.PrincipalRole.ReferenceName #>)<#
-                    } else { #>
-                .WithOptional(e => e.<#= fkey.PrincipalRole.ReferenceName #>)<#
-                    } 
-                    if(fkey.Columns.Count > 1 ){ #>
+                if(association.PrincipalRole.Required){ #>
+                .WithRequired(e => e.<#= association.PrincipalRole.ReferenceName #>)<#
+                } else { #>
+                .WithOptional(e => e.<#= association.PrincipalRole.ReferenceName #>)<#
+                } 
+                if(association.DependentRole.Columns.Count > 1 ){ #>
 
                 .HasForeignKey(e => new { 
 <#
-                        var position = 0;
-                        foreach(var column in fkey.Columns){
-                            if(position > 0){
+                    var position = 0;
+                    foreach(var column in association.DependentRole.Columns){
+                        if(position > 0){
 #>,<#
                             }
 #>
                     e.<#= NamingConvention.Pascalize(column) #>
 <#
-                            position++;
-                        }
+                        position++;
+                    }
 #>                
                  })<#                  
-                    } else { #>
+                } else { #>
 
-                .HasForeignKey(e => e.<#= NamingConvention.Pascalize(fkey.Columns[0]) #>)<#
-                    }
+                .HasForeignKey(e => e.<#= NamingConvention.Pascalize(association.DependentRole.Columns[0]) #>)<#
                 }
-                else{
+            }
+            else{
 #>
-                .HasOptional(e => e.<#= fkey.DependentRole.ReferenceName  #>)
+                .HasOptional(e => e.<#= association.DependentRole.ReferenceName#>)
 <#
-                    if(fkey.PrincipalRole.Required){ #>
-                .WithRequired(e => e.<#= fkey.PrincipalRole.ReferenceName #>)<#
-                    } else { #>
-                .WithOptional(e => e.<#= fkey.PrincipalRole.ReferenceName #>)<#
-                    } 
+                if(association.PrincipalRole.Required){ #>
+                .WithRequired(e => e.<#= association.PrincipalRole.ReferenceName #>)<#
+                } else { #>
+                .WithOptional(e => e.<#= association.PrincipalRole.ReferenceName #>)<#
                 } 
-                if(fkey.ReferentialConstraint.DeleteRule == "NO ACTION"){ #>
+            } 
+            if(association.DeleteRule == "NO ACTION"){ #>
 
                 .WillCascadeOnDelete(false)<#
-                }
+            }
 #>;
 
 <#
-                
-                n++;
-            }
         }
         foreach(var column in table.Columns){
-
             if(column.IsString && column.IsFixedLength){
 #>
             modelBuilder.Entity<<#= table.ObjectName #>>()

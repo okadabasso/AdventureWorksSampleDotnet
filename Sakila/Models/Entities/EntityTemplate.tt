@@ -17,13 +17,15 @@
 <#@ output extension=".generated.cs" #>
 <#
     var modelNamespace = "Sakila.Models";
-    var connectionString = "server=localhost;database=sakila;uid=sakilauser;pwd=sakilauser";
+    var connectionString = "server=localhost;port=13306;database=sakila;uid=sakilauser;pwd=sakilauser";
 
     var schemaManager = new MySqlSchemaManager(connectionString);
     TypeHelper.TypeMapping["timestamp"] = typeof(DateTime);
     TypeHelper.TypeMapping["tinyint"] = typeof(sbyte);
+    TypeHelper.TypeMapping["year"] = typeof(short);
     TypeHelper.DbTypeMapping["timestamp"] = DbType.DateTime;
     var tables = schemaManager.GetTables();
+    var associations = schemaManager.GetAssociations();
 
 #>
 <#  foreach(var table in tables){ 
@@ -37,6 +39,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
 namespace <#= modelNamespace #>
 {
     [Table("<#= table.TableName#>")]
@@ -46,25 +49,18 @@ namespace <#= modelNamespace #>
         {
 <#  
         // このテーブルを参照する
-        var dependentsForInit = tables.Where(x => x.ForeignKeys.Any(y => y.ReferencedTable.NameEquals(table)))
-            .SelectMany(x => x.ForeignKeys.Where(r => r.ReferencedTable.NameEquals(table)))
-            .GroupBy(x => new { x.BaseTable.TableSchema, x.BaseTable.TableName });
-
-        foreach (var group in dependentsForInit)
+        foreach (var association in associations.Where(x => x.PrincipalRole.RoleName == table.TableName).OrderBy(x => x.DependentRole.RoleName))
         {
-            var n = 0;
-            foreach(var fkey in group)
-            {
-                if( fkey.BaseTable.PrimaryKeyColumns.Any(x => fkey.BaseTable.Columns.Any(y => y.ColumnName == x && y.DataType == "hierarchyid"))){
-                     continue;
-                }
-                if(fkey.DependentRole.Multiplicity == "*"){
-                var variableName = Schema.Infrastructure.Inflector.Currnet.Pluralize(fkey.DependentRole.ReferenceName);
+            var baseTable = tables.FirstOrDefault(x => x.TableName == association.DependentRole.RoleName);
+            // base tableの主キーに hierarchyidが含まれている場合は除外する
+            if( baseTable.PrimaryKeyColumns.Any(x => baseTable.Columns.Any(y => y.ColumnName == x && y.DataType == "hierarchyid"))){
+                    continue;
+            }
+            var variableName = Schema.Infrastructure.Inflector.Currnet.Pluralize(association.DependentRole.ReferenceName);
+            if(association.DependentRole.Multiplicity == "*"){
 #>
-            <#= variableName  #> = new HashSet<<#= fkey.BaseTable.ObjectName #>>();
-<#              }
-                n++;
-            }        
+            <#= variableName  #> = new HashSet<<#= baseTable.ObjectName #>>();
+<#          }
         }
 #>
 
@@ -74,7 +70,10 @@ namespace <#= modelNamespace #>
             // hierarchyid is not supported on .NET Framework 4.7
             if(column.DataType == "hierarchyid") {  
                 continue;
-            }#>
+            }
+            // mysql connector 8.0ベースだと unsignedを受け付けない
+            column.IsUnsigned = "NO";
+            #>
         ///<summary><#= column.Description ?? $"column:{column.ColumnName}" #></summary>
 <# 
             if(table.PrimaryKeyColumns.Any(x => x == column.ColumnName)) {  #>
@@ -100,7 +99,7 @@ namespace <#= modelNamespace #>
 <#          }  
             if(column.ObjectType == typeof(string) && column.CharacterMaximumLength > 0){ #>
         [StringLength(<#= column.Precision #>)]
-<#          }  
+<#          } 
             if(column.IsIdentity == "YES")  {  #>
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 <#          } #>
@@ -109,57 +108,42 @@ namespace <#= modelNamespace #>
 <#      } 
   
         // このテーブルを参照する
-        var dependents = tables.Where(x => x.ForeignKeys.Any(y => y.ReferencedTable.NameEquals(table)))
-            .SelectMany(x => x.ForeignKeys.Where(r => r.ReferencedTable.NameEquals(table)))
-            .GroupBy(x => new { x.BaseTable.TableSchema, x.BaseTable.TableName });
-
-        foreach (var group in dependents)
+        foreach (var association in associations.Where(x => x.PrincipalRole.RoleName == table.TableName).OrderBy(x => x.DependentRole.RoleName))
         {
-            var n = 0;
-
-            foreach(var fkey in group)
-            { 
-                if( fkey.BaseTable.PrimaryKeyColumns.Any(x => fkey.BaseTable.Columns.Any(y => y.ColumnName == x && y.DataType == "hierarchyid"))){
-                     continue;
-                }
-
-                if(fkey.DependentRole.Multiplicity == "*"){
-                    var variableName = NamingConvention.Pluralize(fkey.DependentRole.ReferenceName);
+            var baseTable = tables.FirstOrDefault(x => x.TableName == association.DependentRole.RoleName);
+            if( baseTable.PrimaryKeyColumns.Any(x => baseTable.Columns.Any(y => y.ColumnName == x && y.DataType == "hierarchyid"))){
+                    continue;
+            }
+            if(association.DependentRole.Multiplicity == "*"){
+                var variableName = Schema.Infrastructure.Inflector.Currnet.Pluralize(association.DependentRole.ReferenceName);
 #>
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<<#= fkey.BaseTable.ObjectName #>> <#= variableName  #> { get; set; }
+        public virtual ICollection<<#= baseTable.ObjectName #>> <#= variableName  #> { get; set; }
 
 <#                
-                }
-                else{
+            }
+            else{
 #>
-        public virtual <#= fkey.BaseTable.ObjectName #> <#= fkey.DependentRole.ReferenceName #> { get; set; }
+        public virtual <#= baseTable.ObjectName #> <#= association.DependentRole.ReferenceName #> { get; set; }
 
 <#                
-                }
-                n++;
             }
         }
         // このテーブルが参照する
-        var query = table.ForeignKeys
-            .GroupBy(x => new { x.ReferencedTable.TableSchema, x.ReferencedTable.TableName});
-        foreach (var group in query)
+        // このテーブルが参照する
+        foreach (var association in associations.Where(x => x.DependentRole.RoleName == table.TableName).OrderBy(x => x.PrincipalRole.RoleName))
         {
-            var n = 0;
-            foreach (var fkey in group)
-            { 
+            var referencedTable = tables.FirstOrDefault(x => x.TableName == association.PrincipalRole.RoleName);
                 // hierarchyid is not supported on .NET Framework 4.7
                 //if( fkey.ReferencedTable.PrimaryKeyColumns.Any(x => fkey.ReferencedTable.Columns.Any(y => y.ColumnName == x && y.DataType == "hierarchyid"))){
                 //     continue;
                 //}
-                var required = fkey.DependentRole.Required;
+                var required = association.DependentRole.Required;
 #>
-        public virtual <#= fkey.ReferencedTable.ObjectName #> <#= fkey.PrincipalRole.ReferenceName #> { get; set; }
+        public virtual <#= referencedTable.ObjectName #> <#= association.PrincipalRole.ReferenceName #> { get; set; }
 
 <#
-                n++;
-            }
         }
 #>
     }

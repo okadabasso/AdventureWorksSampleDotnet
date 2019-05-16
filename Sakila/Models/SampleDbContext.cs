@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
@@ -14,22 +14,22 @@ namespace Sakila.Models
             Database.SetInitializer<SampleDbContext>(null);
             //Database.Log = x => Console.Out.WriteLine(x);
         }
-        public DbSet<Actor> Actors { get; set; }
-        public DbSet<Address> Addresses { get; set; }
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<City> Cities { get; set; }
-        public DbSet<Country> Countries { get; set; }
-        public DbSet<Customer> Customers { get; set; }
-        public DbSet<Film> Films { get; set; }
-        public DbSet<FilmActor> FilmActors { get; set; }
-        public DbSet<FilmCategory> FilmCategories { get; set; }
-        public DbSet<FilmText> FilmTexts { get; set; }
-        public DbSet<Inventory> Inventories { get; set; }
-        public DbSet<Language> Languages { get; set; }
-        public DbSet<Payment> Payments { get; set; }
-        public DbSet<Rental> Rentals { get; set; }
-        public DbSet<Staff> Staffs { get; set; }
-        public DbSet<Store> Stores { get; set; }
+        public virtual DbSet<Actor> Actors { get; set; }
+        public virtual DbSet<Address> Addresses { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<City> Cities { get; set; }
+        public virtual DbSet<Country> Countries { get; set; }
+        public virtual DbSet<Customer> Customers { get; set; }
+        public virtual DbSet<Film> Films { get; set; }
+        public virtual DbSet<FilmActor> FilmActors { get; set; }
+        public virtual DbSet<FilmCategory> FilmCategories { get; set; }
+        public virtual DbSet<FilmText> FilmTexts { get; set; }
+        public virtual DbSet<Inventory> Inventories { get; set; }
+        public virtual DbSet<Language> Languages { get; set; }
+        public virtual DbSet<Payment> Payments { get; set; }
+        public virtual DbSet<Rental> Rentals { get; set; }
+        public virtual DbSet<Staff> Staffs { get; set; }
+        public virtual DbSet<Store> Stores { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
 

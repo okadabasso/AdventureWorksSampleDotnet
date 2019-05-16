@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using global::Schema.MySql;
+using Schema.Infrastructure;
 
 namespace Sakila.Schema
 {
@@ -12,25 +14,21 @@ namespace Sakila.Schema
         static void Main(string[] args)
         {
             var connectionString = "server= localhost;port=13306;database=sakila;uid=sakilauser;pwd=sakilauser";
-
+            TypeHelper.TypeMapping["timestamp"] = typeof(DateTime);
+            TypeHelper.TypeMapping["tinyint"] = typeof(sbyte);
+            TypeHelper.DbTypeMapping["timestamp"] = DbType.DateTime;
             var schemaManager = new MySqlSchemaManager(connectionString);
-            var associations = schemaManager.GetAssociations().OrderBy(x => x.PrincipalRole.RoleName);
-            foreach (var association in associations)
+            var tables = schemaManager.GetTables();
+            foreach(var table in tables)
             {
-                var principalMultiplicity = (association.PrincipalRole.Required ? "" : "0..") + association.PrincipalRole.Multiplicity;
-                var dependentMultiplicity = (association.DependentRole.Required ? "1.." : "0..") + association.DependentRole.Multiplicity;
+                Console.WriteLine($"{table.TableSchema} {table.TableName}");
 
-                Console.WriteLine($"{association.PrincipalRole.RoleName}({association.PrincipalRole.ReferenceName}) {principalMultiplicity}----{dependentMultiplicity} {association.DependentRole.RoleName}({association.DependentRole.ReferenceName})");
-
-                var e1 = association.PrincipalRole.Columns.GetEnumerator();
-                var e2 = association.DependentRole.Columns.GetEnumerator();
-                while (e1.MoveNext())
+                foreach(var column in table.Columns)
                 {
-                    e2.MoveNext();
-                    Console.WriteLine($"\t{e1.Current} -- {e2.Current}");
+                    column.IsUnsigned = "NO";
+                    Console.WriteLine($"\t{column.ColumnName} {column.DataType}  {column.ObjectTypeName}");
 
                 }
-                Console.WriteLine();
             }
             Console.ReadLine();
         }
