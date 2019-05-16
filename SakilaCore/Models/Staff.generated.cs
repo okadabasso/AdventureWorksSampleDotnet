@@ -5,14 +5,14 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace SakilaCore.Models
 {
-    [Table("staff")]
+    [Table("staff", Schema="sakila")]
     public partial class Staff
     {
         public Staff()
         {
             Payments = new HashSet<Payment>();
             Rentals = new HashSet<Rental>();
-            Stores = new HashSet<Store>();
+            ManagerStore = new HashSet<Store>();
 
         }
 
@@ -91,7 +91,7 @@ namespace SakilaCore.Models
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Store> Stores { get; set; }
+        public virtual ICollection<Store> ManagerStore { get; set; }
 
         public virtual Address Address { get; set; }
 

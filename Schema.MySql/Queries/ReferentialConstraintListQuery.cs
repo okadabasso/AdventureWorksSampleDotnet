@@ -43,10 +43,18 @@ order by
 
         private string CurrentDatabase()
         {
-            connection.Open();
+            var internalConnection = connection.State != System.Data.ConnectionState.Open;
+            if (internalConnection)
+            {
+                connection.Open();
+            }
             var command = new MySqlCommand("select DATABASE();", connection as MySqlConnection);
             var result = (string) command.ExecuteScalar();
-            connection.Close();
+            if(internalConnection)
+            {
+                connection.Close();
+
+            }
             return result;
         }
     }

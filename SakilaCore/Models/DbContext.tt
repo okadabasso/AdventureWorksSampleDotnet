@@ -17,11 +17,12 @@
     var contextName = "SampleDbContext";
     var connectionName = "sampledb";
     var modelNamespace = "SakilaCore.Models";
-    var connectionString = "server=localhost;database=sakila;uid=sakilauser;pwd=sakilauser";
+    var connectionString = "server=localhost;port=13306;database=sakila;uid=sakilauser;pwd=sakilauser";
 
     var schemaManager = new MySqlSchemaManager(connectionString);
 
     var tables = schemaManager.GetTables();
+    var associations = schemaManager.GetAssociations();
 
 #>
 using System;
@@ -50,7 +51,8 @@ namespace <#= modelNamespace #>
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseMySql("<#= connectionString #>");
+            optionsBuilder
+                .UseMySql(@"<#= connectionString #>");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -62,56 +64,53 @@ namespace <#= modelNamespace #>
         }
 
         // primary key #>
-            modelBuilder.Entity<<#= table.ObjectName #>>()
 <#      if(table.PrimaryKeyColumns.Count() > 1 ){ #>
 
+            modelBuilder.Entity<<#= table.ObjectName #>>()
                 .HasKey(e => new { 
 <#
                         var position = 0;
                         foreach(var column in table.PrimaryKeyColumns){
                             if(position > 0){
-#>,<#
+#>, 
+<#
                             }
 #>
-                    e.<#= NamingConvention.Pascalize(column) #>
-<#
+                    e.<#= NamingConvention.Pascalize(column) #><#
                             position++;
                         }
-#>                
-                 });
+#>});
+
 <#                  
-        } else { #>
+        } else if(table.PrimaryKeyColumns.Count() == 1 ){ #>
+            modelBuilder.Entity<<#= table.ObjectName #>>()
                 .HasKey(e => e.<#= NamingConvention.Pascalize(table.PrimaryKeyColumns.First()) #>);
+
 <#
         }
 
         // このテーブルを参照する
-        var dependentsForInit = tables.Where(x => x.ForeignKeys.Any(y => y.ReferencedTable.NameEquals(table)))
-            .SelectMany(x => x.ForeignKeys.Where(r => r.ReferencedTable.NameEquals(table)))
-            .GroupBy(x => new { x.BaseTable.TableSchema, x.BaseTable.ObjectName });
-
-        foreach (var group in dependentsForInit)
+        foreach (var association in associations.Where(x => x.PrincipalRole.RoleName == table.TableName).OrderBy(x => x.DependentRole.RoleName))
         {
-            var n = 0;
-            foreach(var fkey in group)
-            {
-                if( fkey.BaseTable.PrimaryKeyColumns.Any(x => fkey.BaseTable.Columns.Any(y => y.ColumnName == x && y.DataType == "hierarchyid"))){
-                     continue;
-                }
+            var baseTable = tables.FirstOrDefault(x => x.TableName == association.DependentRole.RoleName);
+            // base tableの主キーに hierarchyidが含まれている場合は除外する
+            if( baseTable.PrimaryKeyColumns.Any(x => baseTable.Columns.Any(y => y.ColumnName == x && y.DataType == "hierarchyid"))){
+                    continue;
+            }
 #>            modelBuilder.Entity<<#= table.ObjectName #>>()
 <#
-                var variableName = NamingConvention.Pluralize(fkey.BaseTable.ObjectName) + $"{n:#}";
-                if(fkey.DependentRole.Multiplicity == "*"){
+                if(association.DependentRole.Multiplicity == "*"){
+                    var variableName = NamingConvention.Pluralize(association.DependentRole.ReferenceName);
 #>
                 .HasMany(e => e.<#= variableName #>)
-                .WithOne(e => e.<#= fkey.ReferencedTable.ObjectName + $"{n:#}" #>)<#
+                .WithOne(e => e.<#= association.PrincipalRole.ReferenceName #>)<#
                     
-                    if(fkey.Columns.Count > 1 ){ #>
+                    if(association.DependentRole.Columns.Count > 1 ){ #>
 
                 .HasForeignKey(e => new { 
 <#
                         var position = 0;
-                        foreach(var column in fkey.Columns){
+                        foreach(var column in association.DependentRole.Columns){
                             if(position > 0){
 #>,<#
                             }
@@ -124,29 +123,47 @@ namespace <#= modelNamespace #>
                  })<#                  
                     } else { #>
 
-                .HasForeignKey(e => e.<#= NamingConvention.Pascalize(fkey.Columns[0]) #>)<#
+                .HasForeignKey(e => e.<#= NamingConvention.Pascalize(association.DependentRole.Columns[0]) #>)<#
                     }
                 }
                 else{
 #>
-                .HasOne(e => e.<#= fkey.BaseTable.ObjectName + $"{n:#}" #>)
+                .HasOne(e => e.<#= association.DependentRole.ReferenceName #>)
 <#
-                    if(fkey.PrincipalRole.Required){ #>
-                .WithOne(e => e.<#= fkey.ReferencedTable.ObjectName + $"{n:#}" #>)<#
+                    if(association.PrincipalRole.Required){ #>
+                .WithOne(e => e.<#= association.PrincipalRole.ReferenceName #>)<#
                     } else { #>
-                .WithOptional(e => e.<#= fkey.ReferencedTable.ObjectName + $"{n:#}" #>)<#
+                .WithOptional(e => e.<#= association.PrincipalRole.ReferenceName #>)<#
                     } 
-                } 
-                if(fkey.ReferentialConstraint.DeleteRule == "NO ACTION"){ #>
+                    if(association.DependentRole.Columns.Count > 1 ){ #>
 
-                .WillCascadeOnDelete(false)<#
+                .HasForeignKey(e => new { 
+<#
+                        var position = 0;
+                        foreach(var column in association.DependentRole.Columns){
+                            if(position > 0){
+#>,<#
+                            }
+#>
+                    e.<#= NamingConvention.Pascalize(column) #>
+<#
+                            position++;
+                        }
+#>                
+                 })<#
+                     }
+                     else{#>
+
+                .HasForeignKey<<#= baseTable.ObjectName #>>(e => e.<#= NamingConvention.Pascalize(association.DependentRole.Columns[0]) #>)<#
+                     }
+                } 
+                if(association.DeleteRule != "NO ACTION"){ #>
+
+                .OnDelete(DeleteBehavior.Cascade)<#
                 }
 #>;
 
 <#
-                
-                n++;
-            }
         }
         foreach(var column in table.Columns){
 
@@ -163,7 +180,7 @@ namespace <#= modelNamespace #>
         }
     }
 }
-<# SaveOutput("SampleDbContext.cs"); #>
+<# SaveOutput(contextName + ".cs"); #>
 <#+
 private void SaveOutput(string outputFileName) {
   string templateDirectory = Path.GetDirectoryName(Host.TemplateFile);

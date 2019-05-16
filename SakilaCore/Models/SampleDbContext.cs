@@ -32,119 +32,143 @@ namespace SakilaCore.Models
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseMySql("server=localhost;database=sakila;uid=sakilauser;pwd=sakilauser");
+            optionsBuilder
+                .UseMySql(@"server=localhost;port=13306;database=sakila;uid=sakilauser;pwd=sakilauser");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
             modelBuilder.Entity<Actor>()
                 .HasKey(e => e.ActorId);
+
             modelBuilder.Entity<Actor>()
                 .HasMany(e => e.FilmActors)
                 .WithOne(e => e.Actor)
-                .HasForeignKey(e => e.ActorId);
+                .HasForeignKey(e => e.ActorId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Address>()
                 .HasKey(e => e.AddressId);
+
             modelBuilder.Entity<Address>()
                 .HasMany(e => e.Customers)
                 .WithOne(e => e.Address)
-                .HasForeignKey(e => e.AddressId);
+                .HasForeignKey(e => e.AddressId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Address>()
                 .HasMany(e => e.Staffs)
                 .WithOne(e => e.Address)
-                .HasForeignKey(e => e.AddressId);
+                .HasForeignKey(e => e.AddressId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Address>()
                 .HasMany(e => e.Stores)
                 .WithOne(e => e.Address)
-                .HasForeignKey(e => e.AddressId);
+                .HasForeignKey(e => e.AddressId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Category>()
                 .HasKey(e => e.CategoryId);
+
             modelBuilder.Entity<Category>()
                 .HasMany(e => e.FilmCategories)
                 .WithOne(e => e.Category)
-                .HasForeignKey(e => e.CategoryId);
+                .HasForeignKey(e => e.CategoryId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<City>()
                 .HasKey(e => e.CityId);
+
             modelBuilder.Entity<City>()
                 .HasMany(e => e.Addresses)
                 .WithOne(e => e.City)
-                .HasForeignKey(e => e.CityId);
+                .HasForeignKey(e => e.CityId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Country>()
                 .HasKey(e => e.CountryId);
+
             modelBuilder.Entity<Country>()
                 .HasMany(e => e.Cities)
                 .WithOne(e => e.Country)
-                .HasForeignKey(e => e.CountryId);
+                .HasForeignKey(e => e.CountryId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Customer>()
                 .HasKey(e => e.CustomerId);
+
             modelBuilder.Entity<Customer>()
                 .HasMany(e => e.Payments)
                 .WithOne(e => e.Customer)
-                .HasForeignKey(e => e.CustomerId);
+                .HasForeignKey(e => e.CustomerId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Customer>()
                 .HasMany(e => e.Rentals)
                 .WithOne(e => e.Customer)
-                .HasForeignKey(e => e.CustomerId);
+                .HasForeignKey(e => e.CustomerId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Film>()
                 .HasKey(e => e.FilmId);
+
             modelBuilder.Entity<Film>()
                 .HasMany(e => e.FilmActors)
                 .WithOne(e => e.Film)
-                .HasForeignKey(e => e.FilmId);
+                .HasForeignKey(e => e.FilmId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Film>()
                 .HasMany(e => e.FilmCategories)
                 .WithOne(e => e.Film)
-                .HasForeignKey(e => e.FilmId);
+                .HasForeignKey(e => e.FilmId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Film>()
                 .HasMany(e => e.Inventories)
                 .WithOne(e => e.Film)
-                .HasForeignKey(e => e.FilmId);
+                .HasForeignKey(e => e.FilmId)
+                .OnDelete(DeleteBehavior.Cascade);
+
 
             modelBuilder.Entity<FilmActor>()
-
                 .HasKey(e => new { 
-                    e.ActorId
-,                    e.FilmId
-                
-                 });
+                    e.ActorId, 
+                    e.FilmId});
+
+
             modelBuilder.Entity<FilmCategory>()
-
                 .HasKey(e => new { 
-                    e.FilmId
-,                    e.CategoryId
-                
-                 });
+                    e.FilmId, 
+                    e.CategoryId});
+
             modelBuilder.Entity<FilmText>()
                 .HasKey(e => e.FilmId);
+
             modelBuilder.Entity<Inventory>()
                 .HasKey(e => e.InventoryId);
+
             modelBuilder.Entity<Inventory>()
                 .HasMany(e => e.Rentals)
                 .WithOne(e => e.Inventory)
-                .HasForeignKey(e => e.InventoryId);
+                .HasForeignKey(e => e.InventoryId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Language>()
                 .HasKey(e => e.LanguageId);
+
             modelBuilder.Entity<Language>()
                 .HasMany(e => e.Films)
                 .WithOne(e => e.Language)
-                .HasForeignKey(e => e.LanguageId);
+                .HasForeignKey(e => e.LanguageId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Language>()
-                .HasMany(e => e.Films1)
-                .WithOne(e => e.Language1)
-                .HasForeignKey(e => e.OriginalLanguageId);
+                .HasMany(e => e.OriginalFilms)
+                .WithOne(e => e.OriginalLanguage)
+                .HasForeignKey(e => e.OriginalLanguageId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Language>()
                 .Property(e => e.Name)
@@ -152,46 +176,57 @@ namespace SakilaCore.Models
 
             modelBuilder.Entity<Payment>()
                 .HasKey(e => e.PaymentId);
+
             modelBuilder.Entity<Rental>()
                 .HasKey(e => e.RentalId);
+
             modelBuilder.Entity<Rental>()
                 .HasMany(e => e.Payments)
                 .WithOne(e => e.Rental)
-                .HasForeignKey(e => e.RentalId);
+                .HasForeignKey(e => e.RentalId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Staff>()
                 .HasKey(e => e.StaffId);
+
             modelBuilder.Entity<Staff>()
                 .HasMany(e => e.Payments)
                 .WithOne(e => e.Staff)
-                .HasForeignKey(e => e.StaffId);
+                .HasForeignKey(e => e.StaffId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Staff>()
                 .HasMany(e => e.Rentals)
                 .WithOne(e => e.Staff)
-                .HasForeignKey(e => e.StaffId);
+                .HasForeignKey(e => e.StaffId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Staff>()
-                .HasMany(e => e.Stores)
-                .WithOne(e => e.Staff)
-                .HasForeignKey(e => e.ManagerStaffId);
+                .HasMany(e => e.ManagerStore)
+                .WithOne(e => e.ManagerStaff)
+                .HasForeignKey(e => e.ManagerStaffId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Store>()
                 .HasKey(e => e.StoreId);
+
             modelBuilder.Entity<Store>()
                 .HasMany(e => e.Customers)
                 .WithOne(e => e.Store)
-                .HasForeignKey(e => e.StoreId);
+                .HasForeignKey(e => e.StoreId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Store>()
                 .HasMany(e => e.Inventories)
                 .WithOne(e => e.Store)
-                .HasForeignKey(e => e.StoreId);
+                .HasForeignKey(e => e.StoreId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Store>()
                 .HasMany(e => e.Staffs)
                 .WithOne(e => e.Store)
-                .HasForeignKey(e => e.StoreId);
+                .HasForeignKey(e => e.StoreId)
+                .OnDelete(DeleteBehavior.Cascade);
 
         }
     }

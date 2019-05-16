@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace SakilaCore.Models
 {
-    [Table("store")]
+    [Table("store", Schema="sakila")]
     public partial class Store
     {
         public Store()
@@ -52,7 +52,7 @@ namespace SakilaCore.Models
 
         public virtual Address Address { get; set; }
 
-        public virtual Staff Staff { get; set; }
+        public virtual Staff ManagerStaff { get; set; }
 
     }
 }

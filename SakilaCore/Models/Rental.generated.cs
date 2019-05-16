@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace SakilaCore.Models
 {
-    [Table("rental")]
+    [Table("rental", Schema="sakila")]
     public partial class Rental
     {
         public Rental()

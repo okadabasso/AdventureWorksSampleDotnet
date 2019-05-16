@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace SakilaCore.Models
 {
-    [Table("film")]
+    [Table("film", Schema="sakila")]
     public partial class Film
     {
         public Film()
@@ -90,7 +90,7 @@ namespace SakilaCore.Models
 
         public virtual Language Language { get; set; }
 
-        public virtual Language Language1 { get; set; }
+        public virtual Language OriginalLanguage { get; set; }
 
     }
 }

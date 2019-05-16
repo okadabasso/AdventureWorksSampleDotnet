@@ -5,13 +5,13 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace SakilaCore.Models
 {
-    [Table("language")]
+    [Table("language", Schema="sakila")]
     public partial class Language
     {
         public Language()
         {
             Films = new HashSet<Film>();
-            Films1 = new HashSet<Film>();
+            OriginalFilms = new HashSet<Film>();
 
         }
 
@@ -40,7 +40,7 @@ namespace SakilaCore.Models
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Film> Films1 { get; set; }
+        public virtual ICollection<Film> OriginalFilms { get; set; }
 
     }
 }
