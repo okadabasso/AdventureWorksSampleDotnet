@@ -11,10 +11,10 @@ namespace AdventureWorksCore.Models
         public Person()
         {
             BusinessEntityContacts = new HashSet<BusinessEntityContact>();
-            EmailAddresses = new HashSet<EmailAddress>();
-            PersonPhones = new HashSet<PersonPhone>();
             Customers = new HashSet<Customer>();
+            EmailAddresses = new HashSet<EmailAddress>();
             PersonCreditCards = new HashSet<PersonCreditCard>();
+            PersonPhones = new HashSet<PersonPhone>();
 
         }
 
@@ -93,21 +93,9 @@ namespace AdventureWorksCore.Models
         [Column("ModifiedDate", Order = 12)]
         public DateTime ModifiedDate { get; set; }
 
-        public virtual Employee Employee { get; set; }
-
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BusinessEntityContact> BusinessEntityContacts { get; set; }
-
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<EmailAddress> EmailAddresses { get; set; }
-
-        public virtual Password Password { get; set; }
-
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PersonPhone> PersonPhones { get; set; }
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -115,7 +103,19 @@ namespace AdventureWorksCore.Models
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EmailAddress> EmailAddresses { get; set; }
+
+        public virtual Employee Employee { get; set; }
+
+        public virtual Password Password { get; set; }
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PersonCreditCard> PersonCreditCards { get; set; }
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PersonPhone> PersonPhones { get; set; }
 
         public virtual BusinessEntity BusinessEntity { get; set; }
 

@@ -260,14 +260,14 @@ namespace AdventureWorksCore.Models
                 .HasForeignKey<Person>(e => e.BusinessEntityId);
 
             modelBuilder.Entity<BusinessEntity>()
-                .HasOne(e => e.Vendor)
-                .WithOne(e => e.BusinessEntity)
-                .HasForeignKey<Vendor>(e => e.BusinessEntityId);
-
-            modelBuilder.Entity<BusinessEntity>()
                 .HasOne(e => e.Store)
                 .WithOne(e => e.BusinessEntity)
                 .HasForeignKey<Store>(e => e.BusinessEntityId);
+
+            modelBuilder.Entity<BusinessEntity>()
+                .HasOne(e => e.Vendor)
+                .WithOne(e => e.BusinessEntity)
+                .HasForeignKey<Vendor>(e => e.BusinessEntityId);
 
 
             modelBuilder.Entity<BusinessEntityAddress>()
@@ -295,17 +295,17 @@ namespace AdventureWorksCore.Models
                 .HasKey(e => e.CountryRegionCode);
 
             modelBuilder.Entity<CountryRegion>()
-                .HasMany(e => e.StateProvinces)
-                .WithOne(e => e.CountryRegion)
-                .HasForeignKey(e => e.CountryRegionCode);
-
-            modelBuilder.Entity<CountryRegion>()
                 .HasMany(e => e.CountryRegionCurrencies)
                 .WithOne(e => e.CountryRegion)
                 .HasForeignKey(e => e.CountryRegionCode);
 
             modelBuilder.Entity<CountryRegion>()
                 .HasMany(e => e.SalesTerritories)
+                .WithOne(e => e.CountryRegion)
+                .HasForeignKey(e => e.CountryRegionCode);
+
+            modelBuilder.Entity<CountryRegion>()
+                .HasMany(e => e.StateProvinces)
                 .WithOne(e => e.CountryRegion)
                 .HasForeignKey(e => e.CountryRegionCode);
 
@@ -322,12 +322,12 @@ namespace AdventureWorksCore.Models
                 .HasKey(e => e.BusinessEntityId);
 
             modelBuilder.Entity<Person>()
-                .HasOne(e => e.Employee)
+                .HasMany(e => e.BusinessEntityContacts)
                 .WithOne(e => e.Person)
-                .HasForeignKey<Employee>(e => e.BusinessEntityId);
+                .HasForeignKey(e => e.PersonId);
 
             modelBuilder.Entity<Person>()
-                .HasMany(e => e.BusinessEntityContacts)
+                .HasMany(e => e.Customers)
                 .WithOne(e => e.Person)
                 .HasForeignKey(e => e.PersonId);
 
@@ -337,22 +337,22 @@ namespace AdventureWorksCore.Models
                 .HasForeignKey(e => e.BusinessEntityId);
 
             modelBuilder.Entity<Person>()
+                .HasOne(e => e.Employee)
+                .WithOne(e => e.Person)
+                .HasForeignKey<Employee>(e => e.BusinessEntityId);
+
+            modelBuilder.Entity<Person>()
                 .HasOne(e => e.Password)
                 .WithOne(e => e.Person)
                 .HasForeignKey<Password>(e => e.BusinessEntityId);
 
             modelBuilder.Entity<Person>()
-                .HasMany(e => e.PersonPhones)
+                .HasMany(e => e.PersonCreditCards)
                 .WithOne(e => e.Person)
                 .HasForeignKey(e => e.BusinessEntityId);
 
             modelBuilder.Entity<Person>()
-                .HasMany(e => e.Customers)
-                .WithOne(e => e.Person)
-                .HasForeignKey(e => e.PersonId);
-
-            modelBuilder.Entity<Person>()
-                .HasMany(e => e.PersonCreditCards)
+                .HasMany(e => e.PersonPhones)
                 .WithOne(e => e.Person)
                 .HasForeignKey(e => e.BusinessEntityId);
 
@@ -489,16 +489,6 @@ namespace AdventureWorksCore.Models
                 .HasForeignKey(e => e.ProductId);
 
             modelBuilder.Entity<Product>()
-                .HasMany(e => e.TransactionHistories)
-                .WithOne(e => e.Product)
-                .HasForeignKey(e => e.ProductId);
-
-            modelBuilder.Entity<Product>()
-                .HasMany(e => e.WorkOrders)
-                .WithOne(e => e.Product)
-                .HasForeignKey(e => e.ProductId);
-
-            modelBuilder.Entity<Product>()
                 .HasMany(e => e.ProductVendors)
                 .WithOne(e => e.Product)
                 .HasForeignKey(e => e.ProductId);
@@ -515,6 +505,16 @@ namespace AdventureWorksCore.Models
 
             modelBuilder.Entity<Product>()
                 .HasMany(e => e.SpecialOfferProducts)
+                .WithOne(e => e.Product)
+                .HasForeignKey(e => e.ProductId);
+
+            modelBuilder.Entity<Product>()
+                .HasMany(e => e.TransactionHistories)
+                .WithOne(e => e.Product)
+                .HasForeignKey(e => e.ProductId);
+
+            modelBuilder.Entity<Product>()
+                .HasMany(e => e.WorkOrders)
                 .WithOne(e => e.Product)
                 .HasForeignKey(e => e.ProductId);
 
@@ -982,11 +982,6 @@ namespace AdventureWorksCore.Models
                 .HasKey(e => e.TerritoryId);
 
             modelBuilder.Entity<SalesTerritory>()
-                .HasMany(e => e.StateProvinces)
-                .WithOne(e => e.SalesTerritory)
-                .HasForeignKey(e => e.TerritoryId);
-
-            modelBuilder.Entity<SalesTerritory>()
                 .HasMany(e => e.Customers)
                 .WithOne(e => e.SalesTerritory)
                 .HasForeignKey(e => e.TerritoryId);
@@ -1003,6 +998,11 @@ namespace AdventureWorksCore.Models
 
             modelBuilder.Entity<SalesTerritory>()
                 .HasMany(e => e.SalesTerritoryHistories)
+                .WithOne(e => e.SalesTerritory)
+                .HasForeignKey(e => e.TerritoryId);
+
+            modelBuilder.Entity<SalesTerritory>()
+                .HasMany(e => e.StateProvinces)
                 .WithOne(e => e.SalesTerritory)
                 .HasForeignKey(e => e.TerritoryId);
 

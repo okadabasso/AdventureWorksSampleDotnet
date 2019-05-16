@@ -17,12 +17,12 @@ namespace AdventureWorksCore.Models
             ProductListPriceHistories = new HashSet<ProductListPriceHistory>();
             ProductProductPhotos = new HashSet<ProductProductPhoto>();
             ProductReviews = new HashSet<ProductReview>();
-            TransactionHistories = new HashSet<TransactionHistory>();
-            WorkOrders = new HashSet<WorkOrder>();
             ProductVendors = new HashSet<ProductVendor>();
             PurchaseOrderDetails = new HashSet<PurchaseOrderDetail>();
             ShoppingCartItems = new HashSet<ShoppingCartItem>();
             SpecialOfferProducts = new HashSet<SpecialOfferProduct>();
+            TransactionHistories = new HashSet<TransactionHistory>();
+            WorkOrders = new HashSet<WorkOrder>();
 
         }
 
@@ -194,14 +194,6 @@ namespace AdventureWorksCore.Models
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TransactionHistory> TransactionHistories { get; set; }
-
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<WorkOrder> WorkOrders { get; set; }
-
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProductVendor> ProductVendors { get; set; }
 
 
@@ -215,6 +207,14 @@ namespace AdventureWorksCore.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SpecialOfferProduct> SpecialOfferProducts { get; set; }
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TransactionHistory> TransactionHistories { get; set; }
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<WorkOrder> WorkOrders { get; set; }
 
         public virtual ProductModel ProductModel { get; set; }
 

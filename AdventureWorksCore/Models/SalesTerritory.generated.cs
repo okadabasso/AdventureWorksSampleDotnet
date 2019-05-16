@@ -10,11 +10,11 @@ namespace AdventureWorksCore.Models
     {
         public SalesTerritory()
         {
-            StateProvinces = new HashSet<StateProvince>();
             Customers = new HashSet<Customer>();
             SalesOrderHeaders = new HashSet<SalesOrderHeader>();
             SalesPersons = new HashSet<SalesPerson>();
             SalesTerritoryHistories = new HashSet<SalesTerritoryHistory>();
+            StateProvinces = new HashSet<StateProvince>();
 
         }
 
@@ -78,10 +78,6 @@ namespace AdventureWorksCore.Models
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<StateProvince> StateProvinces { get; set; }
-
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Customer> Customers { get; set; }
 
 
@@ -95,6 +91,10 @@ namespace AdventureWorksCore.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SalesTerritoryHistory> SalesTerritoryHistories { get; set; }
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StateProvince> StateProvinces { get; set; }
 
         public virtual CountryRegion CountryRegion { get; set; }
 

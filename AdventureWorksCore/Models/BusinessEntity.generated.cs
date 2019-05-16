@@ -42,9 +42,9 @@ namespace AdventureWorksCore.Models
 
         public virtual Person Person { get; set; }
 
-        public virtual Vendor Vendor { get; set; }
-
         public virtual Store Store { get; set; }
+
+        public virtual Vendor Vendor { get; set; }
 
     }
 }

@@ -10,9 +10,9 @@ namespace AdventureWorksCore.Models
     {
         public CountryRegion()
         {
-            StateProvinces = new HashSet<StateProvince>();
             CountryRegionCurrencies = new HashSet<CountryRegionCurrency>();
             SalesTerritories = new HashSet<SalesTerritory>();
+            StateProvinces = new HashSet<StateProvince>();
 
         }
 
@@ -38,15 +38,15 @@ namespace AdventureWorksCore.Models
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<StateProvince> StateProvinces { get; set; }
-
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CountryRegionCurrency> CountryRegionCurrencies { get; set; }
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SalesTerritory> SalesTerritories { get; set; }
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StateProvince> StateProvinces { get; set; }
 
     }
 }
