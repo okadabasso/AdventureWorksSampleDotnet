@@ -69,6 +69,7 @@
     <Compile Include="Queries\IndexColumnListQuery.cs" />
     <Compile Include="Queries\IndexListQuery.cs" />
     <Compile Include="Queries\ParameterListQuery.cs" />
+    <Compile Include="Queries\ReferentialConstraintListQuery.cs" />
     <Compile Include="Queries\ReferentialConstraintQuery.cs" />
     <Compile Include="Queries\RoutineListQuery.cs" />
   </ItemGroup>

@@ -30,5 +30,14 @@ namespace Schema
         [Column("ORDINAL_POSITION")]
         public long OrdinalPosition { get; set; }
 
+        [Column("DATA_TYPE")]
+        public string DataType { get; set; }
+
+        [Column("IS_NULLABLE")]
+        public string IsNullable { get; set; }
+
+        [Column("CONSTRAINT_TYPE")]
+        public string ConstraintType { get; set; }
+
     }
 }

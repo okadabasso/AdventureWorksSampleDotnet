@@ -26,6 +26,7 @@ namespace Schema
         protected virtual RoutineListQuery routineListQuery => new RoutineListQuery(connection);
         protected virtual ParameterListQuery parameterListQuery => new ParameterListQuery(connection);
         protected virtual SequenceListQuery sequenceListQuery => new SequenceListQuery(connection);
+        protected virtual ReferentialConstraintListQuery referentialConstraintListQuery => new ReferentialConstraintListQuery(connection);
 
         public SchemaManager()
         {
@@ -129,7 +130,7 @@ namespace Schema
             table.Constraints = constraintQuery.Execute(table.TableSchema, table.TableName).ToList();
 
             table.ReferentialConstraints = new List<ReferentialConstraint>();
-            foreach (var constraint in table.Constraints.Where(x => x.ConstraintType == "PRIMARY KEY" || x.ConstraintType == "FOREIGN KEY"))
+            foreach (var constraint in table.Constraints)
             {
                 constraint.ConstraintColumns = constraintColumnQuery.Execute(constraint.ConstraintSchema, constraint.ConstraintName, table.TableSchema, table.TableName).ToList();
                 if (constraint.ConstraintType == "FOREIGN KEY")
@@ -146,6 +147,34 @@ namespace Schema
             {
                 index.Columns = indexColumns.Where(x => x.IndexId == index.IndexId).ToList();
             }
+        }
+        public List<Association> GetAssociations()
+        {
+            var keyColumnUsageQuery = new KeyColumnUsageQuery(connection);
+            var list = new List<Association>();
+
+            var query = referentialConstraintListQuery.Execute()
+                .GroupBy(x => new {
+                    x.BaseTableSchema,
+                    x.BaseTableName
+                });
+            foreach(var group in query)
+            {
+                var baseTableConstraintColumns = keyColumnUsageQuery.Execute(group.Key.BaseTableSchema, group.Key.BaseTableName).ToList();
+                foreach(var constraint in group)
+                {
+
+                    var fkeyColumns = baseTableConstraintColumns.Where(x => x.ConstraintSchema == constraint.ConstraintSchema && x.ConstraintName == constraint.ConstraintName);
+                    var referencedKeyColumns = constraintColumnQuery.Execute(constraint.UniqueConstraintSchema, constraint.UniqueConstraintName, constraint.ReferenceTableSchema, constraint.ReferenceTableName);
+
+                    var baseTableKey = baseTableConstraintColumns.Where(x => x.ConstraintType == "PRIMARY KEY");
+
+                    var association = new Association(constraint, fkeyColumns, referencedKeyColumns, baseTableKey);
+                    list.Add(association);
+                }
+            }
+
+            return list;
         }
         public List<Routine> GetRoutines()
         {

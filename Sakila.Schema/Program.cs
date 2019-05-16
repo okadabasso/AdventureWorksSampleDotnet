@@ -11,20 +11,26 @@ namespace Sakila.Schema
     {
         static void Main(string[] args)
         {
-            var connectionString = "server= localhost;database=sakila;uid=sakilauser;pwd=sakilauser";
+            var connectionString = "server= localhost;port=13306;database=sakila;uid=sakilauser;pwd=sakilauser";
 
             var schemaManager = new MySqlSchemaManager(connectionString);
-            var routines = schemaManager.GetRoutines();
-
-            foreach(var r in routines)
+            var associations = schemaManager.GetAssociations().OrderBy(x => x.PrincipalRole.RoleName);
+            foreach (var association in associations)
             {
-                Console.WriteLine(r.RoutineName);
-                foreach(var p in r.Parameters)
+                var principalMultiplicity = (association.PrincipalRole.Required ? "" : "0..") + association.PrincipalRole.Multiplicity;
+                var dependentMultiplicity = (association.DependentRole.Required ? "1.." : "0..") + association.DependentRole.Multiplicity;
+
+                Console.WriteLine($"{association.PrincipalRole.RoleName}({association.PrincipalRole.ReferenceName}) {principalMultiplicity}----{dependentMultiplicity} {association.DependentRole.RoleName}({association.DependentRole.ReferenceName})");
+
+                var e1 = association.PrincipalRole.Columns.GetEnumerator();
+                var e2 = association.DependentRole.Columns.GetEnumerator();
+                while (e1.MoveNext())
                 {
-                    Console.WriteLine(p.ParameterName);
-                    Console.WriteLine(p.ObjectName);
+                    e2.MoveNext();
+                    Console.WriteLine($"\t{e1.Current} -- {e2.Current}");
 
                 }
+                Console.WriteLine();
             }
             Console.ReadLine();
         }

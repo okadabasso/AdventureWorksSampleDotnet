@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Association.cs" />
     <Compile Include="AssociationRole.cs" />
     <Compile Include="Column.cs" />
     <Compile Include="ForeignKey.cs" />
@@ -66,6 +67,8 @@
     <Compile Include="Queries\IndexColumnListQuery.cs" />
     <Compile Include="Queries\IndexListQuery.cs" />
     <Compile Include="Queries\ParameterListQuery.cs" />
+    <Compile Include="Queries\KeyColumnUsageQuery.cs" />
+    <Compile Include="Queries\ReferentialConstraintListQuery.cs" />
     <Compile Include="Queries\ReferentialConstraintQuery.cs" />
     <Compile Include="Queries\RoutineListQuery.cs" />
     <Compile Include="Queries\SequenceListQuery.cs" />

@@ -14,5 +14,7 @@ namespace Schema
         public bool Required { get; set; }
 
         public string ReferenceName { get; set; }
+
+        public List<string> Columns { get; set; }
     }
 }

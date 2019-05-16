@@ -33,6 +33,12 @@ namespace Schema
         [Column("DELETE_RULE")]
         public string DeleteRule { get; set; }
 
+
+        [Column("BASE_TABLE_SCHEMA")]
+        public string BaseTableSchema { get; set; }
+        [Column("BASE_TABLE_NAME")]
+        public string BaseTableName { get; set; }
+
         [Column("REFERENCE_TABLE_SCHEMA")]
         public string ReferenceTableSchema { get; set; }
         [Column("REFERENCE_TABLE_NAME")]

@@ -20,9 +20,37 @@ namespace AdventureWorksSample1
     {
         private static void Main(string[] args)
         {
-            SampleQuery("Mountain");
+            ListAssociations();
             // NamingConventionSample();
             Console.ReadLine();
+        }
+        static void ListAssociations()
+        {
+            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["AdventureWorks"].ConnectionString))
+            {
+                using (var schemaManager = new SchemaManager(connection))
+                {
+                    var associations = schemaManager.GetAssociations().OrderBy(x => x.PrincipalRole.RoleName);
+                    foreach (var association in associations)
+                    {
+                        var principalMultiplicity =(association.PrincipalRole.Required ? "" : "0..") + association.PrincipalRole.Multiplicity;
+                        var dependentMultiplicity = (association.DependentRole.Required ? "1.." : "0..") + association.DependentRole.Multiplicity;
+                        
+                        Console.WriteLine($"{association.PrincipalRole.RoleName}({association.PrincipalRole.ReferenceName}) {principalMultiplicity}----{dependentMultiplicity} {association.DependentRole.RoleName}({association.DependentRole.ReferenceName})");
+
+                        var e1 = association.PrincipalRole.Columns.GetEnumerator();
+                        var e2 = association.DependentRole.Columns.GetEnumerator();
+                        while (e1.MoveNext())
+                        {
+                            e2.MoveNext();
+                            Console.WriteLine($"\t{e1.Current} -- {e2.Current}");
+
+                        }
+                        Console.WriteLine();
+                    }
+                }
+            }
+
         }
         static void InferRoleName()
         {
