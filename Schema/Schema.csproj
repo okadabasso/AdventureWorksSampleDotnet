@@ -46,7 +46,6 @@
     <Compile Include="Association.cs" />
     <Compile Include="AssociationRole.cs" />
     <Compile Include="Column.cs" />
-    <Compile Include="ForeignKey.cs" />
     <Compile Include="Index.cs" />
     <Compile Include="IndexColumn.cs" />
     <Compile Include="Infrastructure\DatabaseAdapter.cs" />

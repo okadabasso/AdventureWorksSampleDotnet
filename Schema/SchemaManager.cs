@@ -79,44 +79,8 @@ namespace Schema
             foreach(var table in tables)
             {
                 BuildTable(table);
-                BuildReferences(tables, table);
             }
             return tables;
-        }
-        private void BuildReferences(List<Table> tables, Table baseTable)
-        {
-            baseTable.ForeignKeys = new List<ForeignKey>();
-            foreach (var constraint in baseTable.Constraints.Where(x => x.ConstraintType == "FOREIGN KEY"))
-            {
-                var foreignKey = CreateForeignKey(tables, baseTable, constraint);
-                if(foreignKey != null)
-                {
-                    foreignKey.BaseTable.ForeignKeys.Add(foreignKey);
-                }
-            }
-        }
-        private ForeignKey CreateForeignKey(List<Table> tables, Table baseTable, TableConstraint constraint)
-        {
-            var referentialConstraint = baseTable.ReferentialConstraints
-                .FirstOrDefault(x =>
-                    x.ConstraintSchema == constraint.ConstraintSchema &&
-                    x.ConstraintName == constraint.ConstraintName);
-            if (referentialConstraint == null)
-            {
-                return null;
-            }
-
-            var referencedTable = tables.FirstOrDefault(x => 
-                x.TableSchema == referentialConstraint.ReferenceTableSchema && 
-                x.TableName == referentialConstraint.ReferenceTableName);
-            if (referencedTable == null)
-            {
-                return null;
-            }
-            BuildTable(referencedTable);
-            var foreignKey = new ForeignKey(constraint, referentialConstraint, baseTable, referencedTable);
-
-            return foreignKey;
         }
 
         private void BuildTable(Table table)
@@ -133,11 +97,6 @@ namespace Schema
             foreach (var constraint in table.Constraints)
             {
                 constraint.ConstraintColumns = constraintColumnQuery.Execute(constraint.ConstraintSchema, constraint.ConstraintName, table.TableSchema, table.TableName).ToList();
-                if (constraint.ConstraintType == "FOREIGN KEY")
-                {
-                    var referentialConstraint = referentialConstraintQuery.Execute(constraint.ConstraintSchema, constraint.ConstraintName).First();
-                    table.ReferentialConstraints.Add(referentialConstraint);
-                }
             }
 
             // mysql does not have "sys.indexes"

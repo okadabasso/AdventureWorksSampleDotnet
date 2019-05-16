@@ -13,6 +13,11 @@ namespace Schema.Infrastructure
         private readonly SchemaManager manager;
         private readonly StreamWriter writer;
 
+        private List<Table> tables;
+        private List<Association> associations;
+        private List<Routine> routines;
+        private List<Sequence> sequences;
+
         public SchemaWriter(SchemaManager manager,string filename)
         {
             this.manager = manager;
@@ -20,18 +25,22 @@ namespace Schema.Infrastructure
         }
         public void Write()
         {
+            tables = manager.GetTables();
+            associations = manager.GetAssociations();
+            routines = manager.GetRoutines();
+            sequences = manager.GetSequences();
             Write($"{{");
             PushIndent();
 
-            WriteTables(manager.GetTables());
-            WriteRoutines(manager.GetRoutines());
-            WriteSequences(manager.GetSequences());
+            WriteTables();
+            WriteRoutines();
+            WriteSequences();
 
             PopIndent();
             Write($"}}");
         }
 
-        public void WriteRoutines(List<Routine> routines)
+        public void WriteRoutines()
         {
             Write($"\"routines\": [");
             PushIndent();
@@ -68,7 +77,7 @@ namespace Schema.Infrastructure
             PopIndent();
             Write($"],");
         }
-        public void WriteSequences(List<Sequence> sequences)
+        public void WriteSequences()
         {
             Write($"\"sequences\": [");
             PushIndent();
@@ -89,7 +98,7 @@ namespace Schema.Infrastructure
             Write($"]");
 
         }
-        public void WriteTables(List<Table> tables)
+        public void WriteTables()
         {
 
             Write($"\"tables\": [");
@@ -107,7 +116,7 @@ namespace Schema.Infrastructure
 
                 WriteIndexes(table);
 
-                WriteForeignKeys(tables, table);
+                WriteForeignKeys(table);
 
                 PopIndent();
                 Write($@"}}" + ((tableCount++ < (tables.Count - 1)) ? ",": ""));
@@ -117,13 +126,14 @@ namespace Schema.Infrastructure
 
         }
 
-        private void WriteForeignKeys(List<Schema.Table> tables, Schema.Table table)
+        private void WriteForeignKeys(Schema.Table table)
         {
             Write($@"""foreign_keys"": [");
             PushIndent();
             var keyCount = 0;
-            var foreignKeyCount = table.Constraints.Where(x => x.ConstraintType == "FOREIGN KEY").Count();
-            foreach (var key in table.ForeignKeys)
+            var fkeys = associations.Where(x => x.DependentRole.RoleName == table.TableName);
+            var foreignKeyCount = fkeys.Count();
+            foreach (var key in fkeys)
             {
                 var referentialConstraint = table.ReferentialConstraints.FirstOrDefault(x => x.ConstraintSchema == key.ConstraintSchema && x.ConstraintName == key.ConstraintName);
                 Write($@"{{");
@@ -133,9 +143,9 @@ namespace Schema.Infrastructure
                 Write($@"""columns"": [");
                 PushIndent();
                 var columnCount = 0;
-                foreach (var column in key.Columns)
+                foreach (var column in key.DependentRole.Columns)
                 {
-                    Write($@"""{column}""" + (columnCount++ < (key.Columns.Count - 1) ? "," : ""));
+                    Write($@"""{column}""" + (columnCount++ < (key.DependentRole.Columns.Count - 1) ? "," : ""));
                 }
                 PopIndent();
                 Write($@"],");
@@ -143,14 +153,13 @@ namespace Schema.Infrastructure
                 Write($@"""references"": {{");
                 PushIndent();
 
-                Write($@"""table"": ""{key.ReferencedTable.TableName}"",");
+                Write($@"""table"": ""{key.PrincipalRole.RoleName}"",");
                 Write($@"""columns"": [");
                 PushIndent();
                 var referencedColumnCount = 0;
-                foreach (var keyColumn in key.ReferenceColumns)
+                foreach (var keyColumn in key.PrincipalRole.Columns)
                 {
-                    Write($@"""{keyColumn}""" + (referencedColumnCount++ < (key.ReferenceColumns.Count - 1) ? "," : ""));
-
+                    Write($@"""{keyColumn}""" + (referencedColumnCount++ < (key.PrincipalRole.Columns.Count - 1) ? "," : ""));
                 }
                 PopIndent();
                 Write($@"]");

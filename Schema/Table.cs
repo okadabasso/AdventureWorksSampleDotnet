@@ -46,7 +46,6 @@ namespace Schema
                 }
             }
         }
-        public List<ForeignKey> ForeignKeys { get; set; }
 
         public bool NameEquals(Table table)
         {
